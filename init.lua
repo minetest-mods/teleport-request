@@ -121,7 +121,7 @@ local function tpr_accept(name, param)
 	--Check to prevent constant teleporting.	
 
 	if tpr_list[name] == nil and tphr_list[name] == nil then
-            minetest.chat_send_player(name, "Usage: /tpaccept allows you to accept teleport requests sent to you by other players")
+            minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players")
 
 		return
 	end
