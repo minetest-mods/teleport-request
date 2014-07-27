@@ -156,6 +156,12 @@ local function tpr_accept(name, param)
 
 		local requester = minetest.env:get_player_by_name(sender)
 		local accepter = minetest.env:get_player_by_name(name)
+		
+		-- Could happen if either player disconnects; if so just abort
+                if requester == nil or accepter == nil then
+                        return
+                end
+                
 		local p = nil
 		p = accepter:getpos()
 		p = find_free_position_near(p)
