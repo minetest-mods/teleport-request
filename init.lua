@@ -1,5 +1,5 @@
 
-local timeout_delay = 10
+local timeout_delay = 60
 
 -- Set to true to register tpr_admin priv
 local regnewpriv = false
