@@ -1,8 +1,8 @@
 
-local timeout_delay = 10
+local timeout_delay = 60
 
 -- Set to true to register tpr_admin priv
---local regnewpriv = false
+local regnewpriv = false
 
 local version = "0.2"
 
@@ -156,11 +156,12 @@ end
 
 --Initalize Permissions.
 
-minetest.register_privilege("tpr_admin", {
-	description = "Permission to override teleport to other players. UNFINISHED",
-	give_to_singleplayer = true
-})
-
+if regnewpriv then
+	minetest.register_privilege("tpr_admin", {
+		description = "Permission to override teleport to other players. UNFINISHED",
+		give_to_singleplayer = true
+	})
+end
 
 --Initalize Commands.
 
