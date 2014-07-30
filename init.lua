@@ -1,14 +1,16 @@
 --Configuration values:
 --Use these to customize this mod
-timeout_delay = 60
+local timeout_delay = 60
 
 --DO NOT CHANGE:
 
-value_carryover = nil
-value_carryover2 = nil
+local value_carryover = nil
+local value_carryover2 = nil
 
+local version = "0.1a"
 
-print ("[Teleport Request] Teleport Request v0.1a Loaded.")
+local tpr_list = {}
+local tphr_list = {}
 
 --Teleport Request System
 
@@ -42,20 +44,17 @@ end
 
 local function tphr_send(name, param)
 
-	--Register variables
+	local sender2 = name
+	local receiver2 = param
+	local value_carryover2 = param
 
-	sender2 = name
-	receiver2 = param
-	value_carryover2 = param
 	--Check for empty parameter
-
 	if receiver2 == "" then
 		minetest.chat_send_player(sender2, "Usage: /tphr <Player name>")
 		return
 	end
 
 	--If paremeter is valid, Send teleport message and set the table.
-
 	if minetest.env:get_player_by_name(receiver2) then
 		minetest.chat_send_player(receiver2, sender2 ..' is requesting that you teleport to them. /tpy to accept.')
 		minetest.chat_send_player(sender2, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
@@ -72,23 +71,15 @@ end
 --Reset after configured delay.
 
 function reset_request(name)
-
-	--A check to prevent crashing
-
 	if tpr_list[value_carryover] ~= nil then
 		tpr_list[value_carryover] = nil
 	end
-
 end
 
 function reset_request2(name)
-
-	--A check to prevent crashing
-
 	if tphr_list[value_carryover2] ~= nil then
 		tphr_list[value_carryover2] = nil
 	end
-
 end
 
 function tpr_deny(name)
@@ -103,19 +94,14 @@ function tpr_deny(name)
 		minetest.chat_send_player(sender2, 'Teleport request denied :C')
 	end
 end
+
 --Teleport Accept Systems
 
 local function tpr_accept(name, param)
 
-	--Register name variables.
+	local receiver = name
 
-	receiver = name
-	sender = tpr_list[name]
-
-	receiver = name
-	sender2 = tphr_list[name]
 	--Check to prevent constant teleporting.
-
 	if tpr_list[name] == nil and tphr_list[name] == nil then
 		minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players")
 		return
@@ -125,6 +111,7 @@ local function tpr_accept(name, param)
 	--Check to ensure name is valid, then send appropriate chat messages
 
 	if tpr_list[name] then
+		local sender = tpr_list[name]
 		minetest.chat_send_player(tpr_list[receiver], "Request Accepted!")
 		minetest.chat_send_player(receiver, sender..' is teleporting to you.')
 
@@ -171,8 +158,9 @@ local function tpr_accept(name, param)
 	--Teleport Here accepting system
 
 	if tphr_list[name] then
+		local sender = tphr_list[name]
 		minetest.chat_send_player(tphr_list[receiver], "Request Accepted!")
-		minetest.chat_send_player(receiver, 'you are teleporting to '..sender2..'.')
+		minetest.chat_send_player(receiver, 'you are teleporting to '..sender..'.')
 
 		--Code here copied from Celeron-55's /teleport command. Thanks Celeron!
 
@@ -195,12 +183,12 @@ local function tpr_accept(name, param)
 
 		--Get names from variables and set position. Then actually teleport the player.
 
-		local requester = minetest.env:get_player_by_name(sender2)
+		local requester = minetest.env:get_player_by_name(sender)
 		local accepter = minetest.env:get_player_by_name(name)
 
 		-- Could happen if either player disconnects; if so just abort
 		if requester == nil or accepter == nil then
-						return
+			return
 		end
 
 		local p = nil
@@ -209,17 +197,11 @@ local function tpr_accept(name, param)
 		accepter:setpos(p)
 
 		-- Set name values to nil to prevent re-teleporting on the same request.
-
 		tphr_list[name] = nil
+		
 		return
 	end
 end
-
-
---Initalize Table.
-
-tpr_list = {}
-tphr_list = {}
 
 --Initalize Permissions.
 
@@ -255,3 +237,5 @@ minetest.register_chatcommand("tpn", {
 	description = "Deny teleport requests from another player",
 	func = tpr_deny
 })
+
+print ("[Teleport Request] Teleport Request v" .. version .. " Loaded.")
