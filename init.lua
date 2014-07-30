@@ -1,26 +1,40 @@
---Configuration values:
---Use these to customize this mod
-local timeout_delay = 60
 
---DO NOT CHANGE:
+local timeout_delay = 10
 
-local value_carryover = nil
-local value_carryover2 = nil
+-- Set to true to register tpr_admin priv
+--local regnewpriv = false
 
-local version = "0.1a"
+local version = "0.2"
 
 local tpr_list = {}
 local tphr_list = {}
 
+--DO NOT CHANGE:------------
+value_carryover = nil
+value_carryover2 = nil
+----------------------------
+
+-- Reset after configured delay.
+-- These functions cannot be local (not sure if this can be avoided)
+function reset_request(name)
+	if tpr_list[value_carryover] ~= nil then
+		tpr_list[value_carryover] = nil
+	end
+end
+
+function reset_request2(name)
+	if tphr_list[value_carryover2] ~= nil then
+		tphr_list[value_carryover2] = nil
+	end
+end
+
 --Teleport Request System
-
 local function tpr_send(name, param)
-
-	--Register variables
 
 	local sender = name
 	local receiver = param
-	local value_carryover = param
+
+	value_carryover = param
 
 	--Check for empty parameter
 	if receiver == "" then
@@ -46,7 +60,8 @@ local function tphr_send(name, param)
 
 	local sender2 = name
 	local receiver2 = param
-	local value_carryover2 = param
+
+	value_carryover2 = param
 
 	--Check for empty parameter
 	if receiver2 == "" then
@@ -67,22 +82,7 @@ local function tphr_send(name, param)
 	end
 end
 
-
---Reset after configured delay.
-
-function reset_request(name)
-	if tpr_list[value_carryover] ~= nil then
-		tpr_list[value_carryover] = nil
-	end
-end
-
-function reset_request2(name)
-	if tphr_list[value_carryover2] ~= nil then
-		tphr_list[value_carryover2] = nil
-	end
-end
-
-function tpr_deny(name)
+local function tpr_deny(name)
 	sender = tpr_list[value_carryover]
 	if tpr_list[value_carryover] ~= nil then
 		tpr_list[value_carryover] = nil
@@ -95,11 +95,27 @@ function tpr_deny(name)
 	end
 end
 
+-- Copied from Celeron-55's /teleport command. Thanks Celeron!
+local function find_free_position_near(pos)
+	local tries = {
+		{x=1,y=0,z=0},
+		{x=-1,y=0,z=0},
+		{x=0,y=0,z=1},
+		{x=0,y=0,z=-1},
+	}
+	for _, d in ipairs(tries) do
+		local p = {x = pos.x+d.x, y = pos.y+d.y, z = pos.z+d.z}
+		local n = minetest.env:get_node(p)
+		if not minetest.registered_nodes[n.name].walkable then
+			return p, true
+		end
+	end
+	return pos, false
+end
+
+
 --Teleport Accept Systems
-
 local function tpr_accept(name, param)
-
-	local receiver = name
 
 	--Check to prevent constant teleporting.
 	if tpr_list[name] == nil and tphr_list[name] == nil then
@@ -107,100 +123,38 @@ local function tpr_accept(name, param)
 		return
 	end
 
-	--Teleport Accept system
-	--Check to ensure name is valid, then send appropriate chat messages
+	local chatmsg
+	local source = nil
+	local target = nil
+	local name2
 
 	if tpr_list[name] then
-		local sender = tpr_list[name]
-		minetest.chat_send_player(tpr_list[receiver], "Request Accepted!")
-		minetest.chat_send_player(receiver, sender..' is teleporting to you.')
-
-		--Code here copied from Celeron-55's /teleport command. Thanks Celeron!
-
-		local function find_free_position_near(pos)
-			local tries = {
-				{x=1,y=0,z=0},
-				{x=-1,y=0,z=0},
-				{x=0,y=0,z=1},
-				{x=0,y=0,z=-1},
-			}
-			for _, d in ipairs(tries) do
-				local p = {x = pos.x+d.x, y = pos.y+d.y, z = pos.z+d.z}
-				local n = minetest.env:get_node(p)
-				if not minetest.registered_nodes[n.name].walkable then
-					return p, true
-				end
-			end
-			return pos, false
-		end
-
-		--Get names from variables and set position. Then actually teleport the player.
-
-		local requester = minetest.env:get_player_by_name(sender)
-		local accepter = minetest.env:get_player_by_name(name)
-
-		-- Could happen if either player disconnects; if so just abort
-		if requester == nil or accepter == nil then
-			return
-		end
-
-		local p = nil
-		p = accepter:getpos()
-		p = find_free_position_near(p)
-		requester:setpos(p)
-
-		-- Set name values to nil to prevent re-teleporting on the same request.
+		name2 = tpr_list[name]
+		source = minetest.env:get_player_by_name(name2)
+		target = minetest.env:get_player_by_name(name)
+		chatmsg = name2 .. " is teleporting to you."
 		tpr_list[name] = nil
-
-		return
-	end
-
-	--Teleport Here accepting system
-
-	if tphr_list[name] then
-		local sender = tphr_list[name]
-		minetest.chat_send_player(tphr_list[receiver], "Request Accepted!")
-		minetest.chat_send_player(receiver, 'you are teleporting to '..sender..'.')
-
-		--Code here copied from Celeron-55's /teleport command. Thanks Celeron!
-
-		local function find_free_position_near(pos)
-			local tries = {
-				{x=1,y=0,z=0},
-				{x=-1,y=0,z=0},
-				{x=0,y=0,z=1},
-				{x=0,y=0,z=-1},
-			}
-			for _, d in ipairs(tries) do
-				local p = {x = pos.x+d.x, y = pos.y+d.y, z = pos.z+d.z}
-				local n = minetest.env:get_node(p)
-				if not minetest.registered_nodes[n.name].walkable then
-					return p, true
-				end
-			end
-			return pos, false
-		end
-
-		--Get names from variables and set position. Then actually teleport the player.
-
-		local requester = minetest.env:get_player_by_name(sender)
-		local accepter = minetest.env:get_player_by_name(name)
-
-		-- Could happen if either player disconnects; if so just abort
-		if requester == nil or accepter == nil then
-			return
-		end
-
-		local p = nil
-		p = requester:getpos()
-		p = find_free_position_near(p)
-		accepter:setpos(p)
-
-		-- Set name values to nil to prevent re-teleporting on the same request.
+	elseif tphr_list[name] then
+		name2 = tphr_list[name]
+		source = minetest.env:get_player_by_name(name)
+		target = minetest.env:get_player_by_name(name2)
+		chatmsg = "You are teleporting to " .. name2 .. "."
 		tphr_list[name] = nil
-
+	else
 		return
 	end
+
+	-- Could happen if either player disconnects (or timeout); if so just abort
+	if source == nil or target == nil then
+		return
+	end
+
+	minetest.chat_send_player(name2, "Request Accepted!")
+	minetest.chat_send_player(name, chatmsg)
+
+	p = source:getpos()
+	p = find_free_position_near(p)
+	target:setpos(p)
 end
 
 --Initalize Permissions.
@@ -209,6 +163,7 @@ minetest.register_privilege("tpr_admin", {
 	description = "Permission to override teleport to other players. UNFINISHED",
 	give_to_singleplayer = true
 })
+
 
 --Initalize Commands.
 
