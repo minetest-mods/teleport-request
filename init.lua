@@ -1,5 +1,5 @@
 
-local timeout_delay = 60
+local timeout_delay = 10
 
 -- Set to true to register tpr_admin priv
 local regnewpriv = false
@@ -8,25 +8,6 @@ local version = "0.2"
 
 local tpr_list = {}
 local tphr_list = {}
-
---DO NOT CHANGE:------------
-value_carryover = nil
-value_carryover2 = nil
-----------------------------
-
--- Reset after configured delay.
--- These functions cannot be local (not sure if this can be avoided)
-function reset_request(name)
-	if tpr_list[value_carryover] ~= nil then
-		tpr_list[value_carryover] = nil
-	end
-end
-
-function reset_request2(name)
-	if tphr_list[value_carryover2] ~= nil then
-		tphr_list[value_carryover2] = nil
-	end
-end
 
 --Teleport Request System
 local function tpr_send(name, param)
@@ -50,7 +31,11 @@ local function tpr_send(name, param)
 		tpr_list[receiver] = nil
 		tpr_list[receiver] = sender
 		--Teleport timeout delay
-		minetest.after(timeout_delay, reset_request)
+		minetest.after(timeout_delay, function(name)
+			if tpr_list[name] ~= nil then
+				tpr_list[name] = nil
+			end
+		end, name)
 	end
 end
 
@@ -75,7 +60,11 @@ local function tphr_send(name, param)
 		tphr_list[receiver] = nil
 		tphr_list[receiver] = sender
 		--Teleport timeout delay
-		minetest.after(timeout_delay, reset_request2)
+		minetest.after(timeout_delay, function(name)
+			if tphr_list[name] ~= nil then
+				tphr_list[name] = nil
+			end
+		end, name)
 	end
 end
 
