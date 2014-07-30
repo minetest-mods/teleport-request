@@ -18,9 +18,9 @@ local function tpr_send(name, param)
 
 	--Register variables
 
-	sender = name
-	receiver = param
-	value_carryover = param
+	local sender = name
+	local receiver = param
+	local value_carryover = param
 
 	--Check for empty parameter
 	if receiver == "" then
@@ -86,12 +86,12 @@ function tpr_deny(name)
 	sender = tpr_list[value_carryover]
 	if tpr_list[value_carryover] ~= nil then
 		tpr_list[value_carryover] = nil
-		minetest.chat_send_player(sender, 'Teleport request denied :C')
+		minetest.chat_send_player(sender, 'Teleport request denied.')
 	end
 	sender2 = tphr_list[value_carryover2]
 	if tphr_list[value_carryover2] ~= nil then
 		tphr_list[value_carryover2] = nil
-		minetest.chat_send_player(sender2, 'Teleport request denied :C')
+		minetest.chat_send_player(sender2, 'Teleport request denied.')
 	end
 end
 
@@ -198,7 +198,7 @@ local function tpr_accept(name, param)
 
 		-- Set name values to nil to prevent re-teleporting on the same request.
 		tphr_list[name] = nil
-		
+
 		return
 	end
 end
