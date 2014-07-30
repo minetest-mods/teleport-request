@@ -68,16 +68,14 @@ local function tphr_send(name, param)
 	end
 end
 
-local function tpr_deny(name)
-	sender = tpr_list[value_carryover]
-	if tpr_list[value_carryover] ~= nil then
-		tpr_list[value_carryover] = nil
-		minetest.chat_send_player(sender, 'Teleport request denied.')
+local function tpr_deny(name, param)
+	if tpr_list[name] ~= nil then
+		minetest.chat_send_player(tpr_list[name], 'Teleport request denied.')
+		tpr_list[name] = nil
 	end
-	sender2 = tphr_list[value_carryover2]
-	if tphr_list[value_carryover2] ~= nil then
-		tphr_list[value_carryover2] = nil
-		minetest.chat_send_player(sender2, 'Teleport request denied.')
+	if tphr_list[name] ~= nil then
+		minetest.chat_send_player(tphr_list[name], 'Teleport request denied.')
+		tphr_list[name] = nil
 	end
 end
 
