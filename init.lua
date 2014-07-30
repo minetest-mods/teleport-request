@@ -127,14 +127,14 @@ local function tpr_accept(name, param)
 
 	if tpr_list[name] then
 		name2 = tpr_list[name]
-		source = minetest.env:get_player_by_name(name2)
-		target = minetest.env:get_player_by_name(name)
+		source = minetest.env:get_player_by_name(name)
+		target = minetest.env:get_player_by_name(name2)
 		chatmsg = name2 .. " is teleporting to you."
 		tpr_list[name] = nil
 	elseif tphr_list[name] then
 		name2 = tphr_list[name]
-		source = minetest.env:get_player_by_name(name)
-		target = minetest.env:get_player_by_name(name2)
+		source = minetest.env:get_player_by_name(name2)
+		target = minetest.env:get_player_by_name(name)
 		chatmsg = "You are teleporting to " .. name2 .. "."
 		tphr_list[name] = nil
 	else
