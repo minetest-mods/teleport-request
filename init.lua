@@ -36,14 +36,12 @@ local function tpr_send(name, param)
 
 	value_carryover = param
 
-	--Check for empty parameter
 	if receiver == "" then
 		minetest.chat_send_player(sender, "Usage: /tpr <Player name>")
 		return
 	end
 
 	--If paremeter is valid, Send teleport message and set the table.
-
 	if minetest.env:get_player_by_name(receiver) then
 		minetest.chat_send_player(receiver, sender ..' is requesting to teleport to you. /tpy to accept.')
 		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
@@ -58,25 +56,24 @@ end
 
 local function tphr_send(name, param)
 
-	local sender2 = name
-	local receiver2 = param
+	local sender = name
+	local receiver = param
 
-	value_carryover2 = param
+	value_carryover = param
 
-	--Check for empty parameter
-	if receiver2 == "" then
-		minetest.chat_send_player(sender2, "Usage: /tphr <Player name>")
+	if receiver == "" then
+		minetest.chat_send_player(sender, "Usage: /tphr <Player name>")
 		return
 	end
 
 	--If paremeter is valid, Send teleport message and set the table.
-	if minetest.env:get_player_by_name(receiver2) then
-		minetest.chat_send_player(receiver2, sender2 ..' is requesting that you teleport to them. /tpy to accept.')
-		minetest.chat_send_player(sender2, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
+	if minetest.env:get_player_by_name(receiver) then
+		minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept.')
+		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
 		--Write name values to list and clear old values.
-		tphr_list[receiver2] = nil
-		tphr_list[receiver2] = sender2
+		tphr_list[receiver] = nil
+		tphr_list[receiver] = sender
 		--Teleport timeout delay
 		minetest.after(timeout_delay, reset_request2)
 	end
