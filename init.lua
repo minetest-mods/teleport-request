@@ -15,8 +15,6 @@ local function tpr_send(name, param)
 	local sender = name
 	local receiver = param
 
-	value_carryover = param
-
 	if receiver == "" then
 		minetest.chat_send_player(sender, "Usage: /tpr <Player name>")
 		return
@@ -43,8 +41,6 @@ local function tphr_send(name, param)
 
 	local sender = name
 	local receiver = param
-
-	value_carryover = param
 
 	if receiver == "" then
 		minetest.chat_send_player(sender, "Usage: /tphr <Player name>")
