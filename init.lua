@@ -52,7 +52,7 @@ local function tphr_send(name, param)
 
 	--If paremeter is valid, Send teleport message and set the table.
 	if minetest.env:get_player_by_name(receiver) then
-		minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept.')
+		minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept; /tpn to deny')
 		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
 		--Write name values to list and clear old values.
