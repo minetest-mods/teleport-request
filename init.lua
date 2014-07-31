@@ -1,10 +1,14 @@
+-- Original code by Traxie21 and released with the WTFPL license
+-- https://forum.minetest.net/viewtopic.php?id=4457
+
+-- Updates by Zeno and ChaosWormz
 
 local timeout_delay = 60
 
 -- Set to true to register tpr_admin priv
 local regnewpriv = false
 
-local version = "0.2"
+local version = "1.1"
 
 local tpr_list = {}
 local tphr_list = {}
