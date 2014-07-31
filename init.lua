@@ -30,7 +30,6 @@ local function tpr_send(name, param)
 		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
 		--Write name values to list and clear old values.
-		tpr_list[receiver] = nil
 		tpr_list[receiver] = sender
 		--Teleport timeout delay
 		minetest.after(timeout_delay, function(name)
@@ -57,7 +56,6 @@ local function tphr_send(name, param)
 		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
 		--Write name values to list and clear old values.
-		tphr_list[receiver] = nil
 		tphr_list[receiver] = sender
 		--Teleport timeout delay
 		minetest.after(timeout_delay, function(name)
