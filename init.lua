@@ -25,7 +25,7 @@ local function tpr_send(name, param)
 	end
 
 	--If paremeter is valid, Send teleport message and set the table.
-	if minetest.env:get_player_by_name(receiver) then
+	if minetest.get_player_by_name(receiver) then
 		minetest.chat_send_player(receiver, sender ..' is requesting to teleport to you. /tpy to accept.')
 		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
@@ -51,7 +51,7 @@ local function tphr_send(name, param)
 	end
 
 	--If paremeter is valid, Send teleport message and set the table.
-	if minetest.env:get_player_by_name(receiver) then
+	if minetest.get_player_by_name(receiver) then
 		minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept; /tpn to deny')
 		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
@@ -87,7 +87,7 @@ local function find_free_position_near(pos)
 	}
 	for _, d in ipairs(tries) do
 		local p = {x = pos.x+d.x, y = pos.y+d.y, z = pos.z+d.z}
-		local n = minetest.env:get_node(p)
+		local n = minetest.get_node(p)
 		if not minetest.registered_nodes[n.name].walkable then
 			return p, true
 		end
@@ -112,14 +112,14 @@ local function tpr_accept(name, param)
 
 	if tpr_list[name] then
 		name2 = tpr_list[name]
-		source = minetest.env:get_player_by_name(name)
-		target = minetest.env:get_player_by_name(name2)
+		source = minetest.get_player_by_name(name)
+		target = minetest.get_player_by_name(name2)
 		chatmsg = name2 .. " is teleporting to you."
 		tpr_list[name] = nil
 	elseif tphr_list[name] then
 		name2 = tphr_list[name]
-		source = minetest.env:get_player_by_name(name2)
-		target = minetest.env:get_player_by_name(name)
+		source = minetest.get_player_by_name(name2)
+		target = minetest.get_player_by_name(name)
 		chatmsg = "You are teleporting to " .. name2 .. "."
 		tphr_list[name] = nil
 	else
