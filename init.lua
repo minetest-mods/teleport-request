@@ -134,8 +134,8 @@ local function tpr_accept(name, param)
 	minetest.chat_send_player(name2, "Request Accepted!")
 	minetest.chat_send_player(name, chatmsg)
 
-	p = source:getpos()
-	p = find_free_position_near(p)
+	local p = source:getpos()
+	local p = find_free_position_near(p)
 	target:setpos(p)
 end
 
@@ -159,7 +159,7 @@ minetest.register_chatcommand("tpr", {
 })
 
 minetest.register_chatcommand("tphr", {
-	description = "Request teleport to another player",
+	description = "Request player to teleport to you",
 	params = "<playername> | leave playername empty to see help message",
 	privs = {interact=true},
 	func = tphr_send
