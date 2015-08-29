@@ -14,64 +14,60 @@ local tpr_list = {}
 local tphr_list = {}
 
 --Teleport Request System
-local function tpr_send(name, param)
-
-	local sender = name
-	local receiver = param
-
+local function tpr_send(sender, receiver)
 	if receiver == "" then
 		minetest.chat_send_player(sender, "Usage: /tpr <Player name>")
 		return
 	end
 
 	--If paremeter is valid, Send teleport message and set the table.
-	if minetest.get_player_by_name(receiver) then
-		minetest.chat_send_player(receiver, sender ..' is requesting to teleport to you. /tpy to accept.')
-		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
-
-		--Write name values to list and clear old values.
-		tpr_list[receiver] = sender
-		--Teleport timeout delay
-		minetest.after(timeout_delay, function(name)
-			if tpr_list[name] ~= nil then
-				tpr_list[name] = nil
-			end
-		end, name)
+	if not minetest.get_player_by_name(receiver) then
+		return
 	end
+
+	minetest.chat_send_player(receiver, sender ..' is requesting to teleport to you. /tpy to accept.')
+	minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
+
+	--Write name values to list and clear old values.
+	tpr_list[receiver] = sender
+	--Teleport timeout delay
+	minetest.after(timeout_delay, function(name)
+		if tpr_list[name] then
+			tpr_list[name] = nil
+		end
+	end, sender)
 end
 
-local function tphr_send(name, param)
-
-	local sender = name
-	local receiver = param
-
+local function tphr_send(sender, receiver)
 	if receiver == "" then
 		minetest.chat_send_player(sender, "Usage: /tphr <Player name>")
 		return
 	end
 
 	--If paremeter is valid, Send teleport message and set the table.
-	if minetest.get_player_by_name(receiver) then
-		minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept; /tpn to deny')
-		minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
-
-		--Write name values to list and clear old values.
-		tphr_list[receiver] = sender
-		--Teleport timeout delay
-		minetest.after(timeout_delay, function(name)
-			if tphr_list[name] ~= nil then
-				tphr_list[name] = nil
-			end
-		end, name)
+	if not minetest.get_player_by_name(receiver) then
+		return
 	end
+
+	minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept; /tpn to deny')
+	minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
+
+	--Write name values to list and clear old values.
+	tphr_list[receiver] = sender
+	--Teleport timeout delay
+	minetest.after(timeout_delay, function(name)
+		if tphr_list[name] then
+			tphr_list[name] = nil
+		end
+	end, sender)
 end
 
-local function tpr_deny(name, param)
-	if tpr_list[name] ~= nil then
+local function tpr_deny(name)
+	if tpr_list[name] then
 		minetest.chat_send_player(tpr_list[name], 'Teleport request denied.')
 		tpr_list[name] = nil
 	end
-	if tphr_list[name] ~= nil then
+	if tphr_list[name] then
 		minetest.chat_send_player(tphr_list[name], 'Teleport request denied.')
 		tphr_list[name] = nil
 	end
@@ -85,10 +81,9 @@ local function find_free_position_near(pos)
 		{x=0,y=0,z=1},
 		{x=0,y=0,z=-1},
 	}
-	for _, d in ipairs(tries) do
-		local p = {x = pos.x+d.x, y = pos.y+d.y, z = pos.z+d.z}
-		local n = minetest.get_node(p)
-		if not minetest.registered_nodes[n.name].walkable then
+	for _,d in pairs(tries) do
+		local p = vector.add(pos, d)
+		if not minetest.registered_nodes[minetest.get_node(p).name].walkable then
 			return p, true
 		end
 	end
@@ -100,15 +95,13 @@ end
 local function tpr_accept(name, param)
 
 	--Check to prevent constant teleporting.
-	if tpr_list[name] == nil and tphr_list[name] == nil then
+	if not tpr_list[name]
+	and not tphr_list[name] then
 		minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players")
 		return
 	end
 
-	local chatmsg
-	local source = nil
-	local target = nil
-	local name2
+	local chatmsg, source, target, name2
 
 	if tpr_list[name] then
 		name2 = tpr_list[name]
@@ -127,16 +120,15 @@ local function tpr_accept(name, param)
 	end
 
 	-- Could happen if either player disconnects (or timeout); if so just abort
-	if source == nil or target == nil then
+	if not source
+	or not target then
 		return
 	end
 
 	minetest.chat_send_player(name2, "Request Accepted!")
 	minetest.chat_send_player(name, chatmsg)
 
-	local p = source:getpos()
-	local p = find_free_position_near(p)
-	target:setpos(p)
+	target:setpos(find_free_position_near(source:getpos()))
 end
 
 --Initalize Permissions.
@@ -155,7 +147,6 @@ minetest.register_chatcommand("tpr", {
 	params = "<playername> | leave playername empty to see help message",
 	privs = {interact=true},
 	func = tpr_send
-
 })
 
 minetest.register_chatcommand("tphr", {
@@ -163,7 +154,6 @@ minetest.register_chatcommand("tphr", {
 	params = "<playername> | leave playername empty to see help message",
 	privs = {interact=true},
 	func = tphr_send
-
 })
 
 minetest.register_chatcommand("tpy", {
@@ -176,4 +166,4 @@ minetest.register_chatcommand("tpn", {
 	func = tpr_deny
 })
 
-print ("[Teleport Request] Teleport Request v" .. version .. " Loaded.")
+minetest.log("info", "[Teleport Request] Teleport Request v" .. version .. " Loaded.")
