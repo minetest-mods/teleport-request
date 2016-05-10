@@ -88,7 +88,7 @@ local function tpc_send(player,coordinates)
 	
 	-- If the area is protected, reject the user's request to teleport to these coordinates
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
-	local protected = minetest.is_protected(target_coords)
+	local protected = minetest.is_protected(target_coords,pname)
 	if protected then
 		minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
 		return
@@ -96,7 +96,7 @@ local function tpc_send(player,coordinates)
 
 	minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 	minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-	pname:setpos(find_free_position_near(target_coords))
+	pname:setpos(target_coords)
 end
 
 local function tpr_deny(name)
