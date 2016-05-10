@@ -71,10 +71,12 @@ local function tpc_send(player,coordinates)
 		minetest.chat_send_player(pname, "Usage: /tpc <x,y,z>")
 		return nil
 	end
-
-	posx = tonumber(posx) + 0.0
-	posy = tonumber(posy) + 0.0
-	posz = tonumber(posz) + 0.0
+	
+	if posx ~= nil or posy ~= nil or posz ~= nil then
+	  posx = tonumber(posx) + 0.0
+	  posy = tonumber(posy) + 0.0
+	  posz = tonumber(posz) + 0.0
+	end
 
 	if posx > 32765 or posx < -32765 or posy > 32765 or posy < -32765 or posz > 32765 or posz < -32765 then
 		minetest.chat_send_player(pname, "Error: Invalid coordinates.")
