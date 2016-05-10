@@ -96,7 +96,7 @@ local function tpc_send(player,coordinates)
 
 	minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 	minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-	pname:setpos(target_coords)
+	pname:setpos(find_free_position_near(target_coords))
 end
 
 local function tpr_deny(name)
