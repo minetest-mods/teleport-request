@@ -68,7 +68,7 @@ local function tpc_send(player,coordinates)
 	local pname = minetest.get_player_by_name(player)
 
 	if posx==nil or posy==nil or posz==nil or string.len(posx) > 6 or string.len(posy) > 6 or string.len(posz) > 6 then
-		minetest.chat_send_player(pname, "Usage: /tpc <x,y,z>")
+		minetest.chat_send_player(player, "Usage: /tpc <x,y,z>")
 		return nil
 	end
 	
@@ -79,7 +79,7 @@ local function tpc_send(player,coordinates)
 	end
 
 	if posx > 32765 or posx < -32765 or posy > 32765 or posy < -32765 or posz > 32765 or posz < -32765 then
-		minetest.chat_send_player(pname, "Error: Invalid coordinates.")
+		minetest.chat_send_player(player, "Error: Invalid coordinates.")
 		return nil
 	end
 
@@ -90,13 +90,13 @@ local function tpc_send(player,coordinates)
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
 	local protected = minetest.is_protected(target_coords)
 	if protected then
-		minetest.chat_send_player(pname, "Error: These coordinates are within a protected area.")
+		minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
 		return
 	end
 
-	minetest.chat_send_player(pname, 'Teleporting to '..posx..','..posy..','..posz)
+	minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 	minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-	pname:setpos(target_coords, false)
+	pname:setpos(target_coords)
 end
 
 local function tpr_deny(name)
