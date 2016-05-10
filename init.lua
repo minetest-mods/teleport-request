@@ -67,17 +67,17 @@ local function tpc_send(player,coordinates)
 	local posx,posy,posz = string.match(coordinates, "^(-?%d+),(-?%d+),(-?%d+)$")
 	local pname = minetest.get_player_by_name(player)
 
-	if posx==nil or posy==nil or posz==nil or string.len(posx) > 6 or string.len(posy) > 6 or string.len(posz) > 6 then
-		minetest.chat_send_player(player, "Usage: /tpc <x,y,z>")
-		return nil
-	end
-	
 	if posx ~= nil or posy ~= nil or posz ~= nil then
 	  posx = tonumber(posx) + 0.0
 	  posy = tonumber(posy) + 0.0
 	  posz = tonumber(posz) + 0.0
 	end
 
+	if posx==nil or posy==nil or posz==nil or string.len(posx) > 6 or string.len(posy) > 6 or string.len(posz) > 6 then
+		minetest.chat_send_player(player, "Usage: /tpc <x,y,z>")
+		return nil
+	end
+	
 	if posx > 32765 or posx < -32765 or posy > 32765 or posy < -32765 or posz > 32765 or posz < -32765 then
 		minetest.chat_send_player(player, "Error: Invalid coordinates.")
 		return nil
