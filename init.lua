@@ -64,25 +64,24 @@ end
 
 local function tpc_send(player,coordinates)
 
-	local x,y,z = string.match(coordinates, "^(-?%d+),(-?%d+),(-?%d+)$")
+	local posx,posy,posz = string.match(coordinates, "^(-?%d+),(-?%d+),(-?%d+)$")
 	local pname = minetest.get_player_by_name(player)
 
-	if x==nil or y==nil or z==nil or string.len(x) > 6 or string.len(y) > 6 or string.len(z) > 6 then
+	if posx==nil or posy==nil or posz==nil or string.len(posx) > 6 or string.len(posy) > 6 or string.len(posz) > 6 then
 		minetest.chat_send_player(pname, "Usage: /tpc <x,y,z>")
 		return nil
 	end
 
-	x = tonumber(x) + 0.0
-	y = tonumber(y) + 0.0
-	z = tonumber(z) + 0.0
+	posx = tonumber(posx) + 0.0
+	posy = tonumber(posy) + 0.0
+	posz = tonumber(posz) + 0.0
 
-	if x > 32765 or x < -32765 or y > 32765 or y < -32765 or z > 32765 or z < -32765 then
+	if posx > 32765 or posx < -32765 or posy > 32765 or posy < -32765 or posz > 32765 or posz < -32765 then
 		minetest.chat_send_player(pname, "Error: Invalid coordinates.")
 		return nil
 	end
 
-        local meta = minetest.env:get_meta(pos)
-	local target_coords={x=meta:get_float("x"), y=meta:get_float("y"), z=meta:get_float("z")}
+	local target_coords={x=posx, y=posy, z=posz}
 
 	
 	-- If the area is protected, reject the user's request to teleport to these coordinates
@@ -93,9 +92,9 @@ local function tpc_send(player,coordinates)
 		return
 	end
 
-	minetest.chat_send_player(pname, 'Teleporting to '..x..','..y..','..z)
+	minetest.chat_send_player(pname, 'Teleporting to '..posx..','..posy..','..posz)
 	minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-	player:sendto(target_coords, false)
+	pname:setpos(target_coords, false)
 end
 
 local function tpr_deny(name)
