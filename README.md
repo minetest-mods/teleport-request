@@ -2,18 +2,18 @@
 
 ##Usage:
 
-- ```/tpr [playername]```
+``` /tpr [playername] ```
 Requests permission to teleport to another player, where [playername] is their exact name.
 
-- ```/tphr [playername]```
+``` /tphr [playername] ```
 Request permission to teleport another player to you.
 
-- ```/tpy```
+``` /tpy ```
 Accept a user's request to teleport to you or teleport you to them.
 
-- ```/tpn```
+``` /tpn ```
 Deny a user's request to teleport to youor teleport you to them.
 
 ##Features To Come
-- ```/tpc [x,y,z]```
+``` /tpc [x,y,z] ```
 Teleport to coordinates. Honors area protection.
