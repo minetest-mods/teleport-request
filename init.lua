@@ -1,14 +1,14 @@
--- Original code by Traxie21 and released with the WTFPL license
+-- Originally Teleport Request by Traxie21 and released with the WTFPL license
 -- https://forum.minetest.net/viewtopic.php?id=4457
-
 -- Updates by Zeno and ChaosWormz
+-- New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
 
 local timeout_delay = 60
 
 -- Set to true to register tpr_admin priv
 local regnewpriv = false
 
-local version = "1.1"
+local version = "1.2"
 
 local tpr_list = {}
 local tphr_list = {}
@@ -62,6 +62,38 @@ local function tphr_send(sender, receiver)
 	end, sender)
 end
 
+local function tpc_send(player,coordinates)
+
+	local x,y,z = string.match(coordinates, "^(-?%d+),(-?%d+),(-?%d+)$")
+	
+	if x==nil or y==nil or z==nil or string.len(x) > 6 or string.len(y) > 6 or string.len(z) > 6 then
+		minetest.chat_send_player(player, "Usage: /tpc <x,y,z>")
+		return nil
+	end
+
+	x = x + 0.0
+	y = y + 0.0
+	z = z + 0.0
+
+	if x > 32765 or x < -32765 or y > 32765 or y < -32765 or z > 32765 or z < -32765 then
+		minetest.chat_send_player(player, "Error: Invalid coordinates.")
+		return nil
+	end
+	
+	-- If the area is protected, reject the user's request to teleport to these coordinates
+	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
+	local protected = minetest.is_protected(coordinates)
+	if protected then
+		minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
+		return
+	end
+
+	minetest.chat_send_player(player, 'Teleporting to '.. coordinates)
+	local target_coords={x=meta:get_float("x"), y=meta:get_float("y"), z=meta:get_float("z")}
+	minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10,})
+	player:moveto(target_coords, false)
+end
+
 local function tpr_deny(name)
 	if tpr_list[name] then
 		minetest.chat_send_player(tpr_list[name], 'Teleport request denied.')
@@ -97,7 +129,7 @@ local function tpr_accept(name, param)
 	--Check to prevent constant teleporting.
 	if not tpr_list[name]
 	and not tphr_list[name] then
-		minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players")
+		minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players.")
 		return
 	end
 
@@ -156,6 +188,13 @@ minetest.register_chatcommand("tphr", {
 	func = tphr_send
 })
 
+minetest.register_chatcommand("tpc", {
+	description = "Teleport to coordinates",
+	params = "<coordinates> | leave coordinates empty to see help message",
+	privs = {interact=true},
+	func = tpc_send
+})
+
 minetest.register_chatcommand("tpy", {
 	description = "Accept teleport requests from another player",
 	func = tpr_accept
@@ -166,4 +205,4 @@ minetest.register_chatcommand("tpn", {
 	func = tpr_deny
 })
 
-minetest.log("info", "[Teleport Request] Teleport Request v" .. version .. " Loaded.")
+minetest.log("info", "[Teleport Request] TPS Teleport v" .. version .. " Loaded.")
