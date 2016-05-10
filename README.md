@@ -14,6 +14,6 @@ Accept a user's request to teleport to you or teleport you to them.
 ``` /tpn ```
 Deny a user's request to teleport to youor teleport you to them.
 
-##Features To Come
-``` /tpc [x,y,z] ```
+####To Do:
+- [ ] ``` /tpc [x,y,z] ```
 Teleport to coordinates. Honors area protection.
