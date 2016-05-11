@@ -14,7 +14,7 @@ Requests permission to teleport to another player, where [playername] is their e
 Request permission to teleport another player to you.
 
 ``` /tpc [x,y,z] ```
-Teleport to coordinates. Honors area protection.
+Teleport to coordinates. Honors area protection: if the area is protected, it must be owned by you in order to teleport to it.
 
 ``` /tpy ```
 Accept a user's request to teleport to you or teleport you to them.
@@ -23,6 +23,5 @@ Accept a user's request to teleport to you or teleport you to them.
 Deny a user's request to teleport to youor teleport you to them.
 
 ##To Do:
-- Make it so players can teleport to coordinates within a protected area if they own the area.
 - Make it so if a player attempts to teleport to coordinates within a protected area owned by another player, and that player is online, the owner receives a request to allow or deny the user from teleporting to their area.
 - Add limitations to /tpc which only allow a user to teleport X number of blocks. Prevents users from teleporting to the edge of the world.
