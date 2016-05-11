@@ -1,4 +1,9 @@
-[The Pixel Shadow](https://minetest.tv/) game servers have switched "teleport" to "teleport request" which means players must literally request from a player to teleport to them before they will be allowed to do so. This prevents malicious users from teleporting to players' private areas where they are working and causing grief, or stealing items from locked chests. It also enhances the overall privacy of our services since if denied teleport, a player must instead travel to the area and "use the front door" so to speak... which might be a locked iron door.
+##*tps_teleport* is a mod for Minetest game servers.
+
+##Description:
+[The Pixel Shadow](https://minetest.tv/) Minetest game servers have switched from "teleport" to "teleport request" via the *tps_teleport* mod. This mod makes it so players must send a request to another player in order to teleport to them. Before they will be allowed to do so, the player must accept the request. This prevents malicious users from teleporting to players' private areas without their permission. It also enhances the overall privacy of our services since if denied teleport, a player must instead travel to the area and "use the front door" so to speak... which might be a locked iron door.
+
+Players may also teleport to coordinates, however if the area is protected, the teleport will be denied.
 
 ##Usage:
 
@@ -16,3 +21,7 @@ Accept a user's request to teleport to you or teleport you to them.
 
 ``` /tpn ```
 Deny a user's request to teleport to youor teleport you to them.
+
+##To Do:
+- Make it so players can teleport to coordinates within a protected area if they own the area.
+- Make it so if a player attempts to teleport to coordinates within a protected area owned by another player, and that player is online, the owner receives a request to allow or deny the user from teleporting to their area.
