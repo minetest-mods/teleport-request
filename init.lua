@@ -90,8 +90,11 @@ local function tpc_send(player,coordinates)
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
 	local protected = minetest.is_protected(target_coords,pname)
 	if protected then
-		minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
-		return
+		local owner_string = get_owner_string(target_coords)
+		if pname ~= owner_string then
+			minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
+			return
+		end
 	end
 
 	minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
