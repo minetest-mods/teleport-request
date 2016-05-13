@@ -26,6 +26,12 @@ Accept a user's request to teleport to you or teleport you to them.
 ``` /tpn ```
 Deny a user's request to teleport to youor teleport you to them.
 
+##Contributors:
+- [RobbieF](https://minetest.tv)
+- [DonBatman](https://github.com/donbatman)
+- [NathanS21](http://nathansalapat.com/)
+- All those who contributed to the original mod (please see init.lua)
+
 ##To Do:
 - Make it so if a player attempts to teleport to coordinates within a protected area owned by another player, and that player is online, the owner receives a request to allow or deny the user from teleporting to their area.
 - Add limitations to /tpc which only allow a user to teleport X number of blocks. Prevents users from teleporting to the edge of the world.
