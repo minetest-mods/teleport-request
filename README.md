@@ -38,6 +38,5 @@ Deny a user's request to teleport to youor teleport you to them.
 - Make it so tp_admin priv also overrides need for player to accept /tpr or /tphr
 - Assess value in changing all tpr-based chat commands to one global command such as /tp to reduce the chance of confusion between tps_admin and the original mod (and also make it so people don't have to remember so many commands).
 - Create a better sound effect for teleport and apply it to all teleport methods (not just /tpc)
-- Add particles during teleport.
 - Creation of "evade" command /tpe which spawns the player in several random locations nearby before placing them at a final destination ~20 nodes away. For evading attack.
 - Add a handful of coordinates which can be set in config and teleported to by anyone regardless of their protection status (eg., Spawn).
