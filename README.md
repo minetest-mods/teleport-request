@@ -37,3 +37,5 @@ Deny a user's request to teleport to youor teleport you to them.
 - Add limitations to /tpc which only allow a user to teleport X number of blocks. Prevents users from teleporting to the edge of the world.
 - Make it so tp_admin priv also overrides need for player to accept /tpr or /tphr
 - Assess value in changing all tpr-based chat commands to one global command such as /tp to reduce the chance of confusion between tps_admin and the original mod (and also make it so people don't have to remember so many commands).
+- Create a better sound effect for teleport and apply it to all teleport methods (not just /tpc)
+- Add particles during teleport.
