@@ -193,8 +193,11 @@ local function tpr_accept(name, param)
 
 	minetest.chat_send_player(name2, "Request Accepted!")
 	minetest.chat_send_player(name, chatmsg)
-
-	target:setpos(find_free_position_near(source:getpos()))
+	
+	local target_coords=source:getpos()
+	target:setpos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	parti2(target_coords)
 end
 
 minetest.register_chatcommand("tpr", {
