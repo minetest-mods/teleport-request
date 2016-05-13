@@ -12,6 +12,22 @@ local tphr_list = {}
 
 minetest.register_privilege("tp_admin", {description = "Admin overrides for tps_teleport.", give_to_singleplayer=false,})
 
+local function find_free_position_near(pos)
+	local tries = {
+		{x=1,y=0,z=0},
+		{x=-1,y=0,z=0},
+		{x=0,y=0,z=1},
+		{x=0,y=0,z=-1},
+	}
+	for _,d in pairs(tries) do
+		local p = vector.add(pos, d)
+		if not minetest.registered_nodes[minetest.get_node(p).name].walkable then
+			return p, true
+		end
+	end
+	return pos, false
+end
+
 --Teleport Request System
 local function tpr_send(sender, receiver)
 	if receiver == "" then
@@ -116,24 +132,6 @@ local function tpr_deny(name)
 		tphr_list[name] = nil
 	end
 end
-
--- Copied from Celeron-55's /teleport command. Thanks Celeron!
-local function find_free_position_near(pos)
-	local tries = {
-		{x=1,y=0,z=0},
-		{x=-1,y=0,z=0},
-		{x=0,y=0,z=1},
-		{x=0,y=0,z=-1},
-	}
-	for _,d in pairs(tries) do
-		local p = vector.add(pos, d)
-		if not minetest.registered_nodes[minetest.get_node(p).name].walkable then
-			return p, true
-		end
-	end
-	return pos, false
-end
-
 
 --Teleport Accept Systems
 local function tpr_accept(name, param)
