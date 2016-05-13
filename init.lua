@@ -77,12 +77,6 @@ local function tphr_send(sender, receiver)
 	end, sender)
 end
 
-local function tpc_go(player,coordinates)
-	minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-	minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-	pname:setpos(find_free_position_near(target_coords))
-end
-
 local function tpc_send(player,coordinates)
 
 	local posx,posy,posz = string.match(coordinates, "^(-?%d+),(-?%d+),(-?%d+)$")
@@ -110,7 +104,9 @@ local function tpc_send(player,coordinates)
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
 	-- Admin user (priv "tp_admin") overrides all protection
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
-		tpc_go(player,target_coords)
+		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+		pname:setpos(find_free_position_near(target_coords))
 	else
 		local protected = minetest.is_protected(target_coords,pname)
 		if protected then
@@ -120,7 +116,9 @@ local function tpc_send(player,coordinates)
 				return
 			end
 		end
-		tpc_go(player,target_coords)
+		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+		pname:setpos(find_free_position_near(target_coords))
 	end
 end
 
