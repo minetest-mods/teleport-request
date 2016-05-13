@@ -28,6 +28,28 @@ local function find_free_position_near(pos)
 	return pos, false
 end
 
+local function parti(pos)
+	minetest.add_particlespawner(50, 0.4,
+		{x=pos.x + 0.5, y=pos.y, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
+		{x=0, y=5, z=0}, {x=0, y=0, z=0},
+		{x=0, y=5, z=0}, {x=0, y=0, z=0},
+		3, 5,
+		3, 5,
+		false,
+		"tps_portal_parti.png")
+end
+
+local function parti2(pos)
+	minetest.add_particlespawner(50, 0.4,
+		{x=pos.x + 0.5, y=pos.y + 10, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
+		{x=0, y=-5, z=0}, {x=0, y=0, z=0},
+		{x=0, y=-5, z=0}, {x=0, y=0, z=0},
+		3, 5,
+		3, 5,
+		false,
+		"tps_portal_parti.png")
+end
+
 --Teleport Request System
 local function tpr_send(sender, receiver)
 	if receiver == "" then
@@ -105,8 +127,9 @@ local function tpc_send(player,coordinates)
 	-- Admin user (priv "tp_admin") overrides all protection
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
 		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
 		pname:setpos(find_free_position_near(target_coords))
+		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+		parti2(target_coords)
 	else
 		local protected = minetest.is_protected(target_coords,pname)
 		if protected then
@@ -117,8 +140,9 @@ local function tpc_send(player,coordinates)
 			end
 		end
 		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
 		pname:setpos(find_free_position_near(target_coords))
+		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+		parti2(target_coords)
 	end
 end
 
