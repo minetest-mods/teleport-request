@@ -5,15 +5,12 @@
 
 local timeout_delay = 60
 
--- Set to true to register tpr_admin priv
-local regnewpriv = false
-
-local version = "1.2"
+local version = "1.3"
 
 local tpr_list = {}
 local tphr_list = {}
 
-minetest.register_privilege("tpr_admin", {description = "Admin overrides for TPC.", give_to_singleplayer=false,})
+minetest.register_privilege("tp_admin", {description = "Admin overrides for tps_teleport.", give_to_singleplayer=false,})
 
 --Teleport Request System
 local function tpr_send(sender, receiver)
@@ -90,8 +87,8 @@ local function tpc_send(player,coordinates)
 
 	-- If the area is protected, reject the user's request to teleport to these coordinates
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
-  -- Admin user (priv "tpr_admin") overrides all protection
-  if minetest.check_player_privs(user.get_player_name(user), {tpr_admin=true}) then
+  -- Admin user (priv "tp_admin") overrides all protection
+  if minetest.check_player_privs(user.get_player_name(user), {tp_admin=true}) then
     minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
     minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
     pname:setpos(target_coords)
@@ -179,17 +176,6 @@ local function tpr_accept(name, param)
 
 	target:setpos(find_free_position_near(source:getpos()))
 end
-
---Initalize Permissions.
-
-if regnewpriv then
-	minetest.register_privilege("tpr_admin", {
-		description = "Permission to override teleport to other players. UNFINISHED",
-		give_to_singleplayer = true
-	})
-end
-
---Initalize Commands.
 
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
