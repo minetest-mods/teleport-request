@@ -84,28 +84,26 @@ local function tpc_send(player,coordinates)
 
 	local target_coords={x=posx, y=posy, z=posz}
 
-
 	-- If the area is protected, reject the user's request to teleport to these coordinates
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
-  -- Admin user (priv "tp_admin") overrides all protection
-  if minetest.check_player_privs(pname, {tp_admin=true}) then
-    minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-    minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-    pname:setpos(target_coords)
-  else
-    local protected = minetest.is_protected(target_coords,pname)
-    if protected then
-      local owner_string = areas:getNodeOwners(target_coords)
-      if pname ~= owner_string then
-        minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
-        return
-      end
-    else
-    end
-    minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-    minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-    pname:setpos(target_coords)
-  end
+	-- Admin user (priv "tp_admin") overrides all protection
+	if minetest.check_player_privs(pname, {tp_admin=true}) then
+		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+		pname:setpos(target_coords)
+	else
+		local protected = minetest.is_protected(target_coords,pname)
+		if protected then
+			if not areas:canInteract(target_coords, pname) then
+				local owners = areas:getNodeOwners(target_coords)
+				minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
+				return
+			end
+		end
+		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+		pname:setpos(target_coords)
+	end
 end
 
 local function tpr_deny(name)
