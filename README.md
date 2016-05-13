@@ -40,3 +40,4 @@ Deny a user's request to teleport to youor teleport you to them.
 - Create a better sound effect for teleport and apply it to all teleport methods (not just /tpc)
 - Add particles during teleport.
 - Creation of "evade" command /tpe which spawns the player in several random locations nearby before placing them at a final destination ~20 nodes away. For evading attack.
+- Add a handful of coordinates which can be set in config and teleported to by anyone regardless of their protection status (eg., Spawn).
