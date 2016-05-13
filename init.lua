@@ -128,7 +128,7 @@ local function tpc_send(player,coordinates)
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
 		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 		pname:setpos(find_free_position_near(target_coords))
-		minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, to_player=player, max_hear_distance = 10})
 		parti2(target_coords)
 	else
 		local protected = minetest.is_protected(target_coords,pname)
