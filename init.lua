@@ -13,6 +13,8 @@ local version = "1.2"
 local tpr_list = {}
 local tphr_list = {}
 
+minetest.register_privilege("tpr_admin", {description = "Admin overrides for TPC.", give_to_singleplayer=false,})
+
 --Teleport Request System
 local function tpr_send(sender, receiver)
 	if receiver == "" then
@@ -85,21 +87,28 @@ local function tpc_send(player,coordinates)
 
 	local target_coords={x=posx, y=posy, z=posz}
 
-	
+
 	-- If the area is protected, reject the user's request to teleport to these coordinates
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
-	local protected = minetest.is_protected(target_coords,pname)
-	if protected then
-		local owner_string = areas:getNodeOwners(target_coords)
-		if pname ~= owner_string then
-			minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
-			return
-		end
-	end
-
-	minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-	minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
-	pname:setpos(target_coords)
+  -- Admin user (priv "tpr_admin") overrides all protection
+  if minetest.check_player_privs(user.get_player_name(user), {tpr_admin=true}) then
+    minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+    minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+    pname:setpos(target_coords)
+  else
+    local protected = minetest.is_protected(target_coords,pname)
+    if protected then
+      local owner_string = areas:getNodeOwners(target_coords)
+      if pname ~= owner_string then
+        minetest.chat_send_player(player, "Error: These coordinates are within a protected area.")
+        return
+      end
+    else
+    end
+    minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+    minetest.sound_play("tps_portal", {pos = target_coords, gain = 1.0, max_hear_distance = 10})
+    pname:setpos(target_coords)
+  end
 end
 
 local function tpr_deny(name)
