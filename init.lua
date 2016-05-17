@@ -1,17 +1,54 @@
--- Original code by Traxie21 and released with the WTFPL license
+-- Originally Teleport Request by Traxie21 and released with the WTFPL license
 -- https://forum.minetest.net/viewtopic.php?id=4457
-
 -- Updates by Zeno and ChaosWormz
+-- New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
 
 local timeout_delay = 60
 
--- Set to true to register tpr_admin priv
-local regnewpriv = false
-
-local version = "1.1"
+local version = "1.3"
 
 local tpr_list = {}
 local tphr_list = {}
+
+minetest.register_privilege("tp_admin", {description = "Admin overrides for tps_teleport.", give_to_singleplayer=false,})
+
+local function find_free_position_near(pos)
+	local tries = {
+		{x=1,y=0,z=0},
+		{x=-1,y=0,z=0},
+		{x=0,y=0,z=1},
+		{x=0,y=0,z=-1},
+	}
+	for _,d in pairs(tries) do
+		local p = vector.add(pos, d)
+		if not minetest.registered_nodes[minetest.get_node(p).name].walkable then
+			return p, true
+		end
+	end
+	return pos, false
+end
+
+local function parti(pos)
+	minetest.add_particlespawner(50, 0.4,
+		{x=pos.x + 0.5, y=pos.y, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
+		{x=0, y=5, z=0}, {x=0, y=0, z=0},
+		{x=0, y=5, z=0}, {x=0, y=0, z=0},
+		3, 5,
+		3, 5,
+		false,
+		"tps_portal_parti.png")
+end
+
+local function parti2(pos)
+	minetest.add_particlespawner(50, 0.4,
+		{x=pos.x + 0.5, y=pos.y + 10, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
+		{x=0, y=-5, z=0}, {x=0, y=0, z=0},
+		{x=0, y=-5, z=0}, {x=0, y=0, z=0},
+		3, 5,
+		3, 5,
+		false,
+		"tps_portal_parti.png")
+end
 
 --Teleport Request System
 local function tpr_send(sender, receiver)
@@ -62,6 +99,53 @@ local function tphr_send(sender, receiver)
 	end, sender)
 end
 
+local function tpc_send(player,coordinates)
+
+	local posx,posy,posz = string.match(coordinates, "^(-?%d+),(-?%d+),(-?%d+)$")
+	local pname = minetest.get_player_by_name(player)
+
+	if posx ~= nil or posy ~= nil or posz ~= nil then
+	  posx = tonumber(posx) + 0.0
+	  posy = tonumber(posy) + 0.0
+	  posz = tonumber(posz) + 0.0
+	end
+
+	if posx==nil or posy==nil or posz==nil or string.len(posx) > 6 or string.len(posy) > 6 or string.len(posz) > 6 then
+		minetest.chat_send_player(player, "Usage: /tpc <x,y,z>")
+		return nil
+	end
+	
+	if posx > 32765 or posx < -32765 or posy > 32765 or posy < -32765 or posz > 32765 or posz < -32765 then
+		minetest.chat_send_player(player, "Error: Invalid coordinates.")
+		return nil
+	end
+
+	local target_coords={x=posx, y=posy, z=posz}
+
+	-- If the area is protected, reject the user's request to teleport to these coordinates
+	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
+	-- Admin user (priv "tp_admin") overrides all protection
+	if minetest.check_player_privs(pname, {tp_admin=true}) then
+		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+		pname:setpos(find_free_position_near(target_coords))
+		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+		parti2(target_coords)
+	else
+		local protected = minetest.is_protected(target_coords,pname)
+		if protected then
+			if not areas:canInteract(target_coords, player) then
+				local owners = areas:getNodeOwners(target_coords)
+				minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
+				return
+			end
+		end
+		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+		pname:setpos(find_free_position_near(target_coords))
+		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+		parti2(target_coords)
+	end
+end
+
 local function tpr_deny(name)
 	if tpr_list[name] then
 		minetest.chat_send_player(tpr_list[name], 'Teleport request denied.')
@@ -73,31 +157,13 @@ local function tpr_deny(name)
 	end
 end
 
--- Copied from Celeron-55's /teleport command. Thanks Celeron!
-local function find_free_position_near(pos)
-	local tries = {
-		{x=1,y=0,z=0},
-		{x=-1,y=0,z=0},
-		{x=0,y=0,z=1},
-		{x=0,y=0,z=-1},
-	}
-	for _,d in pairs(tries) do
-		local p = vector.add(pos, d)
-		if not minetest.registered_nodes[minetest.get_node(p).name].walkable then
-			return p, true
-		end
-	end
-	return pos, false
-end
-
-
 --Teleport Accept Systems
 local function tpr_accept(name, param)
 
 	--Check to prevent constant teleporting.
 	if not tpr_list[name]
 	and not tphr_list[name] then
-		minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players")
+		minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players.")
 		return
 	end
 
@@ -127,20 +193,12 @@ local function tpr_accept(name, param)
 
 	minetest.chat_send_player(name2, "Request Accepted!")
 	minetest.chat_send_player(name, chatmsg)
-
-	target:setpos(find_free_position_near(source:getpos()))
+	
+	local target_coords=source:getpos()
+	target:setpos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	parti2(target_coords)
 end
-
---Initalize Permissions.
-
-if regnewpriv then
-	minetest.register_privilege("tpr_admin", {
-		description = "Permission to override teleport to other players. UNFINISHED",
-		give_to_singleplayer = true
-	})
-end
-
---Initalize Commands.
 
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
@@ -156,6 +214,13 @@ minetest.register_chatcommand("tphr", {
 	func = tphr_send
 })
 
+minetest.register_chatcommand("tpc", {
+	description = "Teleport to coordinates",
+	params = "<coordinates> | leave coordinates empty to see help message",
+	privs = {interact=true},
+	func = tpc_send
+})
+
 minetest.register_chatcommand("tpy", {
 	description = "Accept teleport requests from another player",
 	func = tpr_accept
@@ -166,4 +231,4 @@ minetest.register_chatcommand("tpn", {
 	func = tpr_deny
 })
 
-minetest.log("info", "[Teleport Request] Teleport Request v" .. version .. " Loaded.")
+minetest.log("info", "[Teleport Request] TPS Teleport v" .. version .. " Loaded.")
