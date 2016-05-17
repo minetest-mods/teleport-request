@@ -27,9 +27,10 @@ Accept a user's request to teleport to you or teleport you to them.
 Deny a user's request to teleport to youor teleport you to them.
 
 ##Contributors:
-- [RobbieF](https://minetest.tv)
+- [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
 - [DonBatman](https://github.com/donbatman)
 - [NathanS21](http://nathansalapat.com/)
+- [Traxie21](https://github.com/Traxie21) The original creater of this mod
 - All those who contributed to the original mod (please see init.lua)
 
 ##To Do:
@@ -41,3 +42,4 @@ Deny a user's request to teleport to youor teleport you to them.
 - Creation of "evade" command /tpe which spawns the player in several random locations nearby before placing them at a final destination ~20 nodes away. For evading attack.
 - Add a handful of coordinates which can be set in config and teleported to by anyone regardless of their protection status (eg., Spawn).
 - Add a privilege which is required in order to use all commands. I haven't added such a thing since it hasn't been needed on our servers, but I imagine it would be useful on other servers who desire to grant these features only to specific players.
+- Enhance privileges: Make /tpc require a separate privilege than the /tpr or /tphr commands.
