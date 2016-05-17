@@ -10,7 +10,14 @@ local version = "1.3"
 local tpr_list = {}
 local tphr_list = {}
 
-minetest.register_privilege("tp_admin", {description = "Admin overrides for tps_teleport.", give_to_singleplayer=false,})
+minetest.register_privilege("tp_admin", {
+	description = "Admin overrides for tps_teleport.",
+	give_to_singleplayer=false
+})
+minetest.register_privilege("tp_tpc", {
+	description = "Allow player to teleport to coordinates (if permitted by area protection).",
+	give_to_singleplayer=true
+})
 
 local function find_free_position_near(pos)
 	local tries = {
@@ -131,18 +138,23 @@ local function tpc_send(player,coordinates)
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	else
-		local protected = minetest.is_protected(target_coords,pname)
-		if protected then
-			if not areas:canInteract(target_coords, player) then
-				local owners = areas:getNodeOwners(target_coords)
-				minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
-				return
+		if minetest.check_player_privs(pname, {tp_tpc=true}) then
+			local protected = minetest.is_protected(target_coords,pname)
+			if protected then
+				if not areas:canInteract(target_coords, player) then
+					local owners = areas:getNodeOwners(target_coords)
+					minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
+					return
+				end
 			end
+			minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
+			pname:setpos(find_free_position_near(target_coords))
+			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+			parti2(target_coords)
+		else
+			minetest.chat_send_player(player, "Error: You do not have permission to teleport to coordinates.")	
+			return
 		end
-		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-		pname:setpos(find_free_position_near(target_coords))
-		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		parti2(target_coords)
 	end
 end
 
