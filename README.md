@@ -4,7 +4,8 @@
 [The Pixel Shadow](https://minetest.tv/) Minetest game servers have switched from "teleport" to "teleport request" via the *tps_teleport* mod. This mod makes it so players must send a request to another player in order to teleport to them. Before they will be allowed to do so, the player must accept the request. This prevents malicious users from teleporting to players' private areas without their permission. It also enhances the overall privacy of our services since if denied teleport, a player must instead travel to the area and "use the front door" so to speak... which might be a locked iron door.
 
 ##Privileges:
-- *interact* Permits use of all tps_teleport commands
+- *interact* Permits use of /tpr and /tphr
+- *tp_tpc* Permits use of /tpc
 - *tp_admin* Admin priv allows admin to teleport anywhere without permission
 
 Players may also teleport to coordinates, however if the area is protected, the teleport will be denied.
