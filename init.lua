@@ -8,7 +8,7 @@ local timeout_delay = 60
 -- Set to true to register tpr_admin priv
 local regnewpriv = false
 
-local version = "1.1"
+local version = "1.2"
 
 local tpr_list = {}
 local tphr_list = {}
@@ -153,7 +153,7 @@ end
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
 	params = "<playername> | leave playername empty to see help message",
-	privs = {interact=true},
+	privs = {basic_teleport=true},
 	func = tpr_send
 
 })
@@ -161,13 +161,14 @@ minetest.register_chatcommand("tpr", {
 minetest.register_chatcommand("tphr", {
 	description = "Request player to teleport to you",
 	params = "<playername> | leave playername empty to see help message",
-	privs = {interact=true},
+	privs = {basic_teleport=true},
 	func = tphr_send
 
 })
 
 minetest.register_chatcommand("tpy", {
 	description = "Accept teleport requests from another player",
+	privs = {basic_teleport=true},
 	func = tpr_accept
 })
 
