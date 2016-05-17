@@ -27,9 +27,10 @@ Accept a user's request to teleport to you or teleport you to them.
 Deny a user's request to teleport to youor teleport you to them.
 
 ##Contributors:
-- [RobbieF](https://minetest.tv)
+- [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
 - [DonBatman](https://github.com/donbatman)
 - [NathanS21](http://nathansalapat.com/)
+- [Traxie21](https://github.com/Traxie21) The original creater of this mod
 - All those who contributed to the original mod (please see init.lua)
 
 ##To Do:
