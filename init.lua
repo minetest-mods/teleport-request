@@ -262,7 +262,7 @@ local function tpe(player)
 	local options = { 'x', 'y', 'z' }
 	local axis = options[math.random(3)]
 	for i = 1,times do
-		minetest.after(1, tpj(axis,distance)) -- do this every 1 second
+		minetest.after(1, function() tpj(axis,distance) ) -- do this every 1 second
 	end
 end
 
