@@ -64,8 +64,8 @@ local function tpr_send(sender, receiver)
 		return
 	end
 
-	--If paremeter is valid, Send teleport message and set the table.
 	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case sensitive, and the player must be online.")
 		return
 	end
 
@@ -88,8 +88,8 @@ local function tphr_send(sender, receiver)
 		return
 	end
 
-	--If paremeter is valid, Send teleport message and set the table.
 	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case sensitive, and the player must be online.")
 		return
 	end
 
