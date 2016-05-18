@@ -255,6 +255,7 @@ end
 
 -- Evade
 local function tpe(player)
+	minetest.chat_send_player(sender, "EVADE!")
 	local mindistance = 4
 	local maxdistance = 15
 	local times = math.random(6,20) -- how many times to jump - minimum,maximum
@@ -263,7 +264,7 @@ local function tpe(player)
 	local isnegative = ''
 	local distance = 0
 	local axis = ''
-	local iteration = 0.5
+	local iteration = 0
 	for i = 1,times do
 		-- do this every 1 second
 		minetest.after(iteration,
