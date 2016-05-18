@@ -215,7 +215,7 @@ end
 -- Teleport Jump - Relative Position Teleportation by number of nodes
 local function tpj(player,param)
 	local pname = minetest.get_player_by_name(player)
-	
+	print param
 	if param == "" then
 		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
 		return false
