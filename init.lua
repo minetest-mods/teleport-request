@@ -212,6 +212,47 @@ local function tpr_accept(name, param)
 	parti2(target_coords)
 end
 
+minetest.register_chatcommand("tpj", {
+	params = "<Axis> <Number>",
+	description = "Relative Teleportation",
+	privs = {teleport = true},
+	func = function(name,param)
+		currPos = minetest.get_player_by_name(name):getpos()
+		if param == "" then
+			minetest.chat_send_player(name, "Incorrect usage. <X|Y|Z> <Number>")
+			return false
+		end
+		
+		local args = param:split(" ")
+		if #args < 2 then
+			minetest.chat_send_player(name, "Incorrect usage. <X|Y|Z> <Number>")
+		end
+		
+		if not tonumber(args[2]) then
+			return false, "Not a Number!"
+		end
+		
+		if args[1] == "x" then
+			currPos["x"] = currPos["x"] + tonumber(args[2])
+			minetest.get_player_by_name(name):setpos(currPos)
+			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+			parti2(target_coords)
+		elseif args[1] == "y" then
+			currPos["y"] = currPos["y"] + tonumber(args[2])
+			minetest.get_player_by_name(name):setpos(currPos)
+			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+			parti2(target_coords)
+		elseif args[1] == "z" then
+			currPos["z"] = currPos["z"] + tonumber(args[2])
+			minetest.get_player_by_name(name):setpos(currPos)
+			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+			parti2(target_coords)
+		else
+			minetest.chat_send_player(name,"Not valid axis")
+		end
+	end,
+})
+
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
 	params = "<playername> | leave playername empty to see help message",
