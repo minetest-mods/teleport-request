@@ -44,4 +44,4 @@ Deny a user's request to teleport to youor teleport you to them.
 - Creation of "evade" command /tpe which spawns the player in several random locations nearby before placing them at a final destination ~20 nodes away. For evading attack.
 - Add a handful of coordinates which can be set in config and teleported to by anyone regardless of their protection status (eg., Spawn).
 - Add a privilege which is required in order to use all commands. I haven't added such a thing since it hasn't been needed on our servers, but I imagine it would be useful on other servers who desire to grant these features only to specific players.
-- Merge [ChaosWormz mt_reletive_teleportation mod](https://github.com/ChaosWormz/mt_reletive_teleportation) into tps_teleport.
+- Create a new function for the actual setpos() to remove all the redundant code each time the player is moved and the sound played.
