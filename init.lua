@@ -257,7 +257,7 @@ end
 local function tpe(name)
 	local negatives = { '-','' } -- either it's this way or that way
 	local isnegative = negatives[math.random(2)]
-	local distance = negatives .. math.random(4,15) -- the distance to jump
+	local distance = isnegative .. math.random(4,15) -- the distance to jump
 	local times = math.random(3,6) -- how many times to jump - minimum,maximum
 	local options = { 'x', 'y', 'z' }
 	local axis = options[math.random(3)]
