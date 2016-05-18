@@ -255,9 +255,9 @@ end
 
 -- Evade
 local function tpe(player)
-	minetest.chat_send_player(sender, "EVADE!")
-	local mindistance = 4
-	local maxdistance = 15
+	minetest.chat_send_player(player, "EVADE!")
+	local mindistance = 15
+	local maxdistance = 50
 	local times = math.random(6,20) -- how many times to jump - minimum,maximum
 	local negatives = { '-','' } -- either it's this way or that way: the difference between -10 and 10
 	local options = { 'x', 'y', 'z' }
