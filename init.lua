@@ -5,7 +5,7 @@
 
 local timeout_delay = 60
 
-local version = "1.3"
+local version = "1.4"
 
 local tpr_list = {}
 local tphr_list = {}
