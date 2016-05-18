@@ -5,7 +5,7 @@
 
 local timeout_delay = 60
 
-local version = "1.4"
+local version = "1.5"
 
 local tpr_list = {}
 local tphr_list = {}
@@ -215,12 +215,12 @@ end
 -- Teleport Jump - Relative Position Teleportation by number of nodes
 local function tpj(player,param)
 	local pname = minetest.get_player_by_name(player)
-	
+
 	if param == "" then
 		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
 		return false
 	end
-	
+
 	local args = param:split(" ") -- look into this. Can it crash if the player does not have two parameters?
 	if #args < 2 then
 		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
@@ -257,24 +257,25 @@ end
 local function tpe(player)
 	local mindistance = 4
 	local maxdistance = 15
-	local times = math.random(3,6) -- how many times to jump - minimum,maximum
+	local times = math.random(6,20) -- how many times to jump - minimum,maximum
 	local negatives = { '-','' } -- either it's this way or that way: the difference between -10 and 10
 	local options = { 'x', 'y', 'z' }
 	local isnegative = ''
 	local distance = 0
 	local axis = ''
-	local param = {}
+	local iteration = 0.5
 	for i = 1,times do
 		-- do this every 1 second
-		minetest.after(1,
+		minetest.after(iteration,
 			function() 
 				isnegative = negatives[math.random(2)] -- choose randomly whether this is this way or that
 				distance = isnegative .. math.random(mindistance,maxdistance) -- the distance to jump
 				axis = options[math.random(3)]
-				param = axis .. " " .. distance
-				tpj(param)
+				local command = axis .. " " .. distance
+				tpj(player,command)
 			end
 		)
+		iteration = iteration + 0.5
 	end
 end
 
