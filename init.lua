@@ -258,11 +258,12 @@ local function tpe(player)
 	local mindistance = 4
 	local maxdistance = 15
 	local times = math.random(3,6) -- how many times to jump - minimum,maximum
-	local negatives = { '-','' } -- either it's this way or that way
+	local negatives = { '-','' } -- either it's this way or that way: the difference between -10 and 10
 	local options = { 'x', 'y', 'z' }
 	local isnegative = ''
 	local distance = 0
 	local axis = ''
+	local param = {}
 	for i = 1,times do
 		-- do this every 1 second
 		minetest.after(1,
@@ -270,7 +271,8 @@ local function tpe(player)
 				isnegative = negatives[math.random(2)] -- choose randomly whether this is this way or that
 				distance = isnegative .. math.random(mindistance,maxdistance) -- the distance to jump
 				axis = options[math.random(3)]
-				tpj(axis,distance)
+				param = axis .. distance
+				tpj(param)
 			end
 		)
 	end
