@@ -232,7 +232,7 @@ local function tpj(player,param)
 	end
 	
 	-- Initially generate the target coords from the player's current position (since it's relative) and then perform the math.
-	local target_coords = minetest.get_player_by_name(name):getpos()
+	local target_coords = minetest.get_player_by_name(player):getpos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
 		pname:setpos(find_free_position_near(target_coords))
