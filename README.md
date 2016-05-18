@@ -4,42 +4,42 @@
 [The Pixel Shadow](https://minetest.tv/) Minetest game servers have switched from "teleport" to "teleport request" via the *tps_teleport* mod. This mod makes it so players must send a request to another player in order to teleport to them. Before they will be allowed to do so, the player must accept the request. This prevents malicious users from teleporting to players' private areas without their permission. It also enhances the overall privacy of our services since if denied teleport, a player must instead travel to the area and "use the front door" so to speak... which might be a locked iron door.
 
 ##Privileges:
-- *interact* Permits use of /tpr and /tphr
-- *tp_tpc* Permits use of /tpc
-- *tp_admin* Admin priv allows admin to teleport anywhere without permission
+- **interact** Permits use of /tpr and /tphr
+- **tp_tpc** Permits use of /tpc
+- **tp_admin** Admin priv allows admin to teleport anywhere without permission
 
 Players may also teleport to coordinates, however if the area is protected, the teleport will be denied.
 
 ##Usage:
 
 ``` /tpr [playername] ```
-- *Description:* Requests permission to teleport to another player, where [playername] is their exact name.
-- *Required Privilege:* interact
-- *Example Usage:* /tpr RobbieF - requests permission from RobbieF to teleport to them.
-- *Notes:* Usernames are case-sensitive.
+- **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
+- **Required Privilege:** interact
+- **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
+- **Notes:** Usernames are case-sensitive.
 
 ``` /tphr [playername] ```
-- *Description:* Request permission to teleport another player to you.
-- *Required Privilege:* interact
-- *Example Usage:* /tphr RobbieF - requests RobbieF to teleport to you.
-- *Notes:* Usernames are case-sensitive.
+- **Description:** Request permission to teleport another player to you.
+- **Required Privilege:** interact
+- **Example Usage:** /tphr RobbieF - requests RobbieF to teleport to you.
+- **Notes:** Usernames are case-sensitive.
 
 ``` /tpc [x,y,z] ```
-- *Description:* Teleport to coordinates.
-- *Required Privilege:* interact, tp_tpc
-- *Notes:* Honors area protection: if the area is protected, it must be owned by you in order to teleport to it.
+- **Description:** Teleport to coordinates.
+- **Required Privilege:** interact, tp_tpc
+- **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it.
 
 ``` /tpj [axis] [distance] ```
-- *Description:* Teleport a specified distance along a single specified axis. Useful for fast evading.
-- *Required Privilege:* interact
-- *Available Options for 'axis':* x, y, z
-- *Example Usage:* '/tpj y 10' - teleport 10 nodes into the air.
+- **Description:** Teleport a specified distance along a single specified axis. Useful for fast evading.
+- **Required Privilege:** interact
+- **Available Options for *axis*:** x, y, z
+- **Example Usage:** '/tpj y 10' - teleport 10 nodes into the air.
 
 ``` /tpy ```
-- *Description:* Accept a user's request to teleport to you or teleport you to them.
+- **Description:** Accept a user's request to teleport to you or teleport you to them.
 
 ``` /tpn ```
-- *Description:* Deny a user's request to teleport to youor teleport you to them.
+- **Description:** Deny a user's request to teleport to youor teleport you to them.
 
 ###Please Note:
 Players with the 'tp_admin' privilege override all the required privileges above, except 'interact'.
