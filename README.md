@@ -58,9 +58,9 @@ Players with the 'tp_admin' privilege override all the required privileges above
 - Make it so tp_admin priv also overrides need for player to accept /tpr or /tphr
 - Assess value in changing all tpr-based chat commands to one global command such as /tp to reduce the chance of confusion between tps_admin and the original mod (and also make it so people don't have to remember so many commands).
 - Create a better sound effect for teleport and apply it to all teleport methods (not just /tpc)
-- Creation of "evade" command /tpe which spawns the player in several random locations nearby before placing them at a final destination ~20 nodes away. For evading attack.
 - Add a handful of coordinates which can be set in config and teleported to by anyone regardless of their protection status (eg., Spawn).
 - Add a privilege which is required in order to use all commands. I haven't added such a thing since it hasn't been needed on our servers, but I imagine it would be useful on other servers who desire to grant these features only to specific players.
 - Create a new function for the actual setpos() to remove all the redundant code each time the player is moved and the sound played.
 - Rewrite to place all chat commands into one single command much like how /teleport works.
 - Add a [different] sound effect at the source coords when a TP takes place (so other players hear it when to teleport away).
+- Make evade respect land: no teleporting inside land, but instead make sure player is standing on surface or in water.
