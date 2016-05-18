@@ -253,6 +253,19 @@ local function tpj(name,param)
 	end
 end
 
+-- Evade
+local function tpe(name)
+	local negatives = { '-','' } -- either it's this way or that way
+	local isnegative = negatives[math.random(2)]
+	local distance = negatives .. math.random(4,15) -- the distance to jump
+	local times = math.random(3,6) -- how many times to jump - minimum,maximum
+	local options = { 'x', 'y', 'z' }
+	local axis = options[math.random(3)]
+	for i = 1,times do
+		minetest.after(1, tpj(axis,distance)) -- do this every 1 second
+	end
+end
+
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
 	params = "<playername> | leave playername empty to see help message",
@@ -279,6 +292,12 @@ minetest.register_chatcommand("tpj", {
 	params = "<axis> <distance> | leave empty to see help message",
 	privs = {interact=true},
 	func = tpj
+})
+
+minetest.register_chatcommand("tpe", {
+	description = "Evade Enemy",
+	privs = {interact=true},
+	func = tpe
 })
 
 minetest.register_chatcommand("tpy", {
