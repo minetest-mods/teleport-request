@@ -221,7 +221,7 @@ local function tpj(player,param)
 		return false
 	end
 	
-	local args = param:split(" ")
+	local args = param:split(" ") -- look into this. Can it crash if the player does not have two parameters?
 	if #args < 2 then
 		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
 		return false
@@ -271,7 +271,7 @@ local function tpe(player)
 				isnegative = negatives[math.random(2)] -- choose randomly whether this is this way or that
 				distance = isnegative .. math.random(mindistance,maxdistance) -- the distance to jump
 				axis = options[math.random(3)]
-				param = axis .. distance
+				param = axis .. " " .. distance
 				tpj(param)
 			end
 		)
