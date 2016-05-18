@@ -213,7 +213,7 @@ local function tpr_accept(name, param)
 end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
-local function tpj(name,param)
+local function tpj(player,param)
 	local pname = minetest.get_player_by_name(player)
 	
 	if param == "" then
@@ -254,7 +254,7 @@ local function tpj(name,param)
 end
 
 -- Evade
-local function tpe(name)
+local function tpe(player)
 	local negatives = { '-','' } -- either it's this way or that way
 	local isnegative = negatives[math.random(2)]
 	local distance = isnegative .. math.random(4,15) -- the distance to jump
