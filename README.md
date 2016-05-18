@@ -46,3 +46,4 @@ Deny a user's request to teleport to youor teleport you to them.
 - Add a privilege which is required in order to use all commands. I haven't added such a thing since it hasn't been needed on our servers, but I imagine it would be useful on other servers who desire to grant these features only to specific players.
 - Create a new function for the actual setpos() to remove all the redundant code each time the player is moved and the sound played.
 - Rewrite to place all chat commands into one single command much like how /teleport works.
+- Add a [different] sound effect at the source coords when a TP takes place (so other players hear it when to teleport away).
