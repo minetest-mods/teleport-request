@@ -5,7 +5,7 @@
 
 local timeout_delay = 60
 
-local version = "1.3"
+local version = "1.5"
 
 local tpr_list = {}
 local tphr_list = {}
@@ -64,8 +64,8 @@ local function tpr_send(sender, receiver)
 		return
 	end
 
-	--If paremeter is valid, Send teleport message and set the table.
 	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case sensitive, and the player must be online.")
 		return
 	end
 
@@ -88,8 +88,8 @@ local function tphr_send(sender, receiver)
 		return
 	end
 
-	--If paremeter is valid, Send teleport message and set the table.
 	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case sensitive, and the player must be online.")
 		return
 	end
 
@@ -212,6 +212,74 @@ local function tpr_accept(name, param)
 	parti2(target_coords)
 end
 
+-- Teleport Jump - Relative Position Teleportation by number of nodes
+local function tpj(player,param)
+	local pname = minetest.get_player_by_name(player)
+
+	if param == "" then
+		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
+		return false
+	end
+
+	local args = param:split(" ") -- look into this. Can it crash if the player does not have two parameters?
+	if #args < 2 then
+		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
+		return false
+	end
+	
+	if not tonumber(args[2]) then
+		return false, "Not a Number!"
+	end
+	
+	-- Initially generate the target coords from the player's current position (since it's relative) and then perform the math.
+	local target_coords = minetest.get_player_by_name(player):getpos()
+	if args[1] == "x" then
+		target_coords["x"] = target_coords["x"] + tonumber(args[2])
+		pname:setpos(find_free_position_near(target_coords))
+		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+		parti2(target_coords)
+	elseif args[1] == "y" then
+		target_coords["y"] = target_coords["y"] + tonumber(args[2])
+		pname:setpos(find_free_position_near(target_coords))
+		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+		parti2(target_coords)
+	elseif args[1] == "z" then
+		target_coords["z"] = target_coords["z"] + tonumber(args[2])
+		pname:setpos(find_free_position_near(target_coords))
+		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+		parti2(target_coords)
+	else
+		minetest.chat_send_player(player,"Not a valid axis. Valid options are X, Y or Z.")
+	end
+end
+
+-- Evade
+local function tpe(player)
+	minetest.chat_send_player(player, "EVADE!")
+	local mindistance = 15
+	local maxdistance = 50
+	local times = math.random(6,20) -- how many times to jump - minimum,maximum
+	local negatives = { '-','' } -- either it's this way or that way: the difference between -10 and 10
+	local options = { 'x', 'y', 'z' }
+	local isnegative = ''
+	local distance = 0
+	local axis = ''
+	local iteration = 0
+	for i = 1,times do
+		-- do this every 1 second
+		minetest.after(iteration,
+			function() 
+				isnegative = negatives[math.random(2)] -- choose randomly whether this is this way or that
+				distance = isnegative .. math.random(mindistance,maxdistance) -- the distance to jump
+				axis = options[math.random(3)]
+				local command = axis .. " " .. distance
+				tpj(player,command)
+			end
+		)
+		iteration = iteration + 0.5
+	end
+end
+
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
 	params = "<playername> | leave playername empty to see help message",
@@ -229,8 +297,21 @@ minetest.register_chatcommand("tphr", {
 minetest.register_chatcommand("tpc", {
 	description = "Teleport to coordinates",
 	params = "<coordinates> | leave coordinates empty to see help message",
-	privs = {interact=true},
+	privs = {interact=true,tp_tpc=true},
 	func = tpc_send
+})
+
+minetest.register_chatcommand("tpj", {
+	description = "Teleport to relative position",
+	params = "<axis> <distance> | leave empty to see help message",
+	privs = {interact=true},
+	func = tpj
+})
+
+minetest.register_chatcommand("tpe", {
+	description = "Evade Enemy",
+	privs = {interact=true},
+	func = tpe
 })
 
 minetest.register_chatcommand("tpy", {

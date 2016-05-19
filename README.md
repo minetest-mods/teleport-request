@@ -4,32 +4,51 @@
 [The Pixel Shadow](https://minetest.tv/) Minetest game servers have switched from "teleport" to "teleport request" via the *tps_teleport* mod. This mod makes it so players must send a request to another player in order to teleport to them. Before they will be allowed to do so, the player must accept the request. This prevents malicious users from teleporting to players' private areas without their permission. It also enhances the overall privacy of our services since if denied teleport, a player must instead travel to the area and "use the front door" so to speak... which might be a locked iron door.
 
 ##Privileges:
-- *interact* Permits use of all tps_teleport commands
-- *tp_admin* Admin priv allows admin to teleport anywhere without permission
+- **interact** Permits use of /tpr and /tphr
+- **tp_tpc** Permits use of /tpc
+- **tp_admin** Admin priv allows admin to teleport anywhere without permission
 
 Players may also teleport to coordinates, however if the area is protected, the teleport will be denied.
 
 ##Usage:
 
 ``` /tpr [playername] ```
-Requests permission to teleport to another player, where [playername] is their exact name.
+- **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
+- **Required Privilege:** interact
+- **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
+- **Notes:** Usernames are case-sensitive.
 
 ``` /tphr [playername] ```
-Request permission to teleport another player to you.
+- **Description:** Request permission to teleport another player to you.
+- **Required Privilege:** interact
+- **Example Usage:** /tphr RobbieF - requests RobbieF to teleport to you.
+- **Notes:** Usernames are case-sensitive.
 
 ``` /tpc [x,y,z] ```
-Teleport to coordinates. Honors area protection: if the area is protected, it must be owned by you in order to teleport to it.
+- **Description:** Teleport to coordinates.
+- **Required Privilege:** interact, tp_tpc
+- **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it.
+
+``` /tpj [axis] [distance] ```
+- **Description:** Teleport a specified distance along a single specified axis. Useful for fast evading.
+- **Required Privilege:** interact
+- **Available Options for *axis*:** x, y, z
+- **Example Usage:** '/tpj y 10' - teleport 10 nodes into the air.
 
 ``` /tpy ```
-Accept a user's request to teleport to you or teleport you to them.
+- **Description:** Accept a user's request to teleport to you or teleport you to them.
 
 ``` /tpn ```
-Deny a user's request to teleport to youor teleport you to them.
+- **Description:** Deny a user's request to teleport to youor teleport you to them.
+
+###Please Note:
+Players with the 'tp_admin' privilege override all the required privileges above, except 'interact'.
 
 ##Contributors:
 - [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
 - [DonBatman](https://github.com/donbatman)
 - [NathanS21](http://nathansalapat.com/)
+- [ChaosWormz](https://github.com/ChaosWormz)
 - [Traxie21](https://github.com/Traxie21) The original creater of this mod
 - All those who contributed to the original mod (please see init.lua)
 
@@ -39,7 +58,9 @@ Deny a user's request to teleport to youor teleport you to them.
 - Make it so tp_admin priv also overrides need for player to accept /tpr or /tphr
 - Assess value in changing all tpr-based chat commands to one global command such as /tp to reduce the chance of confusion between tps_admin and the original mod (and also make it so people don't have to remember so many commands).
 - Create a better sound effect for teleport and apply it to all teleport methods (not just /tpc)
-- Creation of "evade" command /tpe which spawns the player in several random locations nearby before placing them at a final destination ~20 nodes away. For evading attack.
 - Add a handful of coordinates which can be set in config and teleported to by anyone regardless of their protection status (eg., Spawn).
 - Add a privilege which is required in order to use all commands. I haven't added such a thing since it hasn't been needed on our servers, but I imagine it would be useful on other servers who desire to grant these features only to specific players.
-- Enhance privileges: Make /tpc require a separate privilege than the /tpr or /tphr commands.
+- Create a new function for the actual setpos() to remove all the redundant code each time the player is moved and the sound played.
+- Rewrite to place all chat commands into one single command much like how /teleport works.
+- Add a [different] sound effect at the source coords when a TP takes place (so other players hear it when to teleport away).
+- Make evade respect land: no teleporting inside land, but instead make sure player is standing on surface or in water.
