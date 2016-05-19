@@ -35,6 +35,19 @@ local function find_free_position_near(pos)
 	return pos, false
 end
 
+local function = find_air(pos,player)
+	local bot = {pos.x, pos.y-1, pos.z}
+ 	local mid = {pos}
+ 	local top = {pos.x, pos.y+1, pos.z}
+ 	while
+ 		mid ~= "air" or mid ~= "ignore" and 
+ 		top ~= "air" or top ~= "ignore" then
+ 		pos.y = pos.y +2
+ 	else
+ 		player:setpos(mid) -- change this to a return and call from within /tpj (which will also impact /tpe)
+ 	end
+end
+
 local function parti(pos)
 	minetest.add_particlespawner(50, 0.4,
 		{x=pos.x + 0.5, y=pos.y, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
