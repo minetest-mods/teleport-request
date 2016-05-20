@@ -46,12 +46,12 @@ local function find_air(pos,player)
  	while bot_node.name ~= "air" and bot_node.name ~= "ignore" and mid_node.name ~= "air" and mid_node.name ~= "ignore" and top_node.name ~= "air" and top_node.name ~= "ignore" do
  		-- Iterate through the y-axis to find a suitable node to land on
  		pos.y = pos.y +2
- 		bot = {pos.x, pos.y-1, pos.z}
-	 	mid = {pos.x,pos.y,pos.z}
- 		top = {pos.x, pos.y+1, pos.z}
-		bot_node = minetest.get_node(bot)
-		mid_node = minetest.get_node(mid)
-		top_node = minetest.get_node(top)
+ 		local bot = {pos.x, pos.y-1, pos.z}
+	 	local mid = {pos.x,pos.y,pos.z}
+ 		local top = {pos.x, pos.y+1, pos.z}
+		local bot_node = minetest.get_node(bot)
+		local mid_node = minetest.get_node(mid)
+		local top_node = minetest.get_node(top)
  	end
  	return mid
 end
