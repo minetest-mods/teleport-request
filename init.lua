@@ -41,12 +41,14 @@ local function find_air(pos,player)
  	local top = {pos.x, pos.y+1, pos.z}
 	local mid_node = minetest.get_node(mid)
 	local top_node = minetest.get_node(top)
+ 	minetest.chat_send_player(player, "Start: " .. mid)
+ 	
  	while mid_node.name ~= "air" or mid_node.name ~= "ignore" and top_node.name ~= "air" or top_node.name ~= "ignore" do
  		pos.y = pos.y +2
 		mid_node = minetest.get_node(mid)
 		top_node = minetest.get_node(top)
  	end
- 	minetest.chat_send_player(sender, "Result: " .. mid)
+ 	minetest.chat_send_player(player, "Result: " .. mid)
 
  	return mid
 end
@@ -251,17 +253,17 @@ local function tpj(player,param)
 	local target_coords = minetest.get_player_by_name(player):getpos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
-		pname:setpos(find_air(find_free_position_near(target_coords)))
+		pname:setpos(find_air(find_free_position_near(target_coords),player))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	elseif args[1] == "y" then
 		target_coords["y"] = target_coords["y"] + tonumber(args[2])
-		pname:setpos(find_air(find_free_position_near(target_coords)))
+		pname:setpos(find_air(find_free_position_near(target_coords),player))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	elseif args[1] == "z" then
 		target_coords["z"] = target_coords["z"] + tonumber(args[2])
-		pname:setpos(find_air(find_free_position_near(target_coords)))
+		pname:setpos(find_air(find_free_position_near(target_coords),player))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	else
