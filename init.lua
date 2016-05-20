@@ -41,14 +41,14 @@ local function find_air(pos,player)
  	local top = {pos.x, pos.y+1, pos.z}
 	local mid_node = minetest.get_node(mid)
 	local top_node = minetest.get_node(top)
- 	minetest.chat_send_player(player, "Start: " .. mid)
+ 	minetest.chat_send_player(player, "Start: " .. minetest.pos_to_string(mid))
  	
  	while mid_node.name ~= "air" or mid_node.name ~= "ignore" and top_node.name ~= "air" or top_node.name ~= "ignore" do
  		pos.y = pos.y +2
 		mid_node = minetest.get_node(mid)
 		top_node = minetest.get_node(top)
  	end
- 	minetest.chat_send_player(player, "Result: " .. mid)
+ 	minetest.chat_send_player(player, "Result: " .. minetest.pos_to_string(mid))
 
  	return mid
 end
