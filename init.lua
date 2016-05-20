@@ -35,7 +35,7 @@ local function find_free_position_near(pos)
 	return pos, false
 end
 
-local function = find_air(pos,player)
+local function find_air(pos,player)
 	local bot = {pos.x, pos.y-1, pos.z}
  	local mid = {pos}
  	local top = {pos.x, pos.y+1, pos.z}
