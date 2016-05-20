@@ -316,11 +316,13 @@ minetest.register_chatcommand("tpe", {
 
 minetest.register_chatcommand("tpy", {
 	description = "Accept teleport requests from another player",
+	privs = {interact=true},
 	func = tpr_accept
 })
 
 minetest.register_chatcommand("tpn", {
 	description = "Deny teleport requests from another player",
+	privs = {interact=true},
 	func = tpr_deny
 })
 
