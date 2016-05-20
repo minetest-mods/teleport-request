@@ -44,7 +44,7 @@ local function = find_air(pos,player)
  		top ~= "air" or top ~= "ignore" then
  		pos.y = pos.y +2
  	else
- 		player:setpos(mid) -- change this to a return and call from within /tpj (which will also impact /tpe)
+ 		return mid
  	end
 end
 
@@ -248,17 +248,17 @@ local function tpj(player,param)
 	local target_coords = minetest.get_player_by_name(player):getpos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
-		pname:setpos(find_free_position_near(target_coords))
+		pname:setpos(find_air(find_free_position_near(target_coords)))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	elseif args[1] == "y" then
 		target_coords["y"] = target_coords["y"] + tonumber(args[2])
-		pname:setpos(find_free_position_near(target_coords))
+		pname:setpos(find_air(find_free_position_near(target_coords)))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	elseif args[1] == "z" then
 		target_coords["z"] = target_coords["z"] + tonumber(args[2])
-		pname:setpos(find_free_position_near(target_coords))
+		pname:setpos(find_air(find_free_position_near(target_coords)))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	else
