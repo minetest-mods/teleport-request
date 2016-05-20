@@ -43,7 +43,7 @@ local function find_air(pos,player)
 	local top_node = minetest.get_node(top)
  	while
  		mid_node.name ~= "air" or mid_node.name ~= "ignore" and 
- 		top_node.name ~= "air" or top_node.name ~= "ignore" then
+ 		top_node.name ~= "air" or top_node.name ~= "ignore" do
  		pos.y = pos.y +2
  	else
  		return mid
