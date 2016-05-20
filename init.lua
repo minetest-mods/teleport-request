@@ -36,20 +36,23 @@ local function find_free_position_near(pos)
 end
 
 local function find_air(pos,player)
+	-- Set the initial values: the actual postion chosen
 	local bot = {pos.x, pos.y-1, pos.z}
  	local mid = {pos.x,pos.y,pos.z}
  	local top = {pos.x, pos.y+1, pos.z}
+	local bot_node = minetest.get_node(bot)
 	local mid_node = minetest.get_node(mid)
 	local top_node = minetest.get_node(top)
- 	minetest.chat_send_player(player, "Start: " .. minetest.pos_to_string(mid))
- 	
- 	while mid_node.name ~= "air" or mid_node.name ~= "ignore" and top_node.name ~= "air" or top_node.name ~= "ignore" do
+ 	while bot_node.name ~= "air" or bot_node.name ~= "ignore" or mid_node.name ~= "air" or mid_node.name ~= "ignore" and top_node.name ~= "air" or top_node.name ~= "ignore" do
+ 		-- Iterate through the y-axis to find a suitable node to land on
  		pos.y = pos.y +2
+ 		bot = {pos.x, pos.y-1, pos.z}
+	 	mid = {pos.x,pos.y,pos.z}
+ 		top = {pos.x, pos.y+1, pos.z}
+		bot_node = minetest.get_node(bot)
 		mid_node = minetest.get_node(mid)
 		top_node = minetest.get_node(top)
  	end
- 	minetest.chat_send_player(player, "Result: " .. minetest.pos_to_string(mid))
-
  	return mid
 end
 
