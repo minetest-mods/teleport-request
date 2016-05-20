@@ -35,27 +35,6 @@ local function find_free_position_near(pos)
 	return pos, false
 end
 
-local function find_air(pos,player)
-	-- Set the initial values: the actual postion chosen
-	local bot = {pos.x, pos.y-1, pos.z}
- 	local mid = {pos.x,pos.y,pos.z}
- 	local top = {pos.x, pos.y+1, pos.z}
-	local bot_node = minetest.get_node(bot)
-	local mid_node = minetest.get_node(mid)
-	local top_node = minetest.get_node(top)
- 	while bot_node.name ~= "air" and bot_node.name ~= "ignore" and mid_node.name ~= "air" and mid_node.name ~= "ignore" and top_node.name ~= "air" and top_node.name ~= "ignore" do
- 		-- Iterate through the y-axis to find a suitable node to land on
- 		pos.y = pos.y +2
- 		local bot = {pos.x, pos.y-1, pos.z}
-	 	local mid = {pos.x,pos.y,pos.z}
- 		local top = {pos.x, pos.y+1, pos.z}
-		local bot_node = minetest.get_node(bot)
-		local mid_node = minetest.get_node(mid)
-		local top_node = minetest.get_node(top)
- 	end
- 	return mid
-end
-
 local function parti(pos)
 	minetest.add_particlespawner(50, 0.4,
 		{x=pos.x + 0.5, y=pos.y, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
@@ -256,17 +235,17 @@ local function tpj(player,param)
 	local target_coords = minetest.get_player_by_name(player):getpos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
-		pname:setpos(find_air(find_free_position_near(target_coords),player))
+		pname:setpos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	elseif args[1] == "y" then
 		target_coords["y"] = target_coords["y"] + tonumber(args[2])
-		pname:setpos(find_air(find_free_position_near(target_coords),player))
+		pname:setpos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	elseif args[1] == "z" then
 		target_coords["z"] = target_coords["z"] + tonumber(args[2])
-		pname:setpos(find_air(find_free_position_near(target_coords),player))
+		pname:setpos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		parti2(target_coords)
 	else
