@@ -41,13 +41,10 @@ local function find_air(pos,player)
  	local top = {pos.x, pos.y+1, pos.z}
 	local mid_node = minetest.get_node(mid)
 	local top_node = minetest.get_node(top)
- 	for
- 		mid_node.name ~= "air" or mid_node.name ~= "ignore" and 
- 		top_node.name ~= "air" or top_node.name ~= "ignore" do
+ 	while mid_node.name ~= "air" or mid_node.name ~= "ignore" and top_node.name ~= "air" or top_node.name ~= "ignore" do
  		pos.y = pos.y +2
- 	else
- 		return mid
  	end
+ 	return mid
 end
 
 local function parti(pos)
