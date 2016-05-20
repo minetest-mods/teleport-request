@@ -44,6 +44,8 @@ local function find_air(pos,player)
  	while mid_node.name ~= "air" or mid_node.name ~= "ignore" and top_node.name ~= "air" or top_node.name ~= "ignore" do
  		pos.y = pos.y +2
  	end
+ 	minetest.chat_send_player(sender, "Result: " .. mid)
+
  	return mid
 end
 
