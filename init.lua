@@ -37,11 +37,13 @@ end
 
 local function find_air(pos,player)
 	local bot = {pos.x, pos.y-1, pos.z}
- 	local mid = {pos}
+ 	local mid = {pos.x,pos.y,pos.z}
  	local top = {pos.x, pos.y+1, pos.z}
+	local mid_node = minetest.get_node(mid)
+	local top_node = minetest.get_node(top)
  	while
- 		mid ~= "air" or mid ~= "ignore" and 
- 		top ~= "air" or top ~= "ignore" then
+ 		mid_node.name ~= "air" or mid_node.name ~= "ignore" and 
+ 		top_node.name ~= "air" or top_node.name ~= "ignore" then
  		pos.y = pos.y +2
  	else
  		return mid
