@@ -13,27 +13,37 @@ Players may also teleport to coordinates, however if the area is protected, the 
 ##Usage:
 
 ``` /tpr [playername] ```
+- **Name:** Teleport Request
 - **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
 - **Required Privilege:** interact
 - **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
 - **Notes:** Usernames are case-sensitive.
 
 ``` /tphr [playername] ```
+- **Name:** Teleport Here Request
 - **Description:** Request permission to teleport another player to you.
 - **Required Privilege:** interact
 - **Example Usage:** /tphr RobbieF - requests RobbieF to teleport to you.
 - **Notes:** Usernames are case-sensitive.
 
 ``` /tpc [x,y,z] ```
+- **Name:** Teleport to Coordinates
 - **Description:** Teleport to coordinates.
 - **Required Privilege:** interact, tp_tpc
 - **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it.
 
 ``` /tpj [axis] [distance] ```
-- **Description:** Teleport a specified distance along a single specified axis. Useful for fast evading.
+- **Name:** Teleport Jump
+- **Description:** Teleport a specified distance along a single specified axis.
 - **Required Privilege:** interact
 - **Available Options for *axis*:** x, y, z
 - **Example Usage:** '/tpj y 10' - teleport 10 nodes into the air.
+
+``` /tpe ```
+- **Name:** Teleport Evade
+- **Description:** In a sticky situation? Evade your enemy by teleporting to several nearby coordinates in random pattern. There's no knowing where you'll end up.
+- **Required Privilege:** interact
+- **Example Usage:** '/tpe' - teleports you to a random number of random coordinates in an evasive pattern.
 
 ``` /tpy ```
 - **Description:** Accept a user's request to teleport to you or teleport you to them.
