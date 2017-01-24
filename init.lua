@@ -136,7 +136,7 @@ local function tpc_send(player,coordinates)
 		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 		pname:setpos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		parti2(target_coords)
+		--parti2(target_coords)
 	else
 		if minetest.check_player_privs(pname, {tp_tpc=true}) then
 			local protected = minetest.is_protected(target_coords,pname)
@@ -150,7 +150,7 @@ local function tpc_send(player,coordinates)
 			minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 			pname:setpos(find_free_position_near(target_coords))
 			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-			parti2(target_coords)
+			--parti2(target_coords)
 		else
 			minetest.chat_send_player(player, "Error: You do not have permission to teleport to coordinates.")	
 			return
@@ -209,7 +209,7 @@ local function tpr_accept(name, param)
 	local target_coords=source:getpos()
 	target:setpos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-	parti2(target_coords)
+	--parti2(target_coords)
 end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
@@ -237,17 +237,17 @@ local function tpj(player,param)
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
 		pname:setpos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		parti2(target_coords)
+		--parti2(target_coords)
 	elseif args[1] == "y" then
 		target_coords["y"] = target_coords["y"] + tonumber(args[2])
 		pname:setpos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		parti2(target_coords)
+		--parti2(target_coords)
 	elseif args[1] == "z" then
 		target_coords["z"] = target_coords["z"] + tonumber(args[2])
 		pname:setpos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		parti2(target_coords)
+		--parti2(target_coords)
 	else
 		minetest.chat_send_player(player,"Not a valid axis. Valid options are X, Y or Z.")
 	end
