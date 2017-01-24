@@ -304,13 +304,13 @@ minetest.register_chatcommand("tpc", {
 minetest.register_chatcommand("tpj", {
 	description = "Teleport to relative position",
 	params = "<axis> <distance> | leave empty to see help message",
-	privs = {interact=true},
+	privs = {interact=true,tp_tpc=true},
 	func = tpj
 })
 
 minetest.register_chatcommand("tpe", {
 	description = "Evade Enemy",
-	privs = {interact=true},
+	privs = {interact=true,tp_tpc=true},
 	func = tpe
 })
 
