@@ -10,6 +10,11 @@ local version = "1.5"
 local tpr_list = {}
 local tphr_list = {}
 
+local map_size = 30912
+local function can_teleport(to)
+   return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
+end
+
 minetest.register_privilege("tp_admin", {
 	description = "Admin overrides for tps_teleport.",
 	give_to_singleplayer=false
@@ -121,13 +126,13 @@ local function tpc_send(player,coordinates)
 		minetest.chat_send_player(player, "Usage: /tpc <x,y,z>")
 		return nil
 	end
-	
-	if posx > 32765 or posx < -32765 or posy > 32765 or posy < -32765 or posz > 32765 or posz < -32765 then
-		minetest.chat_send_player(player, "Error: Invalid coordinates.")
-		return nil
-	end
 
 	local target_coords={x=posx, y=posy, z=posz}
+
+	if can_teleport(target_coords) == false then
+		minetest.chat_send_player("You cannot teleport to a location outside the map!")
+		return nil
+	end
 
 	-- If the area is protected, reject the user's request to teleport to these coordinates
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
@@ -235,22 +240,21 @@ local function tpj(player,param)
 	local target_coords = minetest.get_player_by_name(player):getpos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
-		pname:setpos(find_free_position_near(target_coords))
-		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		--parti2(target_coords)
 	elseif args[1] == "y" then
 		target_coords["y"] = target_coords["y"] + tonumber(args[2])
-		pname:setpos(find_free_position_near(target_coords))
-		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		--parti2(target_coords)
 	elseif args[1] == "z" then
 		target_coords["z"] = target_coords["z"] + tonumber(args[2])
-		pname:setpos(find_free_position_near(target_coords))
-		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		--parti2(target_coords)
 	else
 		minetest.chat_send_player(player,"Not a valid axis. Valid options are X, Y or Z.")
+		return
 	end
+	if can_teleport(target_coords) == false then
+		minetest.chat_send_player(player, "You cannot teleport to a location outside the map!")
+		return
+	end
+	pname:setpos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
 end
 
 -- Evade
