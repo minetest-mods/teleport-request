@@ -19,7 +19,7 @@ Players can also teleport to coordinates, however, if the area is protected, the
 - **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
 - **Required Privileges:** "interact", "tp"
 - **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
-- **Notes:** Usernames are case-sensitive. If you have "tp_admin", you will inmediatilly teleport to the specificed player.
+- **Notes:** Usernames are case-sensitive. If you have "tp_admin", you will immediately teleport to the specificed player.
 
 ``` /tphr [playername] ```
 - **Name:** Teleport Here Request
