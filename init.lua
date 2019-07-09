@@ -1,7 +1,9 @@
--- Originally Teleport Request by Traxie21 and released with the WTFPL license
--- https://forum.minetest.net/viewtopic.php?id=4457
--- Updates by Zeno and ChaosWormz
--- New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
+--[[
+Originally made by Traxie21 and released with the WTFPL license.
+https://forum.minetest.net/viewtopic.php?id=4457
+Updates by Zeno and ChaosWormz
+New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
+--]]
 
 local timeout_delay = 60
 
@@ -15,13 +17,21 @@ local function can_teleport(to)
    return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
 end
 
+minetest.register_privilege("tp", {
+	description = "Let players teleport to other players (request will be sent)",
+	give_to_singleplayer = false,
+	give_to_admin = true,
+})
+
 minetest.register_privilege("tp_admin", {
 	description = "Admin overrides for tps_teleport.",
-	give_to_singleplayer=false
+	give_to_singleplayer = false,
+	give_to_admin = true,
 })
 minetest.register_privilege("tp_tpc", {
 	description = "Allow player to teleport to coordinates (if permitted by area protection).",
-	give_to_singleplayer=true
+	give_to_singleplayer = true,
+	give_to_admin = true,
 })
 
 local function find_free_position_near(pos)
@@ -62,8 +72,22 @@ local function parti2(pos)
 		"tps_portal_parti.png")
 end
 
---Teleport Request System
-local function tpr_send(sender, receiver)
+-- Teleport Request System
+function tpr_send(sender, receiver)
+	if minetest.check_player_privs(sender, {tp_admin = true}) then
+			-- Write name values to list and clear old values.
+				tpr_list[receiver] = sender
+			-- Teleport timeout delay
+				minetest.after(timeout_delay, function(name)
+			if tpr_list[name] then
+			tpr_list[name] = nil
+		end
+	end, sender)
+	tpr_accept(receiver)
+			minetest.chat_send_player(sender, "You are teleporting to " .. receiver .. ".")
+		return
+	end
+	
 	if receiver == "" then
 		minetest.chat_send_player(sender, "Usage: /tpr <Player name>")
 		return
@@ -77,19 +101,34 @@ local function tpr_send(sender, receiver)
 	minetest.chat_send_player(receiver, sender ..' is requesting to teleport to you. /tpy to accept.')
 	minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
-	--Write name values to list and clear old values.
+	-- Write name values to list and clear old values.
+	if not minetest.check_player_privs(sender, {tp_admin = true}) then
 	tpr_list[receiver] = sender
-	--Teleport timeout delay
+	-- Teleport timeout delay
 	minetest.after(timeout_delay, function(name)
 		if tpr_list[name] then
 			tpr_list[name] = nil
 		end
 	end, sender)
+	end	
 end
 
-local function tphr_send(sender, receiver)
+function tphr_send(sender, receiver)
+	if minetest.check_player_privs(sender, {tp_admin = true}) then
+	-- Write name values to list and clear old values.
+		tphr_list[receiver] = sender
+	-- Teleport timeout delay
+		minetest.after(timeout_delay, function(name)
+	if tphr_list[name] then
+		tphr_list[name] = nil
+		end
+	end, sender)
+	tpr_accept(receiver)
+		minetest.chat_send_player(sender, receiver .. " is teleporting to you.")
+		return
+	end
 	if receiver == "" then
-		minetest.chat_send_player(sender, "Usage: /tphr <Player name>")
+	minetest.chat_send_player(sender, "Usage: /tphr <Player name>")
 		return
 	end
 
@@ -101,19 +140,21 @@ local function tphr_send(sender, receiver)
 	minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept; /tpn to deny')
 	minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
 
-	--Write name values to list and clear old values.
+	-- Write name values to list and clear old values.
+	if not minetest.check_player_privs(sender, {tp_admin = true}) then
 	tphr_list[receiver] = sender
-	--Teleport timeout delay
+	-- Teleport timeout delay
 	minetest.after(timeout_delay, function(name)
 		if tphr_list[name] then
 			tphr_list[name] = nil
 		end
 	end, sender)
+	end
 end
 
-local function tpc_send(player,coordinates)
+function tpc_send(player,coordinates)
 
-	local posx,posy,posz = string.match(coordinates, "^(-?%d+),(-?%d+),(-?%d+)$")
+	local posx,posy,posz = string.match(coordinates, "^(-?%d+), (-?%d+), (-?%d+)$")
 	local pname = minetest.get_player_by_name(player)
 
 	if posx ~= nil or posy ~= nil or posz ~= nil then
@@ -123,7 +164,7 @@ local function tpc_send(player,coordinates)
 	end
 
 	if posx==nil or posy==nil or posz==nil or string.len(posx) > 6 or string.len(posy) > 6 or string.len(posz) > 6 then
-		minetest.chat_send_player(player, "Usage: /tpc <x,y,z>")
+		minetest.chat_send_player(player, "Usage: /tpc <x, y, z>")
 		return nil
 	end
 
@@ -139,21 +180,21 @@ local function tpc_send(player,coordinates)
 	-- Admin user (priv "tp_admin") overrides all protection
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
 		minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-		pname:setpos(find_free_position_near(target_coords))
+		pname:set_pos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		--parti2(target_coords)
 	else
 		if minetest.check_player_privs(pname, {tp_tpc=true}) then
 			local protected = minetest.is_protected(target_coords,pname)
 			if protected then
-				if not areas:canInteract(target_coords, player) then
+				if not areas:canInteract(target_coords, player) or not minetest.check_player_privs(pname, {areas = true}) then
 					local owners = areas:getNodeOwners(target_coords)
 					minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
 					return
 				end
 			end
 			minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
-			pname:setpos(find_free_position_near(target_coords))
+			pname:set_pos(find_free_position_near(target_coords))
 			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 			--parti2(target_coords)
 		else
@@ -164,6 +205,7 @@ local function tpc_send(player,coordinates)
 end
 
 local function tpr_deny(name)
+	if minetest.check_player_privs(name, {tp_admin = true}) then return end
 	if tpr_list[name] then
 		minetest.chat_send_player(tpr_list[name], 'Teleport request denied.')
 		tpr_list[name] = nil
@@ -177,7 +219,7 @@ end
 --Teleport Accept Systems
 local function tpr_accept(name, param)
 
-	--Check to prevent constant teleporting.
+	-- Check to prevent constant teleporting.
 	if not tpr_list[name]
 	and not tphr_list[name] then
 		minetest.chat_send_player(name, "Usage: /tpy allows you to accept teleport requests sent to you by other players.")
@@ -211,8 +253,8 @@ local function tpr_accept(name, param)
 	minetest.chat_send_player(name2, "Request Accepted!")
 	minetest.chat_send_player(name, chatmsg)
 	
-	local target_coords=source:getpos()
-	target:setpos(find_free_position_near(target_coords))
+	local target_coords=source:get_pos()
+	target:set_pos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 	--parti2(target_coords)
 end
@@ -252,7 +294,7 @@ local function tpj(player,param)
 		minetest.chat_send_player(player, "You cannot teleport to a location outside the map!")
 		return
 	end
-	pname:setpos(find_free_position_near(target_coords))
+	pname:set_pos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 	--parti2(target_coords)
 end
@@ -287,47 +329,48 @@ end
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
 	params = "<playername> | leave playername empty to see help message",
-	privs = {interact=true},
+	privs = {interact = true, tp = true},
 	func = tpr_send
 })
 
 minetest.register_chatcommand("tphr", {
 	description = "Request player to teleport to you",
 	params = "<playername> | leave playername empty to see help message",
-	privs = {interact=true},
+	privs = {interact = true, tp = true},
 	func = tphr_send
 })
 
 minetest.register_chatcommand("tpc", {
 	description = "Teleport to coordinates",
 	params = "<coordinates> | leave coordinates empty to see help message",
-	privs = {interact=true,tp_tpc=true},
+	privs = {interact = true, tp_tpc = true},
 	func = tpc_send
 })
 
 minetest.register_chatcommand("tpj", {
 	description = "Teleport to relative position",
 	params = "<axis> <distance> | leave empty to see help message",
-	privs = {interact=true,tp_tpc=true},
+	privs = {interact = true, tp_tpc = true},
 	func = tpj
 })
 
 minetest.register_chatcommand("tpe", {
 	description = "Evade Enemy",
-	privs = {interact=true,tp_tpc=true},
+	privs = {interact = true, tp_tpc = true},
 	func = tpe
 })
 
 minetest.register_chatcommand("tpy", {
 	description = "Accept teleport requests from another player",
-	privs = {interact=true},
+	privs = {interact = true, tp = true},
 	func = tpr_accept
 })
 
 minetest.register_chatcommand("tpn", {
 	description = "Deny teleport requests from another player",
-	privs = {interact=true},
+	privs = {interact = true, tp = true},
 	func = tpr_deny
 })
 
+-- Log
 minetest.log("info", "[Teleport Request] TPS Teleport v" .. version .. " Loaded.")
