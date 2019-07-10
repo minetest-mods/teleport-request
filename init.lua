@@ -205,7 +205,6 @@ function tpc_send(player,coordinates)
 end
 
 local function tpr_deny(name)
-	if minetest.check_player_privs(name, {tp_admin = true}) then return end
 	if tpr_list[name] then
 		minetest.chat_send_player(tpr_list[name], 'Teleport request denied.')
 		tpr_list[name] = nil
