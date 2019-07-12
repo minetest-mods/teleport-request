@@ -9,7 +9,7 @@ Each command needs a privilege. These are the following privileges:
 - **tp_tpc** is requiered in order to use "/tpe"
 - **tp_tpc** is requiered in order to use "/tpj"
 - **interact** is also requiered to use all commands.
-"tp_admin" overrides everything: e.g. you can teleport to players even when they haven't decided if to accept, or not.
+"tp_admin" overrides everything: e.g. you can teleport to players even when they haven't decided if to accept, or not, or teleport them to you.
 Players can also teleport to coordinates, however, if the area is protected, the teleport will be denied.
 
 ## Usage:
@@ -51,7 +51,7 @@ Players can also teleport to coordinates, however, if the area is protected, the
 - **Description:** Accept a user's request to teleport to you or teleport you to them (does not apply to those who have "tp_admin" privilege).
 
 ``` /tpn ```
-- **Description:** Deny a user's request to teleport to your teleport you to them (does not apply to those who have "tp_admin" privilege).
+- **Description:** Deny a user's request to teleport to you or teleport you to them.
 
 ## Notes:
 Players with the 'tp_admin' privilege override all the required privileges above, except 'interact'.
