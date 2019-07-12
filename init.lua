@@ -187,11 +187,13 @@ function tpc_send(player,coordinates)
 		if minetest.check_player_privs(pname, {tp_tpc=true}) then
 			local protected = minetest.is_protected(target_coords,pname)
 			if protected then
-				if not areas:canInteract(target_coords, player) or not minetest.check_player_privs(pname, {areas = true}) then
-					local owners = areas:getNodeOwners(target_coords)
-					minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
-					return
-				end
+				if minetest.get_modpath("areas") then
+					if not areas:canInteract(target_coords, player) then
+						local owners = areas:getNodeOwners(target_coords)
+						minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
+						return
+					end
+				else end
 			end
 			minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 			pname:set_pos(find_free_position_near(target_coords))
@@ -204,7 +206,7 @@ function tpc_send(player,coordinates)
 	end
 end
 
-local function tpr_deny(name)
+function tpr_deny(name)
 	if tpr_list[name] then
 		minetest.chat_send_player(tpr_list[name], 'Teleport request denied.')
 		tpr_list[name] = nil
@@ -215,8 +217,8 @@ local function tpr_deny(name)
 	end
 end
 
---Teleport Accept Systems
-local function tpr_accept(name, param)
+-- Teleport Accept Systems
+function tpr_accept(name, param)
 
 	-- Check to prevent constant teleporting.
 	if not tpr_list[name]
@@ -259,7 +261,7 @@ local function tpr_accept(name, param)
 end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
-local function tpj(player,param)
+function tpj(player,param)
 	local pname = minetest.get_player_by_name(player)
 
 	if param == "" then
@@ -299,7 +301,7 @@ local function tpj(player,param)
 end
 
 -- Evade
-local function tpe(player)
+function tpe(player)
 	minetest.chat_send_player(player, "EVADE!")
 	local mindistance = 15
 	local maxdistance = 50
