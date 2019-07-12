@@ -8,31 +8,34 @@ Each command needs a privilege. These are the following privileges:
 - **tp_tpc** is requiered in order to use "/tpc"
 - **tp_tpc** is requiered in order to use "/tpe"
 - **tp_tpc** is requiered in order to use "/tpj"
-- **interact** is also requiered to use all commands.
-"tp_admin" overrides everything: e.g. you can teleport to players even when they haven't decided if to accept, or not, or teleport them to you.
+- **interact** is also requiered to use all commands.    
+**tp_admin** overrides everything: e.g. you can teleport to players even when they haven't decided to accept, or not. You can also teleport him/her to you.   
 Players can also teleport to coordinates, however, if the area is protected, the teleport will be denied.
 
-## Usage:
+## How to use:
+Each command does a function. "**Example Usage**" is an example of how to use the command.   
+Note there must be 2 players in order to make the commands to work: a player must send a request to another player (**see https://wiki.minetest.net/Server or see https://wiki.minetest.net/Setting_up_a_server for more information**).  
+These are the following commands available in-game:
 
 ``` /tpr [playername] ```
 - **Name:** Teleport Request
 - **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
 - **Required Privileges:** "interact", "tp"
 - **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
-- **Notes:** Usernames are case-sensitive. If you have "tp_admin", you will immediately teleport to the specificed player.
+- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, you will immediately teleport to the specificed player.
 
 ``` /tphr [playername] ```
 - **Name:** Teleport Here Request
 - **Description:** Request permission to teleport another player to you.
 - **Required Privileges:** "interact", "tp"
 - **Example Usage:** /tphr RobbieF - requests RobbieF to teleport to you.
-- **Notes:** Usernames are case-sensitive.
+- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, RobbieF will teleport to you immediately.
 
 ``` /tpc [x,y,z] ```
 - **Name:** Teleport to Coordinates
 - **Description:** Teleport to coordinates.
 - **Required Privileges:** "interact", "tp_tpc", "tp"
-- **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it (or you must have "areas" privilege in order to teleport to those coordinates).
+- **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it, or you must have "areas" privilege in order to teleport to those coordinates (this does not apply if "areas" mod is not detected).
 
 ``` /tpj [axis] [distance] ```
 - **Name:** Teleport Jump
@@ -48,13 +51,10 @@ Players can also teleport to coordinates, however, if the area is protected, the
 - **Example Usage:** '/tpe' - teleports you to a random number of random coordinates in an evasive pattern.
 
 ``` /tpy ```
-- **Description:** Accept a user's request to teleport to you or teleport you to them (does not apply to those who have "tp_admin" privilege).
+- **Description:** Accept a user's request to teleport to you or teleport you to them.
 
 ``` /tpn ```
 - **Description:** Deny a user's request to teleport to you or teleport you to them.
-
-## Notes:
-Players with the 'tp_admin' privilege override all the required privileges above, except 'interact'.
 
 ## Dependencies
 There are no dependencies.  
