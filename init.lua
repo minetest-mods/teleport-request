@@ -29,7 +29,7 @@ minetest.register_privilege("tp_admin", {
 	give_to_admin = true,
 })
 minetest.register_privilege("tp_tpc", {
-	description = "Allow player to teleport to coordinates (if permitted by area protection).",
+	description = "Allow player to teleport to coordinates (if allowed by area protection).",
 	give_to_singleplayer = true,
 	give_to_admin = true,
 })
@@ -152,7 +152,7 @@ function tphr_send(sender, receiver)
 	end
 end
 
-function tpc_send(player,coordinates)
+function tpc_send(player, coordinates)
 
 	local posx,posy,posz = string.match(coordinates, "^(-?%d+), (-?%d+), (-?%d+)$")
 	local pname = minetest.get_player_by_name(player)
@@ -254,14 +254,14 @@ function tpr_accept(name, param)
 	minetest.chat_send_player(name2, "Request Accepted!")
 	minetest.chat_send_player(name, chatmsg)
 	
-	local target_coords=source:get_pos()
+	local target_coords = source:get_pos()
 	target:set_pos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 	--parti2(target_coords)
 end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
-function tpj(player,param)
+function tpj(player, param)
 	local pname = minetest.get_player_by_name(player)
 
 	if param == "" then
