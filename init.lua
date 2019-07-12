@@ -168,7 +168,7 @@ function tpc_send(player, coordinates)
 		return nil
 	end
 
-	local target_coords={x=posx, y=posy, z=posz}
+	local target_coords = {x=posx, y=posy, z=posz}
 
 	if can_teleport(target_coords) == false then
 		minetest.chat_send_player("You cannot teleport to a location outside the map!")
@@ -184,16 +184,14 @@ function tpc_send(player, coordinates)
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		--parti2(target_coords)
 	else
-		if minetest.check_player_privs(pname, {tp_tpc=true}) then
+		if minetest.check_player_privs(pname, {tp_tpc = true}) then
 			local protected = minetest.is_protected(target_coords,pname)
-			if protected then
-				if minetest.get_modpath("areas") then
-					if not areas:canInteract(target_coords, player) then
-						local owners = areas:getNodeOwners(target_coords)
-						minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
-						return
-					end
-				else end
+			if protected and minetest.get_modpath("areas") then
+				if not areas:canInteract(target_coords, player) then
+					local owners = areas:getNodeOwners(target_coords)
+					minetest.chat_send_player(player,("Error: %s is protected by %s."):format(minetest.pos_to_string(target_coords),table.concat(owners, ", ")))
+					return
+				end
 			end
 			minetest.chat_send_player(player, 'Teleporting to '..posx..','..posy..','..posz)
 			pname:set_pos(find_free_position_near(target_coords))
@@ -288,7 +286,7 @@ function tpj(player, param)
 	elseif args[1] == "z" then
 		target_coords["z"] = target_coords["z"] + tonumber(args[2])
 	else
-		minetest.chat_send_player(player,"Not a valid axis. Valid options are X, Y or Z.")
+		minetest.chat_send_player(player, "Not a valid axis. Valid options are X, Y or Z.")
 		return
 	end
 	if can_teleport(target_coords) == false then
@@ -327,6 +325,7 @@ function tpe(player)
 	end
 end
 
+-- Register chatcommands
 minetest.register_chatcommand("tpr", {
 	description = "Request teleport to another player",
 	params = "<playername> | leave playername empty to see help message",
