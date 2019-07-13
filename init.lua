@@ -99,7 +99,7 @@ function tpr_send(sender, receiver)
 	end
 
 	minetest.chat_send_player(receiver, sender ..' is requesting to teleport to you. /tpy to accept.')
-	minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
+	minetest.chat_send_player(sender, 'Teleport request sent! It will timeout in '.. timeout_delay ..' seconds.')
 
 	-- Write name values to list and clear old values.
 	if not minetest.check_player_privs(sender, {tp_admin = true}) then
@@ -138,7 +138,7 @@ function tphr_send(sender, receiver)
 	end
 
 	minetest.chat_send_player(receiver, sender ..' is requesting that you teleport to them. /tpy to accept; /tpn to deny')
-	minetest.chat_send_player(sender, 'Teleport request sent! It will time out in '.. timeout_delay ..' seconds.')
+	minetest.chat_send_player(sender, 'Teleport request sent! It will timeout in '.. timeout_delay ..' seconds.')
 
 	-- Write name values to list and clear old values.
 	if not minetest.check_player_privs(sender, {tp_admin = true}) then
@@ -217,7 +217,6 @@ end
 
 -- Teleport Accept Systems
 function tpr_accept(name, param)
-
 	-- Check to prevent constant teleporting.
 	if not tpr_list[name]
 	and not tphr_list[name] then
@@ -263,13 +262,13 @@ function tpj(player, param)
 	local pname = minetest.get_player_by_name(player)
 
 	if param == "" then
-		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
+		minetest.chat_send_player(player, "Usage. <x|y|z> <Number>")
 		return false
 	end
 
 	local args = param:split(" ") -- look into this. Can it crash if the player does not have two parameters?
 	if #args < 2 then
-		minetest.chat_send_player(player, "Usage. <X|Y|Z> <Number>")
+		minetest.chat_send_player(player, "Usage. <x|y|z> <Number>")
 		return false
 	end
 	
@@ -278,7 +277,7 @@ function tpj(player, param)
 	end
 	
 	-- Initially generate the target coords from the player's current position (since it's relative) and then perform the math.
-	local target_coords = minetest.get_player_by_name(player):getpos()
+	local target_coords = minetest.get_player_by_name(player):get_pos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
 	elseif args[1] == "y" then
