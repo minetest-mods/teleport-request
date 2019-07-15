@@ -132,7 +132,7 @@ function tphr_send(sender, receiver)
 		end
 	end, sender)
 	if receiver == "" then
-		minetest.chat_send_player(sender, "Usage: /tpr <Player name>")
+		minetest.chat_send_player(sender, "Usage: /tphr <Player name>")
 	    return	
 	end
 	if not minetest.get_player_by_name(receiver) then
