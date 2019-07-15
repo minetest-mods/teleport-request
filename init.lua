@@ -83,6 +83,14 @@ function tpr_send(sender, receiver)
 			tpr_list[name] = nil
 		end
 	end, sender)
+	if receiver == "" then
+		minetest.chat_send_player(sender, "Usage: /tpr <Player name>")
+            return	
+	end
+	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online")
+	    return
+	end
 	tpr_accept(receiver)
 			minetest.chat_send_player(sender, "You are teleporting to " .. receiver .. ".")
 		return
@@ -123,6 +131,14 @@ function tphr_send(sender, receiver)
 		tphr_list[name] = nil
 		end
 	end, sender)
+	if receiver == "" then
+		minetest.chat_send_player(sender, "Usage: /tpr <Player name>")
+	    return	
+	end
+	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online")
+	    return
+	end
 	tpr_accept(receiver)
 		minetest.chat_send_player(sender, receiver .. " is teleporting to you.")
 		return
