@@ -102,7 +102,7 @@ function tpr_send(sender, receiver)
 	end
 
 	if not minetest.get_player_by_name(receiver) then
-		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case sensitive, and the player must be online.")
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online.")
 		return
 	end
 
@@ -149,7 +149,7 @@ function tphr_send(sender, receiver)
 	end
 
 	if not minetest.get_player_by_name(receiver) then
-		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case sensitive, and the player must be online.")
+		minetest.chat_send_player(sender, "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online.")
 		return
 	end
 
