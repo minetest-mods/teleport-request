@@ -60,6 +60,7 @@ These are the following commands available in-game:
 There are no dependencies.  
 However, optional dependencies are:
 - [areas](https://github.com/minetest-mods/areas)
+- [intllib](https://github.com/minetest-mods/intllib)
 
 ## License
 See license [here](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md).

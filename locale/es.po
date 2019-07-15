@@ -1,0 +1,133 @@
+# Spanish translation for Teleport Request.
+# Copyright (C) 2015-2019 Michael Tomaino and contributors.
+# This file is distributed under under the same license as the Teleport Request package.
+# Panquesito7, 2019.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Teleport Request\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-12 5:07+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: FULL NAME EMAIL@ADDRESS\n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: init.lua:19
+msgid "Let players teleport to other players (request will be sent)"
+msgstr "Permite que los jugadores se teletransporten a otros jugadores (se enviará una solicitud)"
+
+#: init.lua:43
+msgid "Gives full admin-access to a player."
+msgstr "Da acceso total de administrador a un jugador."
+
+#: init.lua:50
+msgid "Allow player to teleport to coordinates (if allowed by area protection)"
+msgstr "Permite a los jugadores teletransportarse a las coordenadas especificadas (si esta permitido por la protección de la área)"
+
+#: init.lua:105
+msgid "You are teleporting to @1."
+msgstr "Te estas teletransportando a @1."
+
+#: init.lua:111
+msgid "Usage: /tpr <Player name>"
+msgstr "Uso: /tpr <jugador>"
+
+#: init.lua:116
+msgid "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"
+msgstr "No hay jugador con ese nombre. Tenga en cuenta que esto es caso-sensitivo, y el jugador debe de estar én linea."
+
+#: init.lua:120
+msgid "@1 is requesting to teleport to you. /tpy to accept"
+msgstr "@1 esta pidiendo teletransportarse a ti. /tpy para aceptar"
+
+#: init.lua:121
+msgid "Teleport request sent! It will timeout in @1 seconds"
+msgstr "¡Solicitud enviada! Se agotara en @1 segundos"
+
+#: init.lua:147
+msgid "@1 is teleporting to you."
+msgstr "@1 se esta teletransportando a ti."
+
+#: init.lua:152
+msgid "Usage: /tphr <Player name>"
+msgstr "Uso: /tphr <jugador>"
+
+#: init.lua:160
+msgid "@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny"
+msgstr "@1 esta pidiendo que tu te teletransportes a el/ella. /tpy para aceptar, /tpn para denegar"
+
+#: init.lua:187
+msgid "Usage: /tpc <x, y, z>"
+msgstr "Uso: /tpc <x, y, z>"
+
+#: init.lua:194
+msgid "You cannot teleport to a location outside the map!"
+msgstr "No puedes teletransportarte afuera del mundo!"
+
+#: init.lua:204
+msgid "Teleporting to: @1, @2, @3"
+msgstr "Teletransportandose a: @1, @2, @3"
+
+#: init.lua:215
+msgid "Error: @1 is protected by @2."
+msgstr "Error: @1 esta protegido por @2."
+
+#: init.lua:240
+msgid "Error: You do not have permission to teleport to those coordinates."
+msgstr "Error: No tienes permiso para teletransportarte a esas coordenadas."
+
+#: init.lua:258
+msgid "Teleport request denied."
+msgstr "Solicitud denegada."
+
+#: init.lua:278
+msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
+msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugadores"
+
+#: init.lua:317
+msgid "Request Accepted!"
+msgstr "Solicitud aceptada!"
+
+#: init.lua:330
+msgid "Usage: <x|y|z> <number>"
+msgstr "Uso: <x|y|z> <numero>"
+
+#: init.lua:353
+msgid "Not a valid axis. Valid options are X, Y or Z"
+msgstr "Eje invalido. Opciones validas son x, y, o z"
+
+#: init.lua:367
+msgid "EVADE!"
+msgstr "¡EVADIR!"
+
+#: init.lua:394
+msgid "Request teleport to another player."
+msgstr "Enviar solicitud para teletransportarte a otro jugador."
+
+#: init.lua:401
+msgid "Request player to teleport to you"
+msgstr "Solicita al jugador que se teletransporte a ti."
+
+#: init.lua:408
+msgid "Teleport to coordinates"
+msgstr "Teletransportarse a las coordenadas especificadas."
+
+#: init.lua:415
+msgid "Teleport to relative position"
+msgstr "Teletransportarse a la posición relativa."
+
+#: init.lua:422
+msgid "Evade Enemy"
+msgstr "Evadir enemigo."
+
+#: init.lua:428
+msgid "Accept teleport requests from another player"
+msgstr "Aceptar solicitudes de otro jugador."
+
+#: init.lua:434
+msgid "Deny teleport requests from another player"
+msgstr "Denegar solicitudos de otro jugador."
