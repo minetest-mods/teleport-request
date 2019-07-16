@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-12 5:07+0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: FULL NAME EMAIL@ADDRESS\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -108,6 +108,10 @@ msgstr ""
 msgid "Request teleport to another player."
 msgstr ""
 
+#: init.lua:395
+msgid "<playername> | leave playername empty to see help message"
+msgstr ""
+
 #: init.lua:401
 msgid "Request player to teleport to you"
 msgstr ""
@@ -116,8 +120,16 @@ msgstr ""
 msgid "Teleport to coordinates"
 msgstr ""
 
+#: init.lua:409
+msgid "<coordinates> | leave coordinates empty to see help message"
+msgstr ""
+
 #: init.lua:415
 msgid "Teleport to relative position"
+msgstr ""
+
+#: init.lua:416
+msgid "<axis> <distance> | leave empty to see help message"
 msgstr ""
 
 #: init.lua:422
