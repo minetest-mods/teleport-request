@@ -146,4 +146,4 @@ msgstr "Denegar solicitudos de otro jugador."
 
 #: init.lua:441
 msgid "[Teleport Request] TPS Teleport v@1 Loaded!"
-msgstr ""
+msgstr "[TPS] Solicitud de teletransporte v@1 Cargado!"
