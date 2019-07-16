@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-12 5:07+0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: FULL NAME EMAIL@ADDRESS\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -108,6 +108,10 @@ msgstr "¡EVADIR!"
 msgid "Request teleport to another player."
 msgstr "Enviar solicitud para teletransportarte a otro jugador."
 
+#: init.lua:395
+msgid "<playername> | leave playername empty to see help message"
+msgstr "<jugador> | Deje el nombre del jugador vacío para ver el mensaje de ayuda"
+
 #: init.lua:401
 msgid "Request player to teleport to you"
 msgstr "Solicita al jugador que se teletransporte a ti."
@@ -116,9 +120,17 @@ msgstr "Solicita al jugador que se teletransporte a ti."
 msgid "Teleport to coordinates"
 msgstr "Teletransportarse a las coordenadas especificadas."
 
+#: init.lua:409
+msgid "<coordinates> | leave coordinates empty to see help message"
+msgstr "<coordenadas> | Deje las coordenadas vacías para ver el mensaje de ayuda"
+
 #: init.lua:415
 msgid "Teleport to relative position"
 msgstr "Teletransportarse a la posición relativa."
+
+#: init.lua:416
+msgid "<axis> <distance> | leave empty to see help message"
+msgstr "<eje> <distancia> | Deje vacío para ver el mensaje de ayuda"
 
 #: init.lua:422
 msgid "Evade Enemy"
