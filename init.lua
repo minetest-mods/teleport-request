@@ -347,28 +347,28 @@ end
 -- Register chatcommands
 minetest.register_chatcommand("tpr", {
 	description = S("Request teleport to another player"),
-	params = "<playername> | leave playername empty to see help message",
+	params = S("<playername> | leave playername empty to see help message"),
 	privs = {interact = true, tp = true},
 	func = tpr_send
 })
 
 minetest.register_chatcommand("tphr", {
 	description = S("Request player to teleport to you"),
-	params = "<playername> | leave playername empty to see help message",
+	params = S("<playername> | leave playername empty to see help message"),
 	privs = {interact = true, tp = true},
 	func = tphr_send
 })
 
 minetest.register_chatcommand("tpc", {
 	description = S("Teleport to coordinates"),
-	params = "<coordinates> | leave coordinates empty to see help message",
+	params = S("<coordinates> | leave coordinates empty to see help message"),
 	privs = {interact = true, tp_tpc = true, tp = true},
 	func = tpc_send
 })
 
 minetest.register_chatcommand("tpj", {
 	description = S("Teleport to relative position"),
-	params = "<axis> <distance> | leave empty to see help message",
+	params = S("<axis> <distance> | leave empty to see help message"),
 	privs = {interact = true, tp_tpc = true, tp = true},
 	func = tpj
 })
