@@ -143,3 +143,7 @@ msgstr ""
 #: init.lua:434
 msgid "Deny teleport requests from another player"
 msgstr ""
+
+#: init.lua:441
+msgid "[Teleport Request] TPS Teleport v@1 Loaded!"
+msgstr ""
