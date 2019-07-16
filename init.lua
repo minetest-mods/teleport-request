@@ -393,5 +393,5 @@ minetest.register_chatcommand("tpn", {
 
 -- Log
 if minetest.settings:get_bool("log_mods") then
-	minetest.log("info", "[Teleport Request] TPS Teleport v" .. version .. " Loaded.")
+	minetest.log("action", S("[Teleport Request] TPS Teleport v@1 Loaded!", version))
 end
