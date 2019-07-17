@@ -1,13 +1,44 @@
 --[[
+Copyright (C) 2015-2019  Michael Tomaino (PlatinumArts@gmail.com)
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+USA
+
+----------------------------------------------------------------------------
+
 Originally made by Traxie21 and released with the WTFPL license.
-https://forum.minetest.net/viewtopic.php?id=4457
-Updates by Zeno and ChaosWormz
+Forum link: https://forum.minetest.net/viewtopic.php?id=4457
+
+Updates by Zeno, Panquesito7 and ChaosWormz.
+License: LGPL-2.1
+
+Optional dependencies: areas, intllib
 New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
 --]]
+
+-- Enable configuration
+enable_configuration = false
 
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
+
+-- Load configuration.
+if enable_configuration then
+	dofile(MP.."/config.lua")
+end
 
 local timeout_delay = 60
 
@@ -345,6 +376,42 @@ function tpe(player)
 end
 
 -- Register chatcommands
+if enable_configuration then
+	minetest.register_chatcommand("tpp", {
+		description = S("Teleport to a place (i.e., spawn, shop)."),
+		params = S("<place> | leave empty to see available places"),
+		privs = {},
+		func = function(player, param)
+			local pname = minetest.get_player_by_name(player)
+			param = param:lower()
+			
+			-- Show the available places to the player.
+			if param == "" then
+			-- shivajiva101's function (thanks!).
+			    local places = {}
+				for key, value in pairs(available_places) do
+					table.insert(places, key)
+				end
+				if #places == 0 then
+					return true, S("There are no places yet.")
+				end
+					table.insert(places, S("Usage: /tpp <place>"))
+					return true, table.concat(places, "\n")
+				-- End shivajiva101's function.
+				
+			-- Teleport player to the specified place.
+			elseif available_places[param] then
+				local pos = {x = available_places[param].x, y = available_places[param].y, z = available_places[param].z}
+				pname:set_pos(pos)
+				minetest.chat_send_player(player, S("Teleporting to @1.", param))
+			-- Check if the place exists.	
+			elseif not available_places[param] then
+				minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
+			end
+		end,
+	})
+end
+
 minetest.register_chatcommand("tpr", {
 	description = S("Request teleport to another player"),
 	params = S("<playername> | leave playername empty to see help message"),

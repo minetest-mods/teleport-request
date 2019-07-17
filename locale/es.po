@@ -136,6 +136,30 @@ msgstr "<eje> <distancia> | Deje vacío para ver el mensaje de ayuda"
 msgid "Evade Enemy"
 msgstr "Evadir enemigo."
 
+#: init.lua
+msgid "Teleport to a place (i.e., spawn, shop)."
+msgstr "Teletransportarse a un lugar (p.ej., la tienda, la ciudad)."
+
+#: init.lua
+msgid "<place> | leave empty to see available places"
+msgstr "<lugar> | Deje vacío para ver los lugares disponibles"
+
+#: init.lua
+msgid "There are no places yet."
+msgstr "Todavia no hay lugares."
+
+#: init.lua
+msgid "Usage: /tpp <place>"
+msgstr "Uso: /tpp <lugar>"
+
+#: init.lua
+msgid "Teleporting to @1."
+msgstr "Teletransportandose a @1."
+
+#: init.lua
+msgid "There is no place by that name. Keep in mind this is case-sensitive."
+msgstr "No hay lugar con ese nombre. Tenga en cuenta que esto es caso-sensitivo."
+
 #: init.lua:428
 msgid "Accept teleport requests from another player"
 msgstr "Aceptar solicitudes de otro jugador."

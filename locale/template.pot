@@ -104,6 +104,30 @@ msgstr ""
 msgid "EVADE!"
 msgstr ""
 
+#: init.lua
+msgid "Teleport to a place (i.e., spawn, shop)."
+msgstr ""
+
+#: init.lua
+msgid "<place> | leave empty to see available places"
+msgstr ""
+
+#: init.lua
+msgid "There are no places yet."
+msgstr ""
+
+#: init.lua
+msgid "Usage: /tpp <place>"
+msgstr ""
+
+#: init.lua
+msgid "Teleporting to @1."
+msgstr ""
+
+#: init.lua
+msgid "There is no place by that name. Keep in mind this is case-sensitive."
+msgstr ""
+
 #: init.lua:394
 msgid "Request teleport to another player."
 msgstr ""
