@@ -22,7 +22,7 @@ Originally made by Traxie21 and released with the WTFPL license.
 Forum link: https://forum.minetest.net/viewtopic.php?id=4457
 
 Updates by Zeno, Panquesito7 and ChaosWormz.
-License: LGPL-2.1
+License: LGPL-2.1 for code, CC-BY-SA-4.0 for media and textures.
 
 Optional dependencies: areas, intllib
 New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
