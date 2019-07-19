@@ -385,9 +385,8 @@ if enable_configuration then
 			local pname = minetest.get_player_by_name(player)
 			param = param:lower()
 			
-			-- Show the available places to the player.
+			-- Show the available places to the player (taken from shivajiva101's POI mod, thanks!).
 			if param == "" then
-			-- shivajiva101's POI mod function (thanks!).
 			    local places = {}
 				for key, value in pairs(available_places) do
 					table.insert(places, key)
@@ -397,9 +396,8 @@ if enable_configuration then
 				end
 					table.insert(places, S("Usage: /tpp <place>"))
 					return true, table.concat(places, "\n")
-				-- End shivajiva101's POI mod function.
 				
-			-- Teleport player to the specified place.
+			-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 			elseif available_places[param] then
 				local pos = {x = available_places[param].x, y = available_places[param].y, z = available_places[param].z}
 				pname:set_pos(pos)
