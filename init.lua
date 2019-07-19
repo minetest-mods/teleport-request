@@ -387,7 +387,7 @@ if enable_configuration then
 			
 			-- Show the available places to the player.
 			if param == "" then
-			-- shivajiva101's function (thanks!).
+			-- shivajiva101's POI mod function (thanks!).
 			    local places = {}
 				for key, value in pairs(available_places) do
 					table.insert(places, key)
@@ -397,7 +397,7 @@ if enable_configuration then
 				end
 					table.insert(places, S("Usage: /tpp <place>"))
 					return true, table.concat(places, "\n")
-				-- End shivajiva101's function.
+				-- End shivajiva101's POI mod function.
 				
 			-- Teleport player to the specified place.
 			elseif available_places[param] then
