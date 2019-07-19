@@ -28,46 +28,15 @@ Optional dependencies: areas, intllib
 New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
 --]]
 
--- Enable configuration
-enable_configuration = false
-
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
 -- Load configuration.
-if enable_configuration then
-	dofile(MP.."/config.lua")
-end
-
-local timeout_delay = 60
-
-local version = "1.5"
+dofile(MP.."/config.lua")
 
 local tpr_list = {}
 local tphr_list = {}
-
-local map_size = 30912
-local function can_teleport(to)
-   return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
-end
-
-minetest.register_privilege("tp", {
-	description = S("Let players teleport to other players (request will be sent)"),
-	give_to_singleplayer = false,
-	give_to_admin = true,
-})
-
-minetest.register_privilege("tp_admin", {
-	description = S("Gives full admin-access to a player."),
-	give_to_singleplayer = false,
-	give_to_admin = true,
-})
-minetest.register_privilege("tp_tpc", {
-	description = S("Allow player to teleport to coordinates (if allowed by area protection)"),
-	give_to_singleplayer = true,
-	give_to_admin = true,
-})
 
 local function find_free_position_near(pos)
 	local tries = {
@@ -376,7 +345,7 @@ function tpe(player)
 end
 
 -- Register chatcommands
-if enable_configuration then
+if enable_tpp_command then
 	minetest.register_chatcommand("tpp", {
 		description = S("Teleport to a place (i.e., spawn, shop)."),
 		params = S("<place> | leave empty to see available places"),

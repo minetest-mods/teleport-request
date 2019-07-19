@@ -19,8 +19,43 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 USA
 --]]
 
+-- Load support for intllib.
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
+
+-- Timeout delay and mod version.
+timeout_delay = 60
+version = "1.5"
+
+map_size = 30912
+function can_teleport(to)
+   return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
+end
+
+-- Enable tpp command
+enable_tpp_command = false
+
 -- Set the values of the positions of your places, players will be able to teleport to them (no matter if it is protected, or not).
 available_places = {
 	spawn = {x = 0, y = 0, z = 0}, -- Set coordinates of spawn here.
 	shop = {x = 0, y = 0, z = 0}, -- Set coordinates of the shop here.
 }
+
+-- Register privileges
+minetest.register_privilege("tp", {
+	description = S("Let players teleport to other players (request will be sent)"),
+	give_to_singleplayer = false,
+	give_to_admin = true,
+})
+
+minetest.register_privilege("tp_admin", {
+	description = S("Gives full admin-access to a player."),
+	give_to_singleplayer = false,
+	give_to_admin = true,
+})
+
+minetest.register_privilege("tp_tpc", {
+	description = S("Allow player to teleport to coordinates (if allowed by area protection)"),
+	give_to_singleplayer = false,
+	give_to_admin = true,
+})
