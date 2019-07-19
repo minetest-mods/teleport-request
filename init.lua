@@ -200,6 +200,7 @@ function tpc_send(player, coordinates)
 	-- Admin user (priv "tp_admin") overrides all protection
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
 		minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
+		minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 		pname:set_pos(find_free_position_near(target_coords))
 		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		--parti2(target_coords)
@@ -213,6 +214,7 @@ function tpc_send(player, coordinates)
 					return
 				end
 			end
+			minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 			minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
 			pname:set_pos(find_free_position_near(target_coords))
 			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
@@ -272,8 +274,10 @@ function tpr_accept(name, param)
 	minetest.chat_send_player(name, chatmsg)
 	
 	local target_coords = source:get_pos()
+	local target_sound = target:get_pos()
 	target:set_pos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
 	--parti2(target_coords)
 end
 
@@ -312,6 +316,7 @@ function tpj(player, param)
 		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
 		return
 	end
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 	pname:set_pos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 	--parti2(target_coords)
@@ -368,9 +373,11 @@ if enable_tpp_command then
 				
 			-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 			elseif available_places[param] then
+				minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 				local pos = {x = available_places[param].x, y = available_places[param].y, z = available_places[param].z}
 				pname:set_pos(pos)
 				minetest.chat_send_player(player, S("Teleporting to @1.", param))
+				minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
 			-- Check if the place exists.	
 			elseif not available_places[param] then
 				minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
