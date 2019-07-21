@@ -381,6 +381,7 @@ if enable_tpp_command then
 			-- Check if the place exists.	
 			elseif not available_places[param] then
 				minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
+			    return	
 			end
 		end,
 	})
