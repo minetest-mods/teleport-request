@@ -63,7 +63,7 @@ However, optional dependencies are:
 - [intllib](https://github.com/minetest-mods/intllib)
 
 ## License
-LGPL-2.1 for code, CC-BY-SA-4.0 for media and textures (click [here](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for more information).
+LGPL-2.1 for code, CC-BY-SA-4.0 for [media](https://github.com/ChaosWormz/teleport-request/blob/master/sounds/LICENSE.txt) and [textures](https://github.com/ChaosWormz/teleport-request/blob/master/textures/LICENSE.txt) (click [here](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for more information).
 
 ## Contributors:
 - [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
