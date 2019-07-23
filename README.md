@@ -62,6 +62,14 @@ However, optional dependencies are:
 - [areas](https://github.com/minetest-mods/areas)
 - [intllib](https://github.com/minetest-mods/intllib)
 
+## Requirements
+This mod requieres MT/MTG 5.0.0+ to run.   
+Older versions not supported.
+
+## Bugfixes & suggestions
+Report bugs or suggest ideas by [creating an issue](https://github.com/ChaosWormz/teleport-request/issues/new).      
+If you know how to fix an issue, or want something to be added, consider opening a [pull request](https://github.com/ChaosWormz/teleport-request/compare).
+
 ## License
 LGPL-2.1 for code, CC-BY-SA-4.0 for [media](https://github.com/ChaosWormz/teleport-request/blob/master/sounds/LICENSE.txt) and [textures](https://github.com/ChaosWormz/teleport-request/blob/master/textures/LICENSE.txt) (click [here](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for more information).
 
@@ -70,8 +78,10 @@ LGPL-2.1 for code, CC-BY-SA-4.0 for [media](https://github.com/ChaosWormz/telepo
 - [DonBatman](https://github.com/donbatman)
 - [NathanS21](http://nathansalapat.com/)
 - [ChaosWormz](https://github.com/ChaosWormz)
+- [Panquesito7](https://github.com/Panquesito7)
 - Traxie21, the original creator of this mod (however, he/she does not have a GitHub account anymore).
-- All those who contributed to the original mod (please see init.lua).
+
+All those who contributed to the original mod (please see `init.lua`).
 
 ## Installation
 - Unzip the archive, rename the folder to "tpr" (**without the quotes**) and
