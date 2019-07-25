@@ -71,7 +71,7 @@ function tpc_teleport_player(player)
 	--parti2(target_coords)
 end
 
-local function find_free_position_near(pos)
+function find_free_position_near(pos)
 	local tries = {
 		{x=1,y=0,z=0},
 		{x=-1,y=0,z=0},
