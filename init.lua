@@ -372,6 +372,7 @@ if enable_tpp_command then
 			-- Show the available places to the player (taken from shivajiva101's POI mod, thanks!).
 			if param == "" then
 			    local places = {}
+				if not available_places then available_places = {} end
 				for key, value in pairs(available_places) do
 					table.insert(places, key)
 				end
@@ -380,7 +381,6 @@ if enable_tpp_command then
 				end
 					table.insert(places, S("Usage: /tpp <place>"))
 					return true, table.concat(places, "\n")
-				
 			-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 			elseif available_places[param] then
 				minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
