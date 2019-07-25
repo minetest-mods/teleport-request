@@ -189,7 +189,7 @@ function tphr_send(sender, receiver)
 	end
 
 	minetest.chat_send_player(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny", sender))
-	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds ", timeout_delay))
+	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
 
 	-- Write name values to list and clear old values.
 	if not minetest.check_player_privs(sender, {tp_admin = true}) then
