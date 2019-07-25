@@ -155,9 +155,9 @@ function tpr_send(sender, receiver)
 
 	-- Write name values to list and clear old values.
 	if not minetest.check_player_privs(sender, {tp_admin = true}) then
-	tpr_list[receiver] = sender
-	-- Teleport timeout delay
-	minetest.after(timeout_delay, clear_tpr_list, receiver)
+		tpr_list[receiver] = sender
+		-- Teleport timeout delay
+		minetest.after(timeout_delay, clear_tpr_list, receiver)
 	end	
 end
 
