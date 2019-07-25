@@ -77,16 +77,24 @@ local function parti2(pos)
 end
 
 -- Teleport Request System
+function clear_tpr_list(name)
+	if tpr_list[name] then
+		tpr_list[name] = nil
+	end
+end
+
+function clear_tphr_list(name)
+	if tphr_list[name] then
+		tphr_list[name] = nil
+	end
+end
+
 function tpr_send(sender, receiver)
 	if minetest.check_player_privs(sender, {tp_admin = true}) then
 			-- Write name values to list and clear old values.
 				tpr_list[receiver] = sender
 			-- Teleport timeout delay
-				minetest.after(timeout_delay, function(name)
-			if tpr_list[name] then
-			tpr_list[name] = nil
-		end
-	end, sender)
+				minetest.after(timeout_delay, clear_tpr_list, receiver)
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
             return	
@@ -117,11 +125,7 @@ function tpr_send(sender, receiver)
 	if not minetest.check_player_privs(sender, {tp_admin = true}) then
 	tpr_list[receiver] = sender
 	-- Teleport timeout delay
-	minetest.after(timeout_delay, function(name)
-		if tpr_list[name] then
-			tpr_list[name] = nil
-		end
-	end, sender)
+	minetest.after(timeout_delay, clear_tpr_list, receiver)
 	end	
 end
 
@@ -130,11 +134,7 @@ function tphr_send(sender, receiver)
 	-- Write name values to list and clear old values.
 		tphr_list[receiver] = sender
 	-- Teleport timeout delay
-		minetest.after(timeout_delay, function(name)
-	if tphr_list[name] then
-		tphr_list[name] = nil
-		end
-	end, sender)
+		minetest.after(timeout_delay, clear_tphr_list, receiver)
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
 	    return	
@@ -164,11 +164,7 @@ function tphr_send(sender, receiver)
 	if not minetest.check_player_privs(sender, {tp_admin = true}) then
 	tphr_list[receiver] = sender
 	-- Teleport timeout delay
-	minetest.after(timeout_delay, function(name)
-		if tphr_list[name] then
-			tphr_list[name] = nil
-		end
-	end, sender)
+	minetest.after(timeout_delay, clear_tphr_list, receiver)
 	end
 end
 
