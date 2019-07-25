@@ -85,7 +85,7 @@ LGPL-2.1 for code, CC-BY-SA-4.0 for [media](https://github.com/ChaosWormz/telepo
 All those who contributed to the original mod (please see `init.lua`).
 
 ## Installation
-- Unzip the archive, rename the folder to "tpr" (**without the quotes**) and
+- Unzip the archive, rename the folder to tpr and
 place it in ..minetest/mods/
 
 - GNU/Linux: If you use a system-wide installation place
