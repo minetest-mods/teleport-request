@@ -228,7 +228,6 @@ function tpc_send(player, coordinates)
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
 		tpc_teleport_player(player)
 		minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-		--parti2(target_coords)
 	else
 		if minetest.check_player_privs(pname, {tp_tpc = true}) then
 			local protected = minetest.is_protected(target_coords,pname)
@@ -241,7 +240,6 @@ function tpc_send(player, coordinates)
 			end
 			tpc_teleport_player(player)
 			minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-			--parti2(target_coords)
 		else
 			minetest.chat_send_player(player, S("Error: You do not have permission to teleport to coordinates."))
 			return
