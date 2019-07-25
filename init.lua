@@ -310,7 +310,7 @@ function tpj(player, param)
 	end
 	
 	if not tonumber(args[2]) then
-		return false, "Not a Number!"
+		return false, S("Not a number!")
 	end
 	
 	-- Initially generate the target coords from the player's current position (since it's relative) and then perform the math.
