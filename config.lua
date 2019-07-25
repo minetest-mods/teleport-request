@@ -27,12 +27,7 @@ local S, NS = dofile(MP.."/intllib.lua")
 timeout_delay = 60
 version = "1.5"
 
-chatmsg, source, target, name2,
-
-map_size = 30912
-function can_teleport(to)
-   return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
-end
+chatmsg, source, target, name2, target_coords,
 
 -- Enable tpp command
 enable_tpp_command = false
