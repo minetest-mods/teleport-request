@@ -76,7 +76,7 @@ LGPL-2.1 for code, CC-BY-SA-4.0 for [media](https://github.com/ChaosWormz/telepo
 ## Contributors:
 - [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
 - [DonBatman](https://github.com/donbatman)
-- [NathanS21](http://nathansalapat.com/)
+- [NathanS21](http://nathansalapat.com/) | [GitHub](https://github.com/NathanSalapat)
 - [ChaosWormz](https://github.com/ChaosWormz)
 - [Panquesito7](https://github.com/Panquesito7)
 - [coil0](https://github.com/coil0)
