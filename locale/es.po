@@ -66,7 +66,7 @@ msgstr "Uso: /tpc <x, y, z>"
 
 #: init.lua:194
 msgid "You cannot teleport to a location outside the map!"
-msgstr "No puedes teletransportarte afuera del mundo!"
+msgstr "¡No puedes teletransportarte afuera del mundo!"
 
 #: init.lua:204
 msgid "Teleporting to: @1, @2, @3"
@@ -90,7 +90,7 @@ msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugad
 
 #: init.lua:317
 msgid "Request Accepted!"
-msgstr "Solicitud aceptada!"
+msgstr "¡Solicitud aceptada!"
 
 #: init.lua:330
 msgid "Usage: <x|y|z> <number>"
