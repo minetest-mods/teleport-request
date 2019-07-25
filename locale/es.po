@@ -100,6 +100,10 @@ msgstr "Uso: <x|y|z> <numero>"
 msgid "Not a valid axis. Valid options are X, Y or Z"
 msgstr "Eje invalido. Opciones validas son x, y, o z"
 
+#: init.lua
+msgid "Not a number!"
+msgstr "¡No un número!"
+
 #: init.lua:367
 msgid "EVADE!"
 msgstr "¡EVADIR!"
