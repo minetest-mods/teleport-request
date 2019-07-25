@@ -91,10 +91,8 @@ end
 
 function tpr_send(sender, receiver)
 	if minetest.check_player_privs(sender, {tp_admin = true}) then
-			-- Write name values to list and clear old values.
-				tpr_list[receiver] = sender
-			-- Teleport timeout delay
-				minetest.after(timeout_delay, clear_tpr_list, receiver)
+		-- Teleport timeout delay
+			minetest.after(timeout_delay, clear_tpr_list, receiver)
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
             return	
@@ -103,6 +101,7 @@ function tpr_send(sender, receiver)
 		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 	    return
 	end
+		tpr_list[receiver] = sender
 	tpr_accept(receiver)
 			minetest.chat_send_player(sender, S("You are teleporting to @1.", receiver))
 		return
@@ -131,8 +130,6 @@ end
 
 function tphr_send(sender, receiver)
 	if minetest.check_player_privs(sender, {tp_admin = true}) then
-	-- Write name values to list and clear old values.
-		tphr_list[receiver] = sender
 	-- Teleport timeout delay
 		minetest.after(timeout_delay, clear_tphr_list, receiver)
 	if receiver == "" then
@@ -143,6 +140,7 @@ function tphr_send(sender, receiver)
 		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 	    return
 	end
+		tphr_list[receiver] = sender
 	tpr_accept(receiver)
 		minetest.chat_send_player(sender, S("@1 is teleporting to you.", receiver))
 		return
@@ -162,9 +160,9 @@ function tphr_send(sender, receiver)
 
 	-- Write name values to list and clear old values.
 	if not minetest.check_player_privs(sender, {tp_admin = true}) then
-	tphr_list[receiver] = sender
-	-- Teleport timeout delay
-	minetest.after(timeout_delay, clear_tphr_list, receiver)
+		tphr_list[receiver] = sender
+		-- Teleport timeout delay
+		minetest.after(timeout_delay, clear_tphr_list, receiver)
 	end
 end
 
