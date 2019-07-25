@@ -79,6 +79,7 @@ LGPL-2.1 for code, CC-BY-SA-4.0 for [media](https://github.com/ChaosWormz/telepo
 - [NathanS21](http://nathansalapat.com/)
 - [ChaosWormz](https://github.com/ChaosWormz)
 - [Panquesito7](https://github.com/Panquesito7)
+- [coil0](https://github.com/coil0)
 - Traxie21, the original creator of this mod (however, he/she does not have a GitHub account anymore).
 
 All those who contributed to the original mod (please see `init.lua`).
