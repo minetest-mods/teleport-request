@@ -38,6 +38,16 @@ dofile(MP.."/config.lua")
 local tpr_list = {}
 local tphr_list = {}
 
+-- Teleport player to a player (used in "/tpr" command).
+function tpr_teleport_player(name)
+	local target_coords = source:get_pos()
+	local target_sound = target:get_pos()
+	target:set_pos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
+end
+
 local function find_free_position_near(pos)
 	local tries = {
 		{x=1,y=0,z=0},
@@ -240,8 +250,6 @@ function tpr_accept(name, param)
 		return
 	end
 
-	local chatmsg, source, target, name2
-
 	if tpr_list[name] then
 		name2 = tpr_list[name]
 		source = minetest.get_player_by_name(name)
@@ -266,13 +274,7 @@ function tpr_accept(name, param)
 
 	minetest.chat_send_player(name2, S("Request Accepted!"))
 	minetest.chat_send_player(name, chatmsg)
-	
-	local target_coords = source:get_pos()
-	local target_sound = target:get_pos()
-	target:set_pos(find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
-	--parti2(target_coords)
+	tpr_teleport_player()
 end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
