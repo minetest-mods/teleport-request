@@ -100,6 +100,10 @@ msgstr ""
 msgid "Not a valid axis. Valid options are X, Y or Z"
 msgstr ""
 
+#: init.lua
+msgid "Not a number!"
+msgstr ""
+
 #: init.lua:367
 msgid "EVADE!"
 msgstr ""
