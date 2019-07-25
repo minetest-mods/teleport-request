@@ -86,7 +86,7 @@ function tpr_send(sender, receiver)
 			if tpr_list[name] then
 			tpr_list[name] = nil
 		end
-	end, sender)
+	end, receiver)
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
             return	
@@ -121,7 +121,7 @@ function tpr_send(sender, receiver)
 		if tpr_list[name] then
 			tpr_list[name] = nil
 		end
-	end, sender)
+	end, receiver)
 	end	
 end
 
@@ -134,7 +134,7 @@ function tphr_send(sender, receiver)
 	if tphr_list[name] then
 		tphr_list[name] = nil
 		end
-	end, sender)
+	end, receiver)
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
 	    return	
@@ -168,7 +168,7 @@ function tphr_send(sender, receiver)
 		if tphr_list[name] then
 			tphr_list[name] = nil
 		end
-	end, sender)
+	end, receiver)
 	end
 end
 
