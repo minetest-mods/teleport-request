@@ -38,6 +38,11 @@ dofile(MP.."/config.lua")
 local tpr_list = {}
 local tphr_list = {}
 
+local map_size = 30912
+local function can_teleport(to)
+	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
+end
+
 -- Teleport player to a player (used in "/tpr" command).
 function tpr_teleport_player(name)
 	local target_coords = source:get_pos()
@@ -46,6 +51,22 @@ function tpr_teleport_player(name)
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
 	--parti2(target_coords)
+end
+
+-- TPJ
+function tpj_teleport_player(player)
+	local pname = minetest.get_player_by_name(player)
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+end
+
+-- TPC
+function tpc_teleport_player(player)
+	local pname = minetest.get_player_by_name(player)
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 end
 
 local function find_free_position_near(pos)
@@ -192,7 +213,7 @@ function tpc_send(player, coordinates)
 		return nil
 	end
 
-	local target_coords = {x=posx, y=posy, z=posz}
+	target_coords = {x=posx, y=posy, z=posz}
 
 	if can_teleport(target_coords) == false then
 		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
@@ -203,10 +224,8 @@ function tpc_send(player, coordinates)
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
 	-- Admin user (priv "tp_admin") overrides all protection
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
+		tpc_teleport_player(player)
 		minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-		minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-		pname:set_pos(find_free_position_near(target_coords))
-		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 		--parti2(target_coords)
 	else
 		if minetest.check_player_privs(pname, {tp_tpc = true}) then
@@ -218,10 +237,8 @@ function tpc_send(player, coordinates)
 					return
 				end
 			end
-			minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+			tpc_teleport_player(player)
 			minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-			pname:set_pos(find_free_position_near(target_coords))
-			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 			--parti2(target_coords)
 		else
 			minetest.chat_send_player(player, S("Error: You do not have permission to teleport to coordinates."))
@@ -297,7 +314,7 @@ function tpj(player, param)
 	end
 	
 	-- Initially generate the target coords from the player's current position (since it's relative) and then perform the math.
-	local target_coords = minetest.get_player_by_name(player):get_pos()
+	target_coords = minetest.get_player_by_name(player):get_pos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
 	elseif args[1] == "y" then
@@ -312,9 +329,7 @@ function tpj(player, param)
 		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
 		return
 	end
-	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-	pname:set_pos(find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	tpj_teleport_player(player)
 	--parti2(target_coords)
 end
 
@@ -338,7 +353,7 @@ function tpe(player)
 				distance = isnegative .. math.random(mindistance,maxdistance) -- the distance to jump
 				axis = options[math.random(3)]
 				local command = axis .. " " .. distance
-				tpj(player,command)
+				tpj(player, command)
 			end
 		)
 		iteration = iteration + 0.5
