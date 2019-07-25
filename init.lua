@@ -59,6 +59,7 @@ function tpj_teleport_player(player)
 	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 	pname:set_pos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
 end
 
 -- TPC
@@ -67,6 +68,7 @@ function tpc_teleport_player(player)
 	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 	pname:set_pos(find_free_position_near(target_coords))
 	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
 end
 
 local function find_free_position_near(pos)
@@ -330,7 +332,6 @@ function tpj(player, param)
 		return
 	end
 	tpj_teleport_player(player)
-	--parti2(target_coords)
 end
 
 -- Evade
