@@ -53,16 +53,7 @@ function tpr_teleport_player()
 	--parti2(target_coords)
 end
 
--- TPJ
-function tpj_teleport_player(player)
-	local pname = minetest.get_player_by_name(player)
-	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-	pname:set_pos(find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-	--parti2(target_coords)
-end
-
--- TPC
+-- TPC & TPJ
 function tpc_teleport_player(player)
 	local pname = minetest.get_player_by_name(player)
 	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
@@ -338,7 +329,7 @@ function tpj(player, param)
 		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
 		return
 	end
-	tpj_teleport_player(player)
+	tpc_teleport_player(player)
 end
 
 -- Evade
