@@ -27,7 +27,7 @@ local S, NS = dofile(MP.."/intllib.lua")
 timeout_delay = 60
 version = "1.5"
 
-local chatmsg, source, target, name2, target_coords
+local chatmsg, source, target, name2, target_coords, pos
 
 -- Set the values of the positions of your places, players will be able to teleport to them (no matter if it is protected, or not).
 available_places = {
