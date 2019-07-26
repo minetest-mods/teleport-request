@@ -48,6 +48,10 @@ msgstr ""
 msgid "Teleport request sent! It will timeout in @1 seconds"
 msgstr ""
 
+#: init.lua
+msgid "Request timed-out."
+msgstr ""
+
 #: init.lua:147
 msgid "@1 is teleporting to you."
 msgstr ""
