@@ -43,8 +43,8 @@ local function can_teleport(to)
 	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
 end
 
--- Teleport player to a player (used in "/tpr" command).
-function tpr_teleport_player(name)
+-- Teleport player to a player (used in "/tpr" and in "/tphr" command).
+function tpr_teleport_player()
 	local target_coords = source:get_pos()
 	local target_sound = target:get_pos()
 	target:set_pos(find_free_position_near(target_coords))
