@@ -71,6 +71,15 @@ function tpc_teleport_player(player)
 	--parti2(target_coords)
 end
 
+-- TPP
+function tpp_teleport_player(player)
+	local pname = minetest.get_player_by_name(player)
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(pos)
+	minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
+end
+
 function find_free_position_near(pos)
 	local tries = {
 		{x=1,y=0,z=0},
@@ -383,11 +392,9 @@ if enable_tpp_command then
 					return true, table.concat(places, "\n")
 			-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 			elseif available_places[param] then
-				minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-				local pos = {x = available_places[param].x, y = available_places[param].y, z = available_places[param].z}
-				pname:set_pos(pos)
+				pos = {x = available_places[param].x, y = available_places[param].y, z = available_places[param].z}
+				tpp_teleport_player(player)
 				minetest.chat_send_player(player, S("Teleporting to @1.", param))
-				minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
 			-- Check if the place exists.	
 			elseif not available_places[param] then
 				minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
