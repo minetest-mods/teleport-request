@@ -48,6 +48,10 @@ msgstr "@1 esta pidiendo teletransportarse a ti. /tpy para aceptar"
 msgid "Teleport request sent! It will timeout in @1 seconds"
 msgstr "¡Solicitud enviada! Se agotara en @1 segundos"
 
+#: init.lua
+msgid "Request timed-out."
+msgstr "La solicitud enviada expiró."
+
 #: init.lua:147
 msgid "@1 is teleporting to you."
 msgstr "@1 se esta teletransportando a ti."
