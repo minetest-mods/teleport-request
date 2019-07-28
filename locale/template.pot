@@ -92,6 +92,10 @@ msgstr ""
 msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
 msgstr ""
 
+#: init.lua
+msgid "@1 just disconnected/left (by timeout)."
+msgstr ""
+
 #: init.lua:317
 msgid "Request Accepted!"
 msgstr ""
