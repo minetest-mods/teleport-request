@@ -124,6 +124,19 @@ function clear_tphr_list(name)
 	end
 end
 
+-- Clear requests when the player leaves
+minetest.register_on_leaveplayer(function(name)
+	if tpr_list[name] then
+		tpr_list[name] = nil
+		return
+	end
+	
+	if tphr_list[name] then
+		tphr_list[name] = nil
+		return
+	end
+end)
+
 function tpr_send(sender, receiver)
 	if minetest.check_player_privs(sender, {tp_admin = true}) and enable_immediate_teleport then
 	if receiver == "" then
@@ -294,6 +307,7 @@ function tpr_accept(name, param)
 	-- Could happen if either player disconnects (or timeout); if so just abort
 	if not source
 	or not target then
+		minetest.chat_send_player(name, S("@1 just disconnected/left (by timeout).", name2))
 		return
 	end
 
