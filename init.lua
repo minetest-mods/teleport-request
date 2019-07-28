@@ -125,7 +125,7 @@ function clear_tphr_list(name)
 end
 
 function tpr_send(sender, receiver)
-	if minetest.check_player_privs(sender, {tp_admin = true}) then
+	if minetest.check_player_privs(sender, {tp_admin = true}) and enable_immediate_teleport then
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
             return	
@@ -154,7 +154,6 @@ function tpr_send(sender, receiver)
 	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
 
 	-- Write name values to list and clear old values.
-	if not minetest.check_player_privs(sender, {tp_admin = true}) then
 		tpr_list[receiver] = sender
 		-- Teleport timeout delay
 		minetest.after(timeout_delay, function(name)
@@ -165,11 +164,10 @@ function tpr_send(sender, receiver)
 			return
 		end
 	end, receiver)
-	end	
 end
 
 function tphr_send(sender, receiver)
-	if minetest.check_player_privs(sender, {tp_admin = true}) then
+	if minetest.check_player_privs(sender, {tp_admin = true}) and enable_immediate_teleport then
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
 	    return	
@@ -197,7 +195,6 @@ function tphr_send(sender, receiver)
 	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
 
 	-- Write name values to list and clear old values.
-	if not minetest.check_player_privs(sender, {tp_admin = true}) then
 		tphr_list[receiver] = sender
 		-- Teleport timeout delay
 		minetest.after(timeout_delay, function(name)
@@ -208,7 +205,6 @@ function tphr_send(sender, receiver)
 			return
 		end
 	end, receiver)
-	end
 end
 
 function tpc_send(player, coordinates)
