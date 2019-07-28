@@ -92,6 +92,10 @@ msgstr "Solicitud denegada."
 msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
 msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugadores"
 
+#: init.lua
+msgid "@1 just disconnected/left (by timeout)."
+msgstr "@1 se desconecto/fue."
+
 #: init.lua:317
 msgid "Request Accepted!"
 msgstr "¡Solicitud aceptada!"
