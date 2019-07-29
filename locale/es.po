@@ -88,6 +88,14 @@ msgstr "Error: No tienes permiso para teletransportarte a esas coordenadas."
 msgid "Teleport request denied."
 msgstr "Solicitud denegada."
 
+#: init.lua
+msgid "You denied the request @1 sent you."
+msgstr "Tú denegaste la solicitud de teletransporte que @1 te mando."
+
+#: init.lua
+msgid "Usage: /tpn allows you to deny teleport requests sent to you by other players."
+msgstr "Uso: /tpn te permite denegar solicitudes enviadas para ti de otros jugadores."
+
 #: init.lua:278
 msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
 msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugadores"
