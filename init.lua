@@ -272,10 +272,12 @@ function tpr_deny(name)
 	if tpr_list[name] then
 		minetest.chat_send_player(tpr_list[name], S("Teleport request denied."))
 		tpr_list[name] = nil
+		return
 	end
 	if tphr_list[name] then
 		minetest.chat_send_player(tphr_list[name], S("Teleport request denied."))
 		tphr_list[name] = nil
+		return
 	end
 end
 
