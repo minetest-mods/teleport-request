@@ -88,6 +88,14 @@ msgstr ""
 msgid "Teleport request denied."
 msgstr ""
 
+#: init.lua
+msgid "You denied the request @1 sent you."
+msgstr ""
+
+#: init.lua
+msgid "Usage: /tpn allows you to deny teleport requests sent to you by other players."
+msgstr ""
+
 #: init.lua:278
 msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
 msgstr ""
