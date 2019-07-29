@@ -48,6 +48,10 @@ msgstr "@1 esta pidiendo teletransportarse a ti. /tpy para aceptar"
 msgid "Teleport request sent! It will timeout in @1 seconds"
 msgstr "¡Solicitud enviada! Se agotara en @1 segundos"
 
+#: init.lua
+msgid "Request timed-out."
+msgstr "La solicitud enviada expiró."
+
 #: init.lua:147
 msgid "@1 is teleporting to you."
 msgstr "@1 se esta teletransportando a ti."
@@ -66,7 +70,7 @@ msgstr "Uso: /tpc <x, y, z>"
 
 #: init.lua:194
 msgid "You cannot teleport to a location outside the map!"
-msgstr "No puedes teletransportarte afuera del mundo!"
+msgstr "¡No puedes teletransportarte afuera del mundo!"
 
 #: init.lua:204
 msgid "Teleporting to: @1, @2, @3"
@@ -84,13 +88,25 @@ msgstr "Error: No tienes permiso para teletransportarte a esas coordenadas."
 msgid "Teleport request denied."
 msgstr "Solicitud denegada."
 
+#: init.lua
+msgid "You denied the request @1 sent you."
+msgstr "Tú denegaste la solicitud de teletransporte que @1 te mando."
+
+#: init.lua
+msgid "Usage: /tpn allows you to deny teleport requests sent to you by other players."
+msgstr "Uso: /tpn te permite denegar solicitudes enviadas para ti de otros jugadores."
+
 #: init.lua:278
 msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
 msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugadores"
 
+#: init.lua
+msgid "@1 just disconnected/left (by timeout)."
+msgstr "@1 se desconecto/fue."
+
 #: init.lua:317
 msgid "Request Accepted!"
-msgstr "Solicitud aceptada!"
+msgstr "¡Solicitud aceptada!"
 
 #: init.lua:330
 msgid "Usage: <x|y|z> <number>"
@@ -99,6 +115,10 @@ msgstr "Uso: <x|y|z> <numero>"
 #: init.lua:353
 msgid "Not a valid axis. Valid options are X, Y or Z"
 msgstr "Eje invalido. Opciones validas son x, y, o z"
+
+#: init.lua
+msgid "Not a number!"
+msgstr "¡No un número!"
 
 #: init.lua:367
 msgid "EVADE!"

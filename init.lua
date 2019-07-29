@@ -38,7 +38,40 @@ dofile(MP.."/config.lua")
 local tpr_list = {}
 local tphr_list = {}
 
-local function find_free_position_near(pos)
+local map_size = 30912
+local function can_teleport(to)
+	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
+end
+
+-- Teleport player to a player (used in "/tpr" and in "/tphr" command).
+function tpr_teleport_player()
+	local target_coords = source:get_pos()
+	local target_sound = target:get_pos()
+	target:set_pos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
+end
+
+-- TPC & TPJ
+function tpc_teleport_player(player)
+	local pname = minetest.get_player_by_name(player)
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(find_free_position_near(target_coords))
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
+end
+
+-- TPP
+function tpp_teleport_player(player)
+	local pname = minetest.get_player_by_name(player)
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(find_free_position_near(pos))
+	minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
+	--parti2(target_coords)
+end
+
+function find_free_position_near(pos)
 	local tries = {
 		{x=1,y=0,z=0},
 		{x=-1,y=0,z=0},
@@ -54,7 +87,7 @@ local function find_free_position_near(pos)
 	return pos, false
 end
 
-local function parti(pos)
+function parti(pos)
 	minetest.add_particlespawner(50, 0.4,
 		{x=pos.x + 0.5, y=pos.y, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
 		{x=0, y=5, z=0}, {x=0, y=0, z=0},
@@ -65,7 +98,7 @@ local function parti(pos)
 		"tps_portal_parti.png")
 end
 
-local function parti2(pos)
+function parti2(pos)
 	minetest.add_particlespawner(50, 0.4,
 		{x=pos.x + 0.5, y=pos.y + 10, z=pos.z + 0.5}, {x=pos.x - 0.5, y=pos.y, z=pos.z - 0.5},
 		{x=0, y=-5, z=0}, {x=0, y=0, z=0},
@@ -80,21 +113,32 @@ end
 function clear_tpr_list(name)
 	if tpr_list[name] then
 		tpr_list[name] = nil
+		return
 	end
 end
 
 function clear_tphr_list(name)
 	if tphr_list[name] then
 		tphr_list[name] = nil
+		return
 	end
 end
 
+-- Clear requests when the player leaves
+minetest.register_on_leaveplayer(function(name)
+	if tpr_list[name] then
+		tpr_list[name] = nil
+		return
+	end
+	
+	if tphr_list[name] then
+		tphr_list[name] = nil
+		return
+	end
+end)
+
 function tpr_send(sender, receiver)
-	if minetest.check_player_privs(sender, {tp_admin = true}) then
-			-- Write name values to list and clear old values.
-				tpr_list[receiver] = sender
-			-- Teleport timeout delay
-				minetest.after(timeout_delay, clear_tpr_list, receiver)
+	if minetest.check_player_privs(sender, {tp_admin = true}) and enable_immediate_teleport then
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
             return	
@@ -103,6 +147,7 @@ function tpr_send(sender, receiver)
 		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 	    return
 	end
+		tpr_list[receiver] = sender
 	tpr_accept(receiver)
 			minetest.chat_send_player(sender, S("You are teleporting to @1.", receiver))
 		return
@@ -122,19 +167,20 @@ function tpr_send(sender, receiver)
 	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
 
 	-- Write name values to list and clear old values.
-	if not minetest.check_player_privs(sender, {tp_admin = true}) then
-	tpr_list[receiver] = sender
-	-- Teleport timeout delay
-	minetest.after(timeout_delay, clear_tpr_list, receiver)
-	end	
+		tpr_list[receiver] = sender
+		-- Teleport timeout delay
+		minetest.after(timeout_delay, function(name)
+		if tpr_list[name] then
+			tpr_list[name] = nil
+			minetest.chat_send_player(sender, S("Request timed-out."))
+			minetest.chat_send_player(receiver, S("Request timed-out."))
+			return
+		end
+	end, receiver)
 end
 
 function tphr_send(sender, receiver)
-	if minetest.check_player_privs(sender, {tp_admin = true}) then
-	-- Write name values to list and clear old values.
-		tphr_list[receiver] = sender
-	-- Teleport timeout delay
-		minetest.after(timeout_delay, clear_tphr_list, receiver)
+	if minetest.check_player_privs(sender, {tp_admin = true}) and enable_immediate_teleport then
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
 	    return	
@@ -143,6 +189,7 @@ function tphr_send(sender, receiver)
 		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 	    return
 	end
+		tphr_list[receiver] = sender
 	tpr_accept(receiver)
 		minetest.chat_send_player(sender, S("@1 is teleporting to you.", receiver))
 		return
@@ -158,14 +205,19 @@ function tphr_send(sender, receiver)
 	end
 
 	minetest.chat_send_player(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny", sender))
-	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds ", timeout_delay))
+	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
 
 	-- Write name values to list and clear old values.
-	if not minetest.check_player_privs(sender, {tp_admin = true}) then
-	tphr_list[receiver] = sender
-	-- Teleport timeout delay
-	minetest.after(timeout_delay, clear_tphr_list, receiver)
-	end
+		tphr_list[receiver] = sender
+		-- Teleport timeout delay
+		minetest.after(timeout_delay, function(name)
+		if tphr_list[name] then
+			tphr_list[name] = nil
+			minetest.chat_send_player(sender, S("Request timed-out."))
+			minetest.chat_send_player(receiver, S("Request timed-out."))
+			return
+		end
+	end, receiver)
 end
 
 function tpc_send(player, coordinates)
@@ -184,7 +236,7 @@ function tpc_send(player, coordinates)
 		return nil
 	end
 
-	local target_coords = {x=posx, y=posy, z=posz}
+	target_coords = {x=posx, y=posy, z=posz}
 
 	if can_teleport(target_coords) == false then
 		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
@@ -195,11 +247,8 @@ function tpc_send(player, coordinates)
 	-- In future release we'll actually query the player who owns the area, if they're online, and ask for their permission.
 	-- Admin user (priv "tp_admin") overrides all protection
 	if minetest.check_player_privs(pname, {tp_admin=true}) then
+		tpc_teleport_player(player)
 		minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-		minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-		pname:set_pos(find_free_position_near(target_coords))
-		minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-		--parti2(target_coords)
 	else
 		if minetest.check_player_privs(pname, {tp_tpc = true}) then
 			local protected = minetest.is_protected(target_coords,pname)
@@ -210,11 +259,8 @@ function tpc_send(player, coordinates)
 					return
 				end
 			end
-			minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+			tpc_teleport_player(player)
 			minetest.chat_send_player(player, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-			pname:set_pos(find_free_position_near(target_coords))
-			minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-			--parti2(target_coords)
 		else
 			minetest.chat_send_player(player, S("Error: You do not have permission to teleport to coordinates."))
 			return
@@ -224,12 +270,18 @@ end
 
 function tpr_deny(name)
 	if tpr_list[name] then
-		minetest.chat_send_player(tpr_list[name], S("Teleport request denied."))
+		name2 = tpr_list[name]
+		minetest.chat_send_player(name2, S("Teleport request denied."))
+		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
 		tpr_list[name] = nil
-	end
-	if tphr_list[name] then
-		minetest.chat_send_player(tphr_list[name], S("Teleport request denied."))
+	elseif tphr_list[name] then
+		name2 = tphr_list[name]
+		minetest.chat_send_player(name2, S("Teleport request denied."))
+		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
 		tphr_list[name] = nil
+	else
+		minetest.chat_send_player(name, S("Usage: /tpn allows you to deny teleport requests sent to you by other players."))
+		return
 	end
 end
 
@@ -241,8 +293,6 @@ function tpr_accept(name, param)
 		minetest.chat_send_player(name, S("Usage: /tpy allows you to accept teleport requests sent to you by other players"))
 		return
 	end
-
-	local chatmsg, source, target, name2
 
 	if tpr_list[name] then
 		name2 = tpr_list[name]
@@ -263,18 +313,13 @@ function tpr_accept(name, param)
 	-- Could happen if either player disconnects (or timeout); if so just abort
 	if not source
 	or not target then
+		minetest.chat_send_player(name, S("@1 just disconnected/left (by timeout).", name2))
 		return
 	end
 
 	minetest.chat_send_player(name2, S("Request Accepted!"))
 	minetest.chat_send_player(name, chatmsg)
-	
-	local target_coords = source:get_pos()
-	local target_sound = target:get_pos()
-	target:set_pos(find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
-	--parti2(target_coords)
+	tpr_teleport_player()
 end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
@@ -293,11 +338,11 @@ function tpj(player, param)
 	end
 	
 	if not tonumber(args[2]) then
-		return false, "Not a Number!"
+		return false, S("Not a number!")
 	end
 	
 	-- Initially generate the target coords from the player's current position (since it's relative) and then perform the math.
-	local target_coords = minetest.get_player_by_name(player):get_pos()
+	target_coords = minetest.get_player_by_name(player):get_pos()
 	if args[1] == "x" then
 		target_coords["x"] = target_coords["x"] + tonumber(args[2])
 	elseif args[1] == "y" then
@@ -312,10 +357,7 @@ function tpj(player, param)
 		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
 		return
 	end
-	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-	pname:set_pos(find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-	--parti2(target_coords)
+	tpc_teleport_player(player)
 end
 
 -- Evade
@@ -338,7 +380,7 @@ function tpe(player)
 				distance = isnegative .. math.random(mindistance,maxdistance) -- the distance to jump
 				axis = options[math.random(3)]
 				local command = axis .. " " .. distance
-				tpj(player,command)
+				tpj(player, command)
 			end
 		)
 		iteration = iteration + 0.5
@@ -358,6 +400,7 @@ if enable_tpp_command then
 			-- Show the available places to the player (taken from shivajiva101's POI mod, thanks!).
 			if param == "" then
 			    local places = {}
+				if not available_places then available_places = {} end
 				for key, value in pairs(available_places) do
 					table.insert(places, key)
 				end
@@ -366,14 +409,11 @@ if enable_tpp_command then
 				end
 					table.insert(places, S("Usage: /tpp <place>"))
 					return true, table.concat(places, "\n")
-				
 			-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 			elseif available_places[param] then
-				minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-				local pos = {x = available_places[param].x, y = available_places[param].y, z = available_places[param].z}
-				pname:set_pos(pos)
+				pos = {x = available_places[param].x, y = available_places[param].y, z = available_places[param].z}
+				tpp_teleport_player(player)
 				minetest.chat_send_player(player, S("Teleporting to @1.", param))
-				minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
 			-- Check if the place exists.	
 			elseif not available_places[param] then
 				minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))

@@ -48,6 +48,10 @@ msgstr ""
 msgid "Teleport request sent! It will timeout in @1 seconds"
 msgstr ""
 
+#: init.lua
+msgid "Request timed-out."
+msgstr ""
+
 #: init.lua:147
 msgid "@1 is teleporting to you."
 msgstr ""
@@ -84,8 +88,20 @@ msgstr ""
 msgid "Teleport request denied."
 msgstr ""
 
+#: init.lua
+msgid "You denied the request @1 sent you."
+msgstr ""
+
+#: init.lua
+msgid "Usage: /tpn allows you to deny teleport requests sent to you by other players."
+msgstr ""
+
 #: init.lua:278
 msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
+msgstr ""
+
+#: init.lua
+msgid "@1 just disconnected/left (by timeout)."
 msgstr ""
 
 #: init.lua:317
@@ -98,6 +114,10 @@ msgstr ""
 
 #: init.lua:353
 msgid "Not a valid axis. Valid options are X, Y or Z"
+msgstr ""
+
+#: init.lua
+msgid "Not a number!"
 msgstr ""
 
 #: init.lua:367
