@@ -71,7 +71,7 @@ Report bugs or suggest ideas by [creating an issue](https://github.com/ChaosWorm
 If you know how to fix an issue, or want something to be added, consider opening a [pull request](https://github.com/ChaosWormz/teleport-request/compare).
 
 ## License
-LGPL-2.1 for code, CC-BY-SA-4.0 for [media](https://github.com/ChaosWormz/teleport-request/blob/master/sounds/LICENSE.txt) and [textures](https://github.com/ChaosWormz/teleport-request/blob/master/textures/LICENSE.txt) (click [here](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for more information).
+LGPL-2.1 for everything (click [here](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for more information).
 
 ## Contributors:
 - [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
