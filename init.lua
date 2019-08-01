@@ -307,6 +307,8 @@ function tpr_accept(name, param)
 		-- Let the player choose which player to teleport to when there are multiple requests.
 		-- THIS IS AN UNTESTED FUNCTION. CHECK IT AT YOUR OWN RISK.
 	elseif tpr_list[name] > 1 then
+		name2 = tpr_list[name]
+		chatmsg = S("@1 is teleporting to you.", name2)
 		param = param:lower()
 		minetest.chat_send_player(name, S("Use /tpy <player> and choose a player to teleport to:"))
 		local tp = {}
@@ -322,6 +324,31 @@ function tpr_accept(name, param)
 		-- Teleport player to the specified player
 		if tpr_list[param] then
 			tpr_teleport_player(param)
+			minetest.chat_send_player(param, S("Request Accepted!"))
+			minetest.chat_send_player(name, chatmsg)
+			--tpr_list[name] = nil
+		end
+	elseif tphr_list[name] > 1 then
+		name2 = tphr_list[name]
+		chatmsg = S("You are teleporting to @1.", name2)
+		param = param:lower()
+		minetest.chat_send_player(name, S("Use /tpy <player> and choose a player to teleport to:"))
+		local tp = {}
+		for key, value in pairs(tphr_list) do
+			table.insert(tp, key)
+		end
+		if param == "" then
+			minetest.chat_send_player(name, S("Use /tpy <player> and choose a player to teleport to:"))
+			for key, value in pairs(tphr_list) do
+				table.insert(tp, key)
+			end
+		end
+		-- Teleport player to the specified player
+		if tphr_list[param] then
+			tpr_teleport_player(param)
+			minetest.chat_send_player(param, S("Request Accepted!"))
+			minetest.chat_send_player(name, chatmsg)
+			--tpr_list[name] = nil
 		end
 	else
 		return
