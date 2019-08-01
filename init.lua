@@ -165,7 +165,6 @@ function tpr_send(sender, receiver)
 
 	minetest.chat_send_player(receiver, S("@1 is requesting to teleport to you. /tpy to accept", sender))
 	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
-
 	-- Write name values to list and clear old values.
 		tpr_list[receiver] = sender
 		-- Teleport timeout delay
@@ -206,7 +205,6 @@ function tphr_send(sender, receiver)
 
 	minetest.chat_send_player(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny", sender))
 	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
-
 	-- Write name values to list and clear old values.
 		tphr_list[receiver] = sender
 		-- Teleport timeout delay
@@ -306,6 +304,25 @@ function tpr_accept(name, param)
 		target = minetest.get_player_by_name(name)
 		chatmsg = S("You are teleporting to @1.", name2)
 		tphr_list[name] = nil
+		-- Let the player choose which player to teleport to when there are multiple requests.
+		-- THIS IS AN UNTESTED FUNCTION. CHECK IT AT YOUR OWN RISK.
+	elseif tpr_list[name] > 1 then
+		param = param:lower()
+		minetest.chat_send_player(name, S("Use /tpy <player> and choose a player to teleport to:"))
+		local tp = {}
+		for key, value in pairs(tpr_list) do
+			table.insert(tp, key)
+		end
+		if param == "" then
+			minetest.chat_send_player(name, S("Use /tpy <player> and choose a player to teleport to:"))
+			for key, value in pairs(tpr_list) do
+				table.insert(tp, key)
+			end
+		end
+		-- Teleport player to the specified player
+		if tpr_list[param] then
+			tpr_teleport_player(param)
+		end
 	else
 		return
 	end
