@@ -97,12 +97,12 @@ msgid "Usage: /tpn allows you to deny teleport requests sent to you by other pla
 msgstr "Uso: /tpn te permite denegar solicitudes enviadas para ti de otros jugadores."
 
 #: init.lua:278
-msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
-msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugadores"
+msgid "Usage: /tpy <player>"
+msgstr "Uso: /tpy <jugador>"
 
 #: init.lua
-msgid "@1 just disconnected/left (by timeout)."
-msgstr "@1 se desconecto/fue."
+msgid "@1 doesn't exist, or just disconnected/left (by timeout)."
+msgstr "@1 no existe, o se desconecto/fue."
 
 #: init.lua:317
 msgid "Request Accepted!"
