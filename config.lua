@@ -24,22 +24,22 @@ local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
 -- Timeout delay and mod version.
-timeout_delay = 60
-version = "1.5"
+tp.timeout_delay = 60
+tp.version = "1.5"
 
 -- Enable teleporting immediately to the player with "tp_admin" privilege.
-enable_immediate_teleport = true
+tp.enable_immediate_teleport = true
 
 local chatmsg, source, target, name2, target_coords, pos
 
 -- Set the values of the positions of your places, players will be able to teleport to them (no matter if it is protected, or not).
-available_places = {
+tp.available_places = {
 	spawn = {x = 0, y = 0, z = 0}, -- Set coordinates of spawn here.
 	shop = {x = 0, y = 0, z = 0}, -- Set coordinates of the shop here.
 }
 
 -- Enable tpp command
-enable_tpp_command = false
+tp.enable_tpp_command = false
 
 -- Register privileges
 minetest.register_privilege("tp", {
