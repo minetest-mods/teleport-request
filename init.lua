@@ -304,7 +304,7 @@ function tp.tpr_accept(name, param)
 	-- Check to prevent constant teleporting.
 	if not tp.tpr_list[name]
 	and not tp.tphr_list[name]
-		minetest.chat_send_player(name, S("Usage: /tpy <player>"))
+		minetest.chat_send_player(name, S("Usage: /tpy allows you to accept teleport requests sent to you by other players"))
 		return
 	end
 	
