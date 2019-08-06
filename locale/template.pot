@@ -97,7 +97,7 @@ msgid "Usage: /tpn allows you to deny teleport requests sent to you by other pla
 msgstr ""
 
 #: init.lua:278
-msgid "Usage: /tpy <player>"
+msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
 msgstr ""
 
 #: init.lua
