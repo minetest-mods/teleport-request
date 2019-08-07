@@ -61,6 +61,8 @@ There are no dependencies.
 However, optional dependencies are:
 - [areas](https://github.com/minetest-mods/areas)
 - [intllib](https://github.com/minetest-mods/intllib)
+- [beerchat](https://github.com/pandorabox-io/beerchat)
+- [chat2](https://github.com/minetest-mods/chat2)
 
 ## Requirements
 This mod requieres MT/MTG 5.0.0+ to run.   

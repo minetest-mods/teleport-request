@@ -33,6 +33,7 @@ tp.enable_immediate_teleport = true
 local chatmsg, source, target, name2, target_coords, pos
 
 -- Set the values of the positions of your places, players will be able to teleport to them (no matter if it is protected, or not).
+-- You must activate "enable_tpp_command" in order to make this to work.
 tp.available_places = {
 	spawn = {x = 0, y = 0, z = 0}, -- Set coordinates of spawn here.
 	shop = {x = 0, y = 0, z = 0}, -- Set coordinates of the shop here.
