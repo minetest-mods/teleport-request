@@ -1,6 +1,6 @@
 # Teleport Request
-
-[The Pixel Shadow](https://minetest.tv/) Minetest game servers have switched from "teleport" to "teleport request" via the *teleport-request* mod. This mod makes it so players must send a request to another player in order to teleport to them. Before they will be allowed to do so, the player must accept the request. This prevents malicious users from teleporting to players' private areas without their permission. It also enhances the overall privacy of our services since if denied teleport, a player must instead travel to the area and "use the front door" so to speak... which might be a locked iron door.
+A mod that allows players to send a teleport request.    
+**(See "How to use" below for more information.)**
 
 ## Privileges:
 Each command needs a privilege. These are the following privileges:
@@ -22,20 +22,20 @@ These are the following commands available in-game:
 - **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
 - **Required Privileges:** `interact, tp`
 - **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
-- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, you will immediately teleport to the specificed player.
+- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, you will immediately teleport to the specificed player (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tphr [playername] ```
 - **Name:** Teleport Here Request
 - **Description:** Request permission to teleport another player to you.
 - **Required Privileges:** `interact, tp`
 - **Example Usage:** /tphr RobbieF - requests RobbieF to teleport to you.
-- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, RobbieF will teleport to you immediately.
+- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, RobbieF will teleport to you immediately (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tpc [x,y,z] ```
 - **Name:** Teleport to Coordinates
 - **Description:** Teleport to coordinates.
 - **Required Privileges:** `interact, tp_tpc, tp`
-- **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it, or you must have "areas" privilege in order to teleport to those coordinates (this does not apply if "areas" mod is not detected).
+- **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it, or you must have "areas" privilege in order to teleport to those coordinates (this works only when [areas](https://github.com/minetest-mods/areas) is installed).
 
 ``` /tpj [axis] [distance] ```
 - **Name:** Teleport Jump
@@ -106,3 +106,5 @@ https://wiki.minetest.net/Installing_Mods
 - Create a better sound effect for teleport and apply it to all teleport methods (not just /tpc)
 - Rewrite to place all chat commands into one single command much like how /teleport works.
 - Make evade respect land: no teleporting inside land, but instead make sure player is standing on surface or in water.
+
+If you think something else should be added to this list, [submit an issue](https://github.com/ChaosWormz/teleport-request/issues/new).
