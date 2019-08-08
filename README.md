@@ -86,6 +86,20 @@ If you know how to fix an issue, or want something to be added, consider opening
 
 All those who contributed to the original mod (please see `init.lua`).
 
+## Configuring the mod
+Open your `minetest.conf` located in your Minetest directory.     
+Set the values of the settings you'd like to.
+
+Available options are:
+```
+tp.timeout_delay = 60
+tp.enable_immediate_teleport = true
+tp_enable_tpp_command = false
+```
+Those values are the default values of the mod.   
+You can also go to your Minetest, Settings tab, All settings, Mods, and you'll find `tpr` there.    
+Or another way to do it, is changing the values in `settingstypes.txt`.
+
 ## Installation
 - Unzip the archive, rename the folder to tpr and
 place it in ..minetest/mods/
