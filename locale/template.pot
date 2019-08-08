@@ -16,35 +16,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: init.lua:19
+#: config.lua
 msgid "Let players teleport to other players (request will be sent)"
 msgstr ""
 
-#: init.lua:43
+#: config.lua
 msgid "Gives full admin-access to a player."
 msgstr ""
 
-#: init.lua:50
+#: config.lua
 msgid "Allow player to teleport to coordinates (if allowed by area protection)"
 msgstr ""
 
-#: init.lua:105
-msgid "You are teleporting to @1."
+#: init.lua
+msgid "You are not allowed to send requests because you're muted."
 msgstr ""
 
-#: init.lua:111
+#: init.lua
 msgid "Usage: /tpr <Player name>"
 msgstr ""
 
-#: init.lua:116
+#: init.lua
 msgid "There is no player by that name. Keep in mind this is case sensitive, and the player must be online"
 msgstr ""
 
-#: init.lua:120
+#: init.lua
+msgid "You are teleporting to @1."
+msgstr ""
+
+#: init.lua
 msgid "@1 is requesting to teleport to you. /tpy to accept"
 msgstr ""
 
-#: init.lua:121
+#: init.lua
 msgid "Teleport request sent! It will timeout in @1 seconds"
 msgstr ""
 
@@ -52,39 +56,39 @@ msgstr ""
 msgid "Request timed-out."
 msgstr ""
 
-#: init.lua:147
+#: init.lua
 msgid "@1 is teleporting to you."
 msgstr ""
 
-#: init.lua:152
+#: init.lua
 msgid "Usage: /tphr <Player name>"
 msgstr ""
 
-#: init.lua:160
+#: init.lua
 msgid "@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny"
 msgstr ""
 
-#: init.lua:187
+#: init.lua
 msgid "Usage: /tpc <x, y, z>"
 msgstr ""
 
-#: init.lua:194
+#: init.lua
 msgid "You cannot teleport to a location outside the map!"
 msgstr ""
 
-#: init.lua:204
+#: init.lua
 msgid "Teleporting to: @1, @2, @3"
 msgstr ""
 
-#: init.lua:215
+#: init.lua
 msgid "Error: @1 is protected by @2."
 msgstr ""
 
-#: init.lua:240
+#: init.lua
 msgid "Error: You do not have permission to teleport to those coordinates."
 msgstr ""
 
-#: init.lua:258
+#: init.lua
 msgid "Teleport request denied."
 msgstr ""
 
@@ -96,7 +100,7 @@ msgstr ""
 msgid "Usage: /tpn allows you to deny teleport requests sent to you by other players."
 msgstr ""
 
-#: init.lua:278
+#: init.lua
 msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
 msgstr ""
 
@@ -104,23 +108,23 @@ msgstr ""
 msgid "@1 doesn't exist, or just disconnected/left (by timeout)."
 msgstr ""
 
-#: init.lua:317
+#: init.lua
 msgid "Request Accepted!"
 msgstr ""
 
-#: init.lua:330
+#: init.lua
 msgid "Usage: <x|y|z> <number>"
-msgstr ""
-
-#: init.lua:353
-msgid "Not a valid axis. Valid options are X, Y or Z"
 msgstr ""
 
 #: init.lua
 msgid "Not a number!"
 msgstr ""
 
-#: init.lua:367
+#: init.lua
+msgid "Not a valid axis. Valid options are X, Y or Z"
+msgstr ""
+
+#: init.lua
 msgid "EVADE!"
 msgstr ""
 
@@ -148,46 +152,46 @@ msgstr ""
 msgid "There is no place by that name. Keep in mind this is case-sensitive."
 msgstr ""
 
-#: init.lua:394
+#: init.lua
 msgid "Request teleport to another player."
 msgstr ""
 
-#: init.lua:395
+#: init.lua
 msgid "<playername> | leave playername empty to see help message"
 msgstr ""
 
-#: init.lua:401
+#: init.lua
 msgid "Request player to teleport to you"
 msgstr ""
 
-#: init.lua:408
+#: init.lua
 msgid "Teleport to coordinates"
 msgstr ""
 
-#: init.lua:409
+#: init.lua
 msgid "<coordinates> | leave coordinates empty to see help message"
 msgstr ""
 
-#: init.lua:415
+#: init.lua
 msgid "Teleport to relative position"
 msgstr ""
 
-#: init.lua:416
+#: init.lua
 msgid "<axis> <distance> | leave empty to see help message"
 msgstr ""
 
-#: init.lua:422
+#: init.lua
 msgid "Evade Enemy"
 msgstr ""
 
-#: init.lua:428
+#: init.lua
 msgid "Accept teleport requests from another player"
 msgstr ""
 
-#: init.lua:434
+#: init.lua
 msgid "Deny teleport requests from another player"
 msgstr ""
 
-#: init.lua:441
+#: init.lua
 msgid "[Teleport Request] TPS Teleport v@1 Loaded!"
 msgstr ""
