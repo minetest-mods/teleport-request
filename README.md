@@ -14,7 +14,12 @@ Players can also teleport to coordinates, however, if the area is protected, the
 
 ## How to use:
 Each command does a function. "**Example Usage**" is an example of how to use the command.   
-Note there must be 2 players in order to make the commands to work: a player must send a request to another player (**see https://wiki.minetest.net/Server or see https://wiki.minetest.net/Setting_up_a_server for more information**).  
+Note there must be 2 players in order to make the commands to work: a player must send a request to another player (**see https://wiki.minetest.net/Server or see https://wiki.minetest.net/Setting_up_a_server for more information**).   
+There are two methods of sending a request:     
+1. A request which teleports you to the specified player (command `/tpr <player>`).   
+2. A request which teleports the specified player to you (command `/tphr <player>`).    
+
+To accept a request some sent you, you must use `/tpy`.   
 These are the following commands available in-game:
 
 ``` /tpr [playername] ```
@@ -82,6 +87,9 @@ If you know how to fix an issue, or want something to be added, consider opening
 - [ChaosWormz](https://github.com/ChaosWormz)
 - [Panquesito7](https://github.com/Panquesito7)
 - [coil0](https://github.com/coil0)
+- [Zeno-](https://github.com/Zeno-)
+- [indriApollo](https://github.com/indriApollo)
+- [Billy-S](https://github.com/Billy-S)
 - Traxie21, the original creator of this mod (however, he/she does not have a GitHub account anymore).
 
 All those who contributed to the original mod (please see `init.lua`).
