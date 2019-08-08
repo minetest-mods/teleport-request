@@ -24,11 +24,11 @@ local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
 -- Timeout delay and mod version.
-tp.timeout_delay = 60
+tp.timeout_delay = tonumber(minetest.settings:get("tp.timeout_delay")) or 60
 tp.version = "1.5"
 
--- Enable teleporting immediately to the player with "tp_admin" privilege.
-tp.enable_immediate_teleport = true
+-- Enable teleporting immediately to the specified player for those with "tp_admin" privilege.
+tp.enable_immediate_teleport = minetest.settings:get_bool("tp.enable_immediate_teleport")
 
 local chatmsg, source, target, name2, target_coords, pos
 
@@ -40,7 +40,7 @@ tp.available_places = {
 }
 
 -- Enable tpp command
-tp.enable_tpp_command = false
+tp.enable_tpp_command = minetest.settings:get_bool("tp.enable_tpp_command")
 
 -- Register privileges
 minetest.register_privilege("tp", {
