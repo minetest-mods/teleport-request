@@ -90,7 +90,6 @@ If you know how to fix an issue, or want something to be added, consider opening
 - [Zeno-](https://github.com/Zeno-)
 - [indriApollo](https://github.com/indriApollo)
 - [Billy-S](https://github.com/Billy-S)
-- [luk3yx](https://github.com/luk3yx)
 - Traxie21, the original creator of this mod (however, he/she does not have a GitHub account anymore).
 
 All those who contributed to the original mod (please see `init.lua`).
