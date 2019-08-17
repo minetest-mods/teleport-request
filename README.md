@@ -106,7 +106,7 @@ tp_enable_tpp_command = false
 ```
 Those values are the default values of the mod.   
 You can also go to your Minetest, Settings tab, All settings, Mods, and you'll find `tpr` there.    
-Or another way to do it, is changing the values in `settingstypes.txt`.
+Or another way to do it, is changing the values in `settingtypes.txt`.
 
 ## Installation
 - Unzip the archive, rename the folder to tpr and

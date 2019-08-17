@@ -194,7 +194,7 @@ function tp.tpr_send(sender, receiver)
 		chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request sent! It will timeout in @1 seconds", tp.timeout_delay), 0xFFFFFF)
 	end
 	minetest.chat_send_player(receiver, S("@1 is requesting to teleport to you. /tpy to accept", sender))
-	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
+	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", tp.timeout_delay))
 	-- Write name values to list and clear old values.
 		tp.tpr_list[receiver] = sender
 		-- Teleport timeout delay
@@ -266,7 +266,7 @@ function tp.tphr_send(sender, receiver)
 		chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request sent! It will timeout in @1 seconds", tp.timeout_delay), 0xFFFFFF)
 	end
 	minetest.chat_send_player(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny", sender))
-	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", timeout_delay))
+	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", tp.timeout_delay))
 	-- Write name values to list and clear old values.
 		tp.tphr_list[receiver] = sender
 		-- Teleport timeout delay
