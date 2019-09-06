@@ -1,5 +1,5 @@
 # Template translation for Teleport Request.
-# Copyright (C) 2015-2019 Michael Tomaino and contributors.
+# Copyright (C) 2015-2019 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
 # Panquesito7, 2019.
 
