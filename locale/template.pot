@@ -41,6 +41,10 @@ msgid "There is no player by that name. Keep in mind this is case sensitive, and
 msgstr ""
 
 #: init.lua
+msgid "Teleport request denied, player is in the gamehub!"
+msgstr ""
+
+#: init.lua
 msgid "You are teleporting to @1."
 msgstr ""
 

@@ -68,6 +68,7 @@ However, optional dependencies are:
 - [intllib](https://github.com/minetest-mods/intllib)
 - [beerchat](https://github.com/pandorabox-io/beerchat)
 - [chat2](https://github.com/minetest-mods/chat2)
+- [gamehub](https://github.com/shivajiva101/minetest-gamehub)
 
 ## Requirements
 This mod requires MT/MTG 5.0.0+ to run.   

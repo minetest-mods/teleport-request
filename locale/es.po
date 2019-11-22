@@ -41,6 +41,10 @@ msgid "There is no player by that name. Keep in mind this is case-sensitive, and
 msgstr "No hay jugador con ese nombre. Tenga en cuenta que esto es caso-sensitivo, y el jugador debe de estar én linea."
 
 #: init.lua
+msgid "Teleport request denied, player is in the gamehub!"
+msgstr "Solicitud denegada, ¡el jugador esta en el centro de juegos!"
+
+#: init.lua
 msgid "You are teleporting to @1."
 msgstr "Te estas teletransportando a @1."
 
