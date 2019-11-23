@@ -2,7 +2,7 @@
 A mod that allows players to send a teleport request.    
 **(See "How to use" below for more information.)**
 
-## Privileges:
+## Privileges
 Each command needs a privilege. These are the following privileges:
 - **tp** is requiered in order to use all commands.
 - **tp_tpc** is requiered in order to use `/tpc`
@@ -12,7 +12,7 @@ Each command needs a privilege. These are the following privileges:
 **tp_admin** overrides everything: e.g. you can teleport to players even when they haven't decided to accept, or not. You can also teleport him/her to you (this happens only when `enable_immediate_teleport` is enabled on `config.lua`).   
 Players can also teleport to coordinates, however, if the area is protected, the teleport will be denied.
 
-## How to use:
+## How to use
 Each command does a function. "**Example Usage**" is an example of how to use the command.   
 Note there must be 2 players in order to make the commands to work: a player must send a request to another player (**see https://wiki.minetest.net/Server or see https://wiki.minetest.net/Setting_up_a_server for more information**).   
 There are two methods of sending a request:     
@@ -27,20 +27,20 @@ These are the following commands available in-game:
 - **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
 - **Required Privileges:** `interact, tp`
 - **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
-- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, you will immediately teleport to the specificed player (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
+- **Notes:** Usernames are case-sensitive. If you have the `tp_admin` privilege, you will immediately teleport to the specificed player (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tphr [playername] ```
 - **Name:** Teleport Here Request
 - **Description:** Request permission to teleport another player to you.
 - **Required Privileges:** `interact, tp`
 - **Example Usage:** /tphr RobbieF - requests RobbieF to teleport to you.
-- **Notes:** Usernames are case-sensitive. If you have "tp_admin" privilege, RobbieF will teleport to you immediately (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
+- **Notes:** Usernames are case-sensitive. If you have the `tp_admin` privilege, RobbieF will teleport to you immediately (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tpc [x,y,z] ```
 - **Name:** Teleport to Coordinates
 - **Description:** Teleport to coordinates.
 - **Required Privileges:** `interact, tp_tpc, tp`
-- **Notes:** Honors area protection: if the area is protected, it must be owned by you in order to teleport to it, or you must have "areas" privilege in order to teleport to those coordinates (this works only when [areas](https://github.com/minetest-mods/areas) is installed).
+- **Notes:** Honors area protection. If the area is protected, it must be owned by you in order to teleport to it, or you must have the `areas` privilege in order to teleport to those coordinates.
 
 ``` /tpj [axis] [distance] ```
 - **Name:** Teleport Jump
@@ -68,9 +68,10 @@ However, optional dependencies are:
 - [intllib](https://github.com/minetest-mods/intllib)
 - [beerchat](https://github.com/pandorabox-io/beerchat)
 - [chat2](https://github.com/minetest-mods/chat2)
+- [gamehub](https://github.com/shivajiva101/minetest-gamehub)
 
 ## Requirements
-This mod requieres MT/MTG 5.0.0+ to run.   
+This mod requires MT/MTG 5.0.0+ to run.   
 Older versions not supported.
 
 ## Bugfixes & suggestions
@@ -78,9 +79,12 @@ Report bugs or suggest ideas by [creating an issue](https://github.com/ChaosWorm
 If you know how to fix an issue, or want something to be added, consider opening a [pull request](https://github.com/ChaosWormz/teleport-request/compare).
 
 ## License
-[LGPL-2.1](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for everything.
+[LGPLv2.1+](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for everything.
 
-## Contributors:
+## Contributors
+
+List of contributors (in no particular order):
+
 - [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
 - [DonBatman](https://github.com/donbatman)
 - [NathanS21](http://nathansalapat.com/) | [GitHub](https://github.com/NathanSalapat)
@@ -91,8 +95,6 @@ If you know how to fix an issue, or want something to be added, consider opening
 - [indriApollo](https://github.com/indriApollo)
 - [Billy-S](https://github.com/Billy-S)
 - Traxie21, the original creator of this mod (however, he/she does not have a GitHub account anymore).
-
-All those who contributed to the original mod (please see `init.lua`).
 
 ## Configuring the mod
 Open your `minetest.conf` located in your Minetest directory.     
@@ -109,7 +111,7 @@ You can also go to your Minetest, Settings tab, All settings, Mods, and you'll f
 Or another way to do it, is changing the values in `settingtypes.txt`.
 
 ## Installation
-- Unzip the archive, rename the folder to tpr and
+- Unzip the archive, rename the folder to `tpr` and
 place it in ..minetest/mods/
 
 - GNU/Linux: If you use a system-wide installation place
@@ -118,10 +120,10 @@ place it in ..minetest/mods/
 - If you only want this to be used in a single world, place
     the folder in ..worldmods/ in your world directory.
 
-For further information or help, see:
+For further information or help, see:    
 https://wiki.minetest.net/Installing_Mods
 
-## TODO:
+## TODO
 - Make it so if a player attempts to teleport to coordinates within a protected area owned by another player, and that player is online, the owner receives a request to allow or deny the user from teleporting to their area.
 - Add limitations to /tpc which only allow a user to teleport X number of blocks. Prevents users from teleporting to the edge of the world.
 - Assess value in changing all tpr-based chat commands to one global command such as /tp to reduce the chance of confusion between tps_admin and the original mod (and also make it so people don't have to remember so many commands).

@@ -22,10 +22,7 @@ Originally made by Traxie21 and released with the WTFPL license.
 Forum link: https://forum.minetest.net/viewtopic.php?id=4457
 
 Updates by Zeno, Panquesito7 and ChaosWormz.
-License: LGPL-2.1 for everything.
-
-Optional dependencies: areas, intllib
-New release by RobbieF under new mod: tps_teleport - http://blog.minetest.tv/teleport-request/
+License: LGPLv2.1+ for everything.
 --]]
 
 tp = {}
@@ -189,6 +186,17 @@ function tp.tpr_send(sender, receiver)
 		end
 		return
 	end
+
+	if minetest.get_modpath("gamehub") then -- Compatibility with gamehub (UNTESTED)
+		if gamehub.players[receiver] then
+			minetest.chat_send_player(sender, S("Teleport request denied, player is in the gamehub!"))
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
+				end	
+			return
+		end
+	end
+
 	if minetest.get_modpath("chat2") then
 		chat2.send_message(minetest.get_player_by_name(receiver), S("@1 is requesting to teleport to you. /tpy to accept", sender), 0xFFFFFF)
 		chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request sent! It will timeout in @1 seconds", tp.timeout_delay), 0xFFFFFF)
@@ -246,6 +254,7 @@ function tp.tphr_send(sender, receiver)
 		end
 		return
 	end
+
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
 		if minetest.get_modpath("chat2") then
@@ -261,10 +270,22 @@ function tp.tphr_send(sender, receiver)
 			end
 		return
 	end
+
+	if minetest.get_modpath("gamehub") then -- Compatibility with gamehub (UNTESTED)
+		if gamehub.players[receiver] then
+			minetest.chat_send_player(sender, S("Teleport request denied, player is in the gamehub!"))
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
+				end	
+			return
+		end
+	end
+
 	if minetest.get_modpath("chat2") then
 		chat2.send_message(minetest.get_player_by_name(receiver), S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny", sender), 0xFFFFFF)
 		chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request sent! It will timeout in @1 seconds", tp.timeout_delay), 0xFFFFFF)
 	end
+
 	minetest.chat_send_player(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny", sender))
 	minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds", tp.timeout_delay))
 	-- Write name values to list and clear old values.
