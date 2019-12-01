@@ -1,21 +1,25 @@
 # Teleport Request
-A mod that allows players to send a teleport request.    
-**(See "How to use" below for more information.)**
+Allows players to request from another player to be teleported to them.
 
 ## Privileges
 Each command needs a privilege. These are the following privileges:
-- **tp** is requiered in order to use all commands.
-- **tp_tpc** is requiered in order to use `/tpc`
-- **tp_tpc** is requiered in order to use `/tpe`
-- **tp_tpc** is requiered in order to use `/tpj`
-- **interact** is also requiered to use all commands.    
-**tp_admin** overrides everything: e.g. you can teleport to players even when they haven't decided to accept, or not. You can also teleport him/her to you (this happens only when `enable_immediate_teleport` is enabled on `config.lua`).   
+- `tp` is required in order to use all commands.
+- `tp_tpc` is required in order to use `/tpc`.
+- `tp_tpc` is required in order to use `/tpe`.
+- `tp_tpc` is required in order to use `/tpj`.
+- `interact` is required to use all commands.
+- `tp_admin` gives more control to admins: 
+   - Admins can teleport to players even when they haven't decided to accept, or not.
+   - Admins can teleport players to him/her, if the `enable_immediate_teleport` setting is enabled.
+   - Admins can teleport to protected coordinates.
+
 Players can also teleport to coordinates, however, if the area is protected, the teleport will be denied.
 
 ## How to use
 Each command does a function. "**Example Usage**" is an example of how to use the command.   
-Note there must be 2 players in order to make the commands to work: a player must send a request to another player (**see https://wiki.minetest.net/Server or see https://wiki.minetest.net/Setting_up_a_server for more information**).   
-There are two methods of sending a request:     
+Note there must be 2 players in order to make the commands to work: a player must send a request to another player.
+
+There are two ways of sending a request:   
 1. A request which teleports you to the specified player (command `/tpr <player>`).   
 2. A request which teleports the specified player to you (command `/tphr <player>`).    
 
@@ -26,14 +30,14 @@ These are the following commands available in-game:
 - **Name:** Teleport Request
 - **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
 - **Required Privileges:** `interact, tp`
-- **Example Usage:** */tpr RobbieF* - requests permission from RobbieF to teleport to them.
+- **Example Usage:** `/tpr RobbieF` requests permission from RobbieF to teleport to them.
 - **Notes:** Usernames are case-sensitive. If you have the `tp_admin` privilege, you will immediately teleport to the specificed player (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tphr [playername] ```
 - **Name:** Teleport Here Request
 - **Description:** Request permission to teleport another player to you.
 - **Required Privileges:** `interact, tp`
-- **Example Usage:** /tphr RobbieF - requests RobbieF to teleport to you.
+- **Example Usage:** `/tphr RobbieF` requests RobbieF to teleport to you.
 - **Notes:** Usernames are case-sensitive. If you have the `tp_admin` privilege, RobbieF will teleport to you immediately (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tpc [x,y,z] ```
@@ -47,13 +51,13 @@ These are the following commands available in-game:
 - **Description:** Teleport a specified distance along a single specified axis.
 - **Required Privilege:** `interact", tp, tp_tpc`
 - **Available Options for *axis*:** x, y, z
-- **Example Usage:** '/tpj y 10' - teleport 10 nodes into the air.
+- **Example Usage:** `/tpj y 10` teleport 10 nodes into the air.
 
 ``` /tpe ```
 - **Name:** Teleport Evade
 - **Description:** In a sticky situation? Evade your enemy by teleporting to several nearby coordinates in random pattern. There's no knowing where you'll end up.
 - **Required Privileges:** `interact, tp_tpc, tp`
-- **Example Usage:** '/tpe' - teleports you to a random number of random coordinates in an evasive pattern.
+- **Example Usage:** `/tpe` teleports you to a random number of random coordinates in an evasive pattern.
 
 ``` /tpy ```
 - **Description:** Accept a user's request to teleport to you or teleport you to them.
@@ -61,9 +65,7 @@ These are the following commands available in-game:
 ``` /tpn ```
 - **Description:** Deny a user's request to teleport to you or teleport you to them.
 
-## Dependencies
-There are no dependencies.  
-However, optional dependencies are:
+## Optional dependencies
 - [areas](https://github.com/minetest-mods/areas)
 - [intllib](https://github.com/minetest-mods/intllib)
 - [beerchat](https://github.com/pandorabox-io/beerchat)
@@ -71,10 +73,10 @@ However, optional dependencies are:
 - [gamehub](https://github.com/shivajiva101/minetest-gamehub)
 
 ## Requirements
-This mod requires MT/MTG 5.0.0+ to run.   
+This mod requires MT 5.0.0+ to run.   
 Older versions not supported.
 
-## Bugfixes & suggestions
+## Issues, suggestions, features & bugfixes
 Report bugs or suggest ideas by [creating an issue](https://github.com/ChaosWormz/teleport-request/issues/new).      
 If you know how to fix an issue, or want something to be added, consider opening a [pull request](https://github.com/ChaosWormz/teleport-request/compare).
 
@@ -82,7 +84,6 @@ If you know how to fix an issue, or want something to be added, consider opening
 [LGPLv2.1+](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for everything.
 
 ## Contributors
-
 List of contributors (in no particular order):
 
 - [RobbieF](https://minetest.tv) | [GitHub](https://github.com/Cat5TV)
@@ -112,13 +113,13 @@ Or another way to do it, is changing the values in `settingtypes.txt`.
 
 ## Installation
 - Unzip the archive, rename the folder to `tpr` and
-place it in ..minetest/mods/
+place it in .. minetest/mods/
 
 - GNU/Linux: If you use a system-wide installation place
     it in ~/.minetest/mods/.
 
 - If you only want this to be used in a single world, place
-    the folder in ..worldmods/ in your world directory.
+    the folder in .. worldmods/ in your world directory.
 
 For further information or help, see:    
 https://wiki.minetest.net/Installing_Mods
