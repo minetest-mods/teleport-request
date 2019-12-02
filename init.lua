@@ -1,5 +1,6 @@
 --[[
-Copyright (C) 2015-2019 ChaosWormz
+Allows players to request from another player to be teleported to them, and do much more.
+Copyright (C) 2015-2019 ChaosWormz and contributors
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -345,7 +346,7 @@ function tp.tpc_send(player, coordinates)
 		end
 	else
 		if minetest.check_player_privs(pname, {tp_tpc = true}) then
-			local protected = minetest.is_protected(target_coords,pname)
+			local protected = minetest.is_protected(target_coords, pname)
 			if protected and minetest.get_modpath("areas") then
 				if not areas:canInteract(target_coords, player) then
 					local owners = areas:getNodeOwners(target_coords)
@@ -381,6 +382,7 @@ function tp.tpr_deny(name)
 			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
 		end
 		tp.tpr_list[name] = nil
+
 	elseif tp.tphr_list[name] then
 		name2 = tp.tphr_list[name]
 		minetest.chat_send_player(name2, S("Teleport request denied."))
@@ -390,6 +392,7 @@ function tp.tpr_deny(name)
 			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
 		end
 		tp.tphr_list[name] = nil
+
 	else
 		minetest.chat_send_player(name, S("Usage: /tpn allows you to deny teleport requests sent to you by other players."))
 		if minetest.get_modpath("chat2") then
@@ -416,6 +419,7 @@ function tp.tpr_accept(name, param)
 		target = minetest.get_player_by_name(name2)
 		chatmsg = S("@1 is teleporting to you.", name2)
 		tp.tpr_list[name] = nil
+
 	elseif tp.tphr_list[name] then
 		name2 = tp.tphr_list[name]
 		source = minetest.get_player_by_name(name2)
@@ -430,8 +434,12 @@ function tp.tpr_accept(name, param)
 	if not source
 	or not target then
 		minetest.chat_send_player(name, S("@1 doesn't exist, or just disconnected/left (by timeout).", name2))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(name), S("@1 doesn't exist, or just disconnected/left (by timeout).", name2), 0xFFFFFF)
+		end
 		return
 	end
+
 	tp.tpr_teleport_player()
 	minetest.chat_send_player(name2, S("Request Accepted!"))
 	minetest.chat_send_player(name, chatmsg)
@@ -463,6 +471,9 @@ function tp.tpj(player, param)
 	end
 	
 	if not tonumber(args[2]) then
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(player), S("Not a number!"), 0xFFFFFF)
+		end
 		return false, S("Not a number!")
 	end
 	
@@ -481,6 +492,7 @@ function tp.tpj(player, param)
 		end
 		return
 	end
+
 	if tp.can_teleport(target_coords) == false then
 		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
 		if minetest.get_modpath("chat2") then
@@ -551,6 +563,7 @@ if tp.enable_tpp_command then
 					end
 					table.insert(places, S("Usage: /tpp <place>"))
 					return true, table.concat(places, "\n")
+
 			-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 			elseif tp.available_places[param] then
 				pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
@@ -558,7 +571,8 @@ if tp.enable_tpp_command then
 				minetest.chat_send_player(player, S("Teleporting to @1.", param))
 				if minetest.get_modpath("chat2") then
 					chat2.send_message(minetest.get_player_by_name(player), S("Teleporting to @1.", param), 0xFFFFFF)
-				end	
+				end
+
 			-- Check if the place exists.	
 			elseif not tp.available_places[param] then
 				minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
