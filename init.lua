@@ -80,7 +80,8 @@ function tp.find_free_position_near(pos)
 	}
 	for _,d in pairs(tries) do
 		local p = vector.add(pos, d)
-		if not minetest.registered_nodes[minetest.get_node(p).name].walkable then
+		local def = minetest.registered_nodes[minetest.get_node(p).name]
+		if def and not def.walkable then
 			return p, true
 		end
 	end
