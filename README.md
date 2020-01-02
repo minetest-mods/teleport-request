@@ -16,7 +16,7 @@ Each command needs a privilege. These are the following privileges:
 Players can also teleport to coordinates, however, if the area is protected, the teleport will be denied.
 
 ## How to use
-Each command does a function. "**Example Usage**" is an example of how to use the command.   
+Each command does a function. "**Example usage**" is an example of how to use the command.   
 Note there must be 2 players in order to make the commands to work: a player must send a request to another player.
 
 There are two ways of sending a request:   
@@ -29,46 +29,48 @@ These are the following commands available in-game:
 ``` /tpr [playername] ```
 - **Name:** Teleport Request
 - **Description:** Requests permission to teleport to another player, where [playername] is their exact name.
-- **Required Privileges:** `interact, tp`
-- **Example Usage:** `/tpr RobbieF` requests permission from RobbieF to teleport to them.
+- **Required privileges:** `interact, tp`
+- **Example usage:** `/tpr RobbieF` requests permission from RobbieF to teleport to them.
 - **Notes:** Usernames are case-sensitive. If you have the `tp_admin` privilege, you will immediately teleport to the specificed player (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tphr [playername] ```
 - **Name:** Teleport Here Request
 - **Description:** Request permission to teleport another player to you.
-- **Required Privileges:** `interact, tp`
-- **Example Usage:** `/tphr RobbieF` requests RobbieF to teleport to you.
+- **Required privileges:** `interact, tp`
+- **Example usage:** `/tphr RobbieF` requests RobbieF to teleport to you.
 - **Notes:** Usernames are case-sensitive. If you have the `tp_admin` privilege, RobbieF will teleport to you immediately (does not apply if `enable_immediate_teleport` setting is disabled, enabled by default).
 
 ``` /tpc [x,y,z] ```
 - **Name:** Teleport to Coordinates
 - **Description:** Teleport to coordinates.
-- **Required Privileges:** `interact, tp_tpc, tp`
+- **Required privileges:** `interact, tp_tpc, tp`
 - **Notes:** Honors area protection. If the area is protected, it must be owned by you in order to teleport to it, or you must have the `areas` privilege in order to teleport to those coordinates.
 
 ``` /tpj [axis] [distance] ```
 - **Name:** Teleport Jump
 - **Description:** Teleport a specified distance along a single specified axis.
-- **Required Privilege:** `interact", tp, tp_tpc`
-- **Available Options for *axis*:** x, y, z
-- **Example Usage:** `/tpj y 10` teleport 10 nodes into the air.
+- **Required privilege:** `interact", tp, tp_tpc`
+- **Available options for *axis*:** x, y, z
+- **Example usage:** `/tpj y 10` teleport 10 nodes into the air.
 
 ``` /tpe ```
 - **Name:** Teleport Evade
 - **Description:** In a sticky situation? Evade your enemy by teleporting to several nearby coordinates in random pattern. There's no knowing where you'll end up.
-- **Required Privileges:** `interact, tp_tpc, tp`
-- **Example Usage:** `/tpe` teleports you to a random number of random coordinates in an evasive pattern.
+- **Required privileges:** `interact, tp_tpc, tp`
+- **Example usage:** `/tpe` teleports you to a random number of random coordinates in an evasive pattern.
 
 ``` /tpy ```
 - **Description:** Accept a user's request to teleport to you or teleport you to them.
+- **Required privileges:** `interact, tp`
 
 ``` /tpn ```
 - **Description:** Deny a user's request to teleport to you or teleport you to them.
+- **Required privileges:** `interact, tp`
 
 ## Optional dependencies
 - [areas](https://github.com/minetest-mods/areas)
 - [intllib](https://github.com/minetest-mods/intllib)
-- [beerchat](https://github.com/pandorabox-io/beerchat)
+- [beerchat](https://github.com/minetest-beerchat/beerchat)
 - [chat2](https://github.com/minetest-mods/chat2)
 - [gamehub](https://github.com/shivajiva101/minetest-gamehub)
 
