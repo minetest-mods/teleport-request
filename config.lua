@@ -18,9 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 USA
 --]]
 
--- Load support for intllib.
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = tp.intllib
 
 -- Timeout delay and mod version.
 tp.timeout_delay = tonumber(minetest.settings:get("tp.timeout_delay")) or 60

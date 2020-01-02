@@ -26,11 +26,13 @@ Updates by Zeno, Panquesito7 and ChaosWormz.
 License: LGPLv2.1+ for everything.
 --]]
 
-tp = {}
-
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
+
+tp = {
+	intllib = S
+}
 
 -- Load configuration.
 dofile(MP.."/config.lua")
@@ -534,58 +536,62 @@ function tp.tpe(player)
 	end
 end
 
--- Register chatcommands
+-- Teleport To Place (TPP) system.
 if tp.enable_tpp_command then
+
+	function tp.tpp(player, param)
+		local pname = minetest.get_player_by_name(player)
+			
+		-- Show the available places to the player (taken from shivajiva101's POI mod, thanks!).
+		if param == "" then
+			local places = {}
+			if not tp.available_places then tp.available_places = {} end
+			for key, value in pairs(tp.available_places) do
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(player), key, 0xFFFFFF)
+				end
+				table.insert(places, key)
+			end
+			if #places == 0 then
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(player), S("There are no places yet."), 0xFFFFFF)
+				end
+				return true, S("There are no places yet.")
+			end
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(player), S("Usage: /tpp <place>"), 0xFFFFFF)
+				end
+				table.insert(places, S("Usage: /tpp <place>"))
+				return true, table.concat(places, "\n")
+
+		-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
+		elseif tp.available_places[param] then
+			pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
+			tp.tpp_teleport_player(player)
+			minetest.chat_send_player(player, S("Teleporting to @1.", param))
+			if minetest.get_modpath("chat2") then
+				chat2.send_message(minetest.get_player_by_name(player), S("Teleporting to @1.", param), 0xFFFFFF)
+			end
+
+		-- Check if the place exists.	
+		elseif not tp.available_places[param] then
+			minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
+			if minetest.get_modpath("chat2") then
+				chat2.send_message(minetest.get_player_by_name(player), S("There is no place by that name. Keep in mind this is case-sensitive."), 0xFFFFFF)
+			end
+			return
+		end
+	end
+
 	minetest.register_chatcommand("tpp", {
 		description = S("Teleport to a place (i.e., spawn, shop)."),
 		params = S("<place> | leave empty to see available places"),
 		privs = {},
-		func = function(player, param)
-			local pname = minetest.get_player_by_name(player)
-			
-			-- Show the available places to the player (taken from shivajiva101's POI mod, thanks!).
-			if param == "" then
-			    local places = {}
-				if not tp.available_places then tp.available_places = {} end
-				for key, value in pairs(tp.available_places) do
-					if minetest.get_modpath("chat2") then
-						chat2.send_message(minetest.get_player_by_name(player), key, 0xFFFFFF)
-					end
-					table.insert(places, key)
-				end
-				if #places == 0 then
-					if minetest.get_modpath("chat2") then
-						chat2.send_message(minetest.get_player_by_name(player), S("There are no places yet."), 0xFFFFFF)
-					end
-					return true, S("There are no places yet.")
-				end
-					if minetest.get_modpath("chat2") then
-						chat2.send_message(minetest.get_player_by_name(player), S("Usage: /tpp <place>"), 0xFFFFFF)
-					end
-					table.insert(places, S("Usage: /tpp <place>"))
-					return true, table.concat(places, "\n")
-
-			-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
-			elseif tp.available_places[param] then
-				pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
-				tp.tpp_teleport_player(player)
-				minetest.chat_send_player(player, S("Teleporting to @1.", param))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(player), S("Teleporting to @1.", param), 0xFFFFFF)
-				end
-
-			-- Check if the place exists.	
-			elseif not tp.available_places[param] then
-				minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(player), S("There is no place by that name. Keep in mind this is case-sensitive."), 0xFFFFFF)
-				end	
-			    return	
-			end
-		end,
+		func = tp.tpp
 	})
 end
 
+-- Register chatcommands
 minetest.register_chatcommand("tpr", {
 	description = S("Request teleport to another player"),
 	params = S("<playername> | leave playername empty to see help message"),
