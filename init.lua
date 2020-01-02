@@ -143,7 +143,7 @@ end)
 function tp.tpr_send(sender, receiver)
 	-- Compatibility with beerchat (UNTESTED)
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
-			if minetest.get_player_by_name(sender):get_attribute("beerchat:muted:" .. sender) then
+			if minetest.get_player_by_name(sender):get_meta():get_string("beerchat:muted:" .. sender) then
 				minetest.chat_send_player(sender, S("You are not allowed to send requests because you're muted."))
 				if minetest.get_modpath("chat2") then
 					chat2.send_message(minetest.get_player_by_name(sender), S("You are not allowed to send requests because you're muted."), 0xFFFFFF)
@@ -227,7 +227,7 @@ end
 function tp.tphr_send(sender, receiver)
 	-- Compatibility with beerchat (UNTESTED)
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
-			if minetest.get_player_by_name(sender):get_attribute("beerchat:muted:" .. sender) then
+			if minetest.get_player_by_name(sender):get_meta():get_string("beerchat:muted:" .. sender) then
 				minetest.chat_send_player(sender, S("You are not allowed to send requests because you're muted."))
 				if minetest.get_modpath("chat2") then
 					chat2.send_message(minetest.get_player_by_name(sender), S("You are not allowed to send requests because you're muted."), 0xFFFFFF)
