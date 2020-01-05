@@ -141,6 +141,7 @@ minetest.register_on_leaveplayer(function(name)
 end)
 
 function tp.tpr_send(sender, receiver)
+--[[
 	-- Compatibility with beerchat (UNTESTED)
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
 			if minetest.get_player_by_name(receiver):get_meta():get_string("beerchat:muted:" .. sender) == "true" then
@@ -151,6 +152,7 @@ function tp.tpr_send(sender, receiver)
 			return
 		end
 	end
+--]]
 	if minetest.check_player_privs(sender, {tp_admin = true}) and tp.enable_immediate_teleport then
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
