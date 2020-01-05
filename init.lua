@@ -141,9 +141,18 @@ minetest.register_on_leaveplayer(function(name)
 end)
 
 function tp.tpr_send(sender, receiver)
-	-- Compatibility with beerchat (UNTESTED)
+	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
-			if minetest.get_player_by_name(receiver):get_meta():get_string("beerchat:muted:" .. sender) == "true" then
+			if not minetest.get_player_by_name(receiver) then
+				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
+				end
+				return
+			end
+
+			local player_receiver = minetest.get_player_by_name(receiver)
+			if player_receiver:get_meta():get_string("beerchat:muted:" .. sender) == "true" then
 				minetest.chat_send_player(sender, S("You are not allowed to send requests because you're muted."))
 				if minetest.get_modpath("chat2") then
 					chat2.send_message(minetest.get_player_by_name(sender), S("You are not allowed to send requests because you're muted."), 0xFFFFFF)
@@ -151,6 +160,7 @@ function tp.tpr_send(sender, receiver)
 			return
 		end
 	end
+
 	if minetest.check_player_privs(sender, {tp_admin = true}) and tp.enable_immediate_teleport then
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
@@ -225,9 +235,18 @@ function tp.tpr_send(sender, receiver)
 end
 
 function tp.tphr_send(sender, receiver)
-	-- Compatibility with beerchat (UNTESTED)
+	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
-			if minetest.get_player_by_name(receiver):get_meta():get_string("beerchat:muted:" .. sender) == "true" then
+			if not minetest.get_player_by_name(receiver) then
+				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
+				end	
+				return
+			end
+
+			local player_receiver = minetest.get_player_by_name(receiver)
+			if player_receiver:get_meta():get_string("beerchat:muted:" .. sender) == "true" then
 				minetest.chat_send_player(sender, S("You are not allowed to send requests because you're muted."))
 				if minetest.get_modpath("chat2") then
 					chat2.send_message(minetest.get_player_by_name(sender), S("You are not allowed to send requests because you're muted."), 0xFFFFFF)
@@ -235,6 +254,7 @@ function tp.tphr_send(sender, receiver)
 			return
 		end
 	end
+
 	if minetest.check_player_privs(sender, {tp_admin = true}) and tp.enable_immediate_teleport then
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
