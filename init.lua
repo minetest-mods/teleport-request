@@ -50,7 +50,7 @@ minetest.register_on_leaveplayer(function(name)
 	end
 end)
 
-dofile(MP.."/privileges")
+dofile(MP.."/privileges.lua")
 dofile(MP.."/config.lua")
 dofile(MP.."/functions.lua")
 dofile(MP.."/commands.lua")
