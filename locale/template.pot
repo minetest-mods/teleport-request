@@ -1,7 +1,7 @@
 # Template translation for Teleport Request.
-# Copyright (C) 2015-2019 ChaosWormz and contributors.
+# Copyright (C) 2014-2020 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
-# Panquesito7, 2019.
+# David Leal <halfpacho@gmail.com>, 2019.
 
 msgid ""
 msgstr ""
@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-12 5:07+0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: David Leal <halfpacho@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
