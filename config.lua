@@ -18,9 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 USA
 --]]
 
--- Support for intllib
-local S = tp.intllib
-
 -- Timeout delay and mod version.
 tp.timeout_delay = tonumber(minetest.settings:get("tp.timeout_delay")) or 60
 tp.version = "1.5"
