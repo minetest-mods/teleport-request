@@ -28,14 +28,13 @@ License: LGPLv2.1+ for everything.
 
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = dofile(MP.."/intllib.lua")
 
 tp = {
-	intllib = S
+	intllib = S,
+	tpr_list = {},
+	tphr_list = {}
 }
-
-tp.tpr_list = {}
-tp.tphr_list = {}
 
 -- Clear requests when the player leaves
 minetest.register_on_leaveplayer(function(name)
@@ -43,7 +42,7 @@ minetest.register_on_leaveplayer(function(name)
 		tp.tpr_list[name] = nil
 		return
 	end
-	
+
 	if tp.tphr_list[name] then
 		tp.tphr_list[name] = nil
 		return

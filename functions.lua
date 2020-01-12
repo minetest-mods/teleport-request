@@ -21,6 +21,9 @@ USA
 -- Support for intllib
 local S = tp.intllib
 
+-- Placeholders
+local chatmsg, source, target, name2, target_coords, pos2
+
 local map_size = 30912
 function tp.can_teleport(to)
 	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
@@ -28,29 +31,29 @@ end
 
 -- Teleport player to a player (used in "/tpr" and in "/tphr" command).
 function tp.tpr_teleport_player()
-	local target_coords = source:get_pos()
+	target_coords = source:get_pos()
 	local target_sound = target:get_pos()
 	target:set_pos(tp.find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
-	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos2 = target_coords, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos2 = target_sound, gain = 0.5, max_hear_distance = 10})
 	--tp.parti2(target_coords)
 end
 
 -- TPC & TPJ
 function tp.tpc_teleport_player(player)
 	local pname = minetest.get_player_by_name(player)
-	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos2 = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 	pname:set_pos(tp.find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos2 = target_coords, gain = 0.5, max_hear_distance = 10})
 	--tp.parti2(target_coords)
 end
 
 -- TPP
 function tp.tpp_teleport_player(player)
 	local pname = minetest.get_player_by_name(player)
-	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-	pname:set_pos(tp.find_free_position_near(pos))
-	minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos2 = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(tp.find_free_position_near(pos2))
+	minetest.sound_play("whoosh", {pos2 = pos2, gain = 0.5, max_hear_distance = 10})
 	--tp.parti2(target_coords)
 end
 
@@ -97,6 +100,14 @@ end
 function tp.tpr_send(sender, receiver)
 	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
+			if receiver == "" then
+				minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
+					end
+				return
+			end
+
 			if not minetest.get_player_by_name(receiver) then
 				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 				if minetest.get_modpath("chat2") then
@@ -118,18 +129,18 @@ function tp.tpr_send(sender, receiver)
 		if minetest.check_player_privs(sender, {tp_admin = true}) and tp.enable_immediate_teleport then
 			if receiver == "" then
 				minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
-				end
-            	return
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
+					end
+				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
 				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-				end
-	    		return
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
+					end
+				return
 			end
 
 			tp.tpr_list[receiver] = sender
@@ -140,29 +151,29 @@ function tp.tpr_send(sender, receiver)
 			end
 			return
 		end
-	
+
 			if receiver == "" then
 				minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
-				end
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
+					end
 				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
 				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-				end
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
+					end
 				return
 			end
 
 			if minetest.get_modpath("gamehub") then -- Compatibility with gamehub (UNTESTED)
 				if gamehub.players[receiver] then
 					minetest.chat_send_player(sender, S("Teleport request denied, player is in the gamehub!"))
-					if minetest.get_modpath("chat2") then
-						chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
-					end
+						if minetest.get_modpath("chat2") then
+							chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
+						end
 					return
 				end
 			end
@@ -201,7 +212,7 @@ function tp.tphr_send(sender, receiver)
 				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 				if minetest.get_modpath("chat2") then
 					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-				end	
+				end
 				return
 			end
 
@@ -218,18 +229,18 @@ function tp.tphr_send(sender, receiver)
 		if minetest.check_player_privs(sender, {tp_admin = true}) and tp.enable_immediate_teleport then
 			if receiver == "" then
 				minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
-				end
-	    		return
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
+					end
+				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
 				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-				end
-	    		return
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
+					end
+				return
 			end
 
 			tp.tphr_list[receiver] = sender
@@ -243,26 +254,26 @@ function tp.tphr_send(sender, receiver)
 
 			if receiver == "" then
 				minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
-				end
+					if minetest.get_modpath("chat2") then
+						chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
+					end
 				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
 				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-				if minetest.get_modpath("chat2") then
+					if minetest.get_modpath("chat2") then
 						chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-				end
+					end
 				return
 			end
 
 			if minetest.get_modpath("gamehub") then -- Compatibility with gamehub (UNTESTED)
 				if gamehub.players[receiver] then
 					minetest.chat_send_player(sender, S("Teleport request denied, player is in the gamehub!"))
-					if minetest.get_modpath("chat2") then
-						chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
-					end
+						if minetest.get_modpath("chat2") then
+							chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
+						end
 					return
 				end
 			end
@@ -391,7 +402,7 @@ function tp.tpr_deny(name)
 end
 
 -- Teleport Accept Systems
-function tp.tpr_accept(name, param)
+function tp.tpr_accept(name)
 
 	-- Check to prevent constant teleporting.
 	if not tp.tpr_list[name] and not tp.tphr_list[name] then
@@ -401,7 +412,7 @@ function tp.tpr_accept(name, param)
 		end
 		return
 	end
-	
+
 	if tp.tpr_list[name] then
 		name2 = tp.tpr_list[name]
 		source = minetest.get_player_by_name(name)
@@ -418,7 +429,7 @@ function tp.tpr_accept(name, param)
 	else
 		return
 	end
-	
+
 	-- Could happen if either player disconnects (or timeout); if so just abort
 	if not source
 	or not target then
@@ -440,7 +451,6 @@ end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
 function tp.tpj(player, param)
-	local pname = minetest.get_player_by_name(player)
 
 	if param == "" then
 		minetest.chat_send_player(player, S("Usage: <x|y|z> <number>"))
@@ -458,14 +468,14 @@ function tp.tpj(player, param)
 		end
 		return false
 	end
-	
+
 	if not tonumber(args[2]) then
 		if minetest.get_modpath("chat2") then
 			chat2.send_message(minetest.get_player_by_name(player), S("Not a number!"), 0xFFFFFF)
 		end
 		return false, S("Not a number!")
 	end
-	
+
 	-- Initially generate the target coords from the player's current position (since it's relative) and then perform the math.
 	target_coords = minetest.get_player_by_name(player):get_pos()
 	if args[1] == "x" then
@@ -510,7 +520,7 @@ function tp.tpe(player)
 	for i = 1,times do
 		-- do this every 1 second
 		minetest.after(iteration,
-			function() 
+			function()
 				isnegative = negatives[math.random(2)] -- choose randomly whether this is this way or that
 				distance = isnegative .. math.random(mindistance,maxdistance) -- the distance to jump
 				axis = options[math.random(3)]
@@ -526,8 +536,7 @@ end
 if tp.enable_tpp_command then
 
 	function tp.tpp(player, param)
-		local pname = minetest.get_player_by_name(player)
-			
+
 		-- Show the available places to the player (taken from shivajiva101's POI mod, thanks!).
 		if param == "" then
 			local places = {}
@@ -552,14 +561,14 @@ if tp.enable_tpp_command then
 
 		-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 		elseif tp.available_places[param] then
-			pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
+			pos2 = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
 			tp.tpp_teleport_player(player)
 			minetest.chat_send_player(player, S("Teleporting to @1.", param))
 			if minetest.get_modpath("chat2") then
 				chat2.send_message(minetest.get_player_by_name(player), S("Teleporting to @1.", param), 0xFFFFFF)
 			end
 
-		-- Check if the place exists.	
+		-- Check if the place exists.
 		elseif not tp.available_places[param] then
 			minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
 			if minetest.get_modpath("chat2") then
