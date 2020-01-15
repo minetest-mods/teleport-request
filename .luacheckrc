@@ -7,20 +7,14 @@ globals = {
 }
 
 read_globals = {
-	-- Stdlib
 	string = {fields = {"split", "trim"}},
 	table = {fields = {"copy", "getn"}},
 
-	-- Minetest
-	"minetest",
+	"minetest", "core",
 	"vector", "ItemStack",
-	"dump", "dump2", "chat2",
+	"dump", "dump2",
 
-    "gamehub",
-    "intllib", "pos2",
-    "target_coords", "chatmsg",
-    "name2", "target", "source", "areas",
-
-	-- Deps
+	"chat2", "gamehub", 
+	"intllib", "areas",
 
 }
