@@ -18,17 +18,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 USA
 --]]
 
--- Support for intllib
-local S = tp.intllib
-
 -- Timeout delay and mod version.
 tp.timeout_delay = tonumber(minetest.settings:get("tp.timeout_delay")) or 60
 tp.version = "1.5"
 
 -- Enable teleporting immediately to the specified player for those with "tp_admin" privilege.
 tp.enable_immediate_teleport = minetest.settings:get_bool("tp.enable_immediate_teleport")
-
-local chatmsg, source, target, name2, target_coords, pos
 
 -- Set the values of the positions of your places, players will be able to teleport to them (no matter if it is protected, or not).
 -- You must activate "enable_tpp_command" in order to make this to work.
