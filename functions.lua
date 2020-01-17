@@ -345,7 +345,7 @@ function tp.tpc_send(player, coordinates)
 		end
 	else
 		if minetest.check_player_privs(pname, {tp_tpc = true}) then
-			local protected = minetest.is_protected(target_coords, pname)
+			local protected = minetest.is_protected(target_coords, player)
 			if protected and minetest.get_modpath("areas") then
 				if not areas:canInteract(target_coords, player) then
 					local owners = areas:getNodeOwners(target_coords)
