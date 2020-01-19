@@ -22,7 +22,7 @@ USA
 local S = tp.intllib
 
 -- Placeholders
-local chatmsg, source, target, name2, target_coords, pos2
+local chatmsg, source, target, name2, target_coords
 
 local map_size = 30912
 function tp.can_teleport(to)
@@ -567,7 +567,7 @@ if tp.enable_tpp_command then
 
 		-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 		elseif tp.available_places[param] then
-			pos2 = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
+			pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
 			tp.tpp_teleport_player(player)
 			minetest.chat_send_player(player, S("Teleporting to @1.", param))
 			if minetest.get_modpath("chat2") then
