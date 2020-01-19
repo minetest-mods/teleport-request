@@ -22,7 +22,7 @@ USA
 local S = tp.intllib
 
 -- Placeholders
-local chatmsg, source, target, name2, target_coords, pos2
+local chatmsg, source, target, name2, target_coords
 
 local map_size = 30912
 function tp.can_teleport(to)
@@ -34,26 +34,26 @@ function tp.tpr_teleport_player()
 	target_coords = source:get_pos()
 	local target_sound = target:get_pos()
 	target:set_pos(tp.find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos2 = target_coords, gain = 0.5, max_hear_distance = 10})
-	minetest.sound_play("whoosh", {pos2 = target_sound, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = target_sound, gain = 0.5, max_hear_distance = 10})
 	--tp.parti2(target_coords)
 end
 
 -- TPC & TPJ
 function tp.tpc_teleport_player(player)
 	local pname = minetest.get_player_by_name(player)
-	minetest.sound_play("whoosh", {pos2 = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 	pname:set_pos(tp.find_free_position_near(target_coords))
-	minetest.sound_play("whoosh", {pos2 = target_coords, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = target_coords, gain = 0.5, max_hear_distance = 10})
 	--tp.parti2(target_coords)
 end
 
 -- TPP
 function tp.tpp_teleport_player(player)
 	local pname = minetest.get_player_by_name(player)
-	minetest.sound_play("whoosh", {pos2 = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-	pname:set_pos(tp.find_free_position_near(pos2))
-	minetest.sound_play("whoosh", {pos2 = pos2, gain = 0.5, max_hear_distance = 10})
+	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(tp.find_free_position_near(pos))
+	minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
 	--tp.parti2(target_coords)
 end
 
@@ -567,7 +567,7 @@ if tp.enable_tpp_command then
 
 		-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 		elseif tp.available_places[param] then
-			pos2 = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
+			pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
 			tp.tpp_teleport_player(player)
 			minetest.chat_send_player(player, S("Teleporting to @1.", param))
 			if minetest.get_modpath("chat2") then
