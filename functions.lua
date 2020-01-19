@@ -52,8 +52,8 @@ end
 function tp.tpp_teleport_player(player)
 	local pname = minetest.get_player_by_name(player)
 	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
-	pname:set_pos(tp.find_free_position_near(pos2))
-	minetest.sound_play("whoosh", {pos = pos2, gain = 0.5, max_hear_distance = 10})
+	pname:set_pos(tp.find_free_position_near(pos))
+	minetest.sound_play("whoosh", {pos = pos, gain = 0.5, max_hear_distance = 10})
 	--tp.parti2(target_coords)
 end
 
