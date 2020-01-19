@@ -49,7 +49,7 @@ function tp.tpc_teleport_player(player)
 end
 
 -- TPP
-function tp.tpp_teleport_player(player)
+function tp.tpp_teleport_player(player, pos)
 	local pname = minetest.get_player_by_name(player)
 	minetest.sound_play("whoosh", {pos = pname:get_pos(), gain = 0.5, max_hear_distance = 10})
 	pname:set_pos(tp.find_free_position_near(pos))
@@ -567,8 +567,8 @@ if tp.enable_tpp_command then
 
 		-- Teleport player to the specified place (taken from shivajiva101's POI mod, thanks!).
 		elseif tp.available_places[param] then
-			pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
-			tp.tpp_teleport_player(player)
+			local pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
+			tp.tpp_teleport_player(player, pos)
 			minetest.chat_send_player(player, S("Teleporting to @1.", param))
 			if minetest.get_modpath("chat2") then
 				chat2.send_message(minetest.get_player_by_name(player), S("Teleporting to @1.", param), 0xFFFFFF)
