@@ -23,7 +23,7 @@ Originally made by Traxie21 and released with the WTFPL license.
 Forum link: https://forum.minetest.net/viewtopic.php?id=4457
 
 Updates by Zeno, Panquesito7 and ChaosWormz.
-License: LGPLv2.1+ for everything.
+License: LGPLv2.1+ for code, CC BY-SA 4.0 for sounds.
 --]]
 
 -- Load support for intllib.
