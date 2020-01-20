@@ -447,11 +447,26 @@ function tp.tpr_accept(name)
 	end
 
 	tp.tpr_teleport_player()
-	minetest.chat_send_player(name2, S("Request Accepted!"))
+
 	minetest.chat_send_player(name, chatmsg)
 	if minetest.get_modpath("chat2") then
-		chat2.send_message(minetest.get_player_by_name(name2), S("Request Accepted!"), 0xFFFFFF)
 		chat2.send_message(minetest.get_player_by_name(name), chatmsg, 0xFFFFFF)
+	end
+
+	if minetest.check_player_privs(name2, {tp_admin = true}) == false then
+		minetest.chat_send_player(name2, S("Request Accepted!"))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(name2), S("Request Accepted!"), 0xFFFFFF)
+		end
+
+	else
+		if tp.enable_immediate_teleport then return end
+
+		minetest.chat_send_player(name2, S("Request Accepted!"))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(name2), S("Request Accepted!"), 0xFFFFFF)
+		end
+		return
 	end
 end
 
