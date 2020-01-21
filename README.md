@@ -87,7 +87,10 @@ Report bugs or suggest ideas by [creating an issue](https://github.com/ChaosWorm
 If you know how to fix an issue, or want something to be added, consider opening a [pull request](https://github.com/ChaosWormz/teleport-request/compare).
 
 ## License
-[LGPLv2.1+](https://github.com/ChaosWormz/teleport-request/blob/master/LICENSE.md) for everything.
+Copyright (C) 2014-2020 ChaosWormz and contributors.
+
+Teleport Request code is licensed under LGPLv2.1+, see [`LICENSE.md`](LICENSE.md).   
+[`tpr_warp.ogg`](sounds/tpr_warp.ogg) is licensed under [CC BY-SA 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ## Contributors
 List of contributors (in no particular order):
