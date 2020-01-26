@@ -1,7 +1,7 @@
 # Spanish translation for Teleport Request.
 # Copyright (C) 2014-2020 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
-# David Leal <halfpacho@gmail.com>, 2019.
+# David Leal <halfpacho@gmail.com>, 2019-2020.
 
 msgid ""
 msgstr ""
@@ -37,7 +37,7 @@ msgid "Usage: /tpr <Player name>"
 msgstr "Uso: /tpr <jugador>"
 
 #: init.lua
-msgid "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"
+msgid "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."
 msgstr "No hay jugador con ese nombre. Tenga en cuenta que esto es caso-sensitivo, y el jugador debe de estar én linea."
 
 #: init.lua
@@ -49,12 +49,12 @@ msgid "You are teleporting to @1."
 msgstr "Te estas teletransportando a @1."
 
 #: init.lua
-msgid "@1 is requesting to teleport to you. /tpy to accept"
-msgstr "@1 esta pidiendo teletransportarse a ti. /tpy para aceptar"
+msgid "@1 is requesting to teleport to you. /tpy to accept."
+msgstr "@1 esta pidiendo teletransportarse a ti. /tpy para aceptar."
 
 #: init.lua
-msgid "Teleport request sent! It will timeout in @1 seconds"
-msgstr "¡Solicitud enviada! Se agotara en @1 segundos"
+msgid "Teleport request sent! It will timeout in @1 seconds."
+msgstr "¡Solicitud enviada! Se agotara en @1 segundos."
 
 #: init.lua
 msgid "Request timed-out."
@@ -69,8 +69,8 @@ msgid "Usage: /tphr <Player name>"
 msgstr "Uso: /tphr <jugador>"
 
 #: init.lua
-msgid "@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny"
-msgstr "@1 esta pidiendo que tu te teletransportes a el/ella. /tpy para aceptar, /tpn para denegar"
+msgid "@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny."
+msgstr "@1 esta pidiendo que tu te teletransportes a el/ella. /tpy para aceptar, /tpn para denegar."
 
 #: init.lua
 msgid "Usage: /tpc <x, y, z>"
@@ -85,8 +85,12 @@ msgid "Teleporting to: @1, @2, @3"
 msgstr "Teletransportandose a: @1, @2, @3"
 
 #: init.lua
-msgid "Error: @1 is protected by @2."
-msgstr "Error: @1 esta protegido por @2."
+msgid "Area request sent! Waiting for @1 to accept your request. It will timeout in @2 seconds."
+msgstr "Solicitud de área enviada! Esperando a @1 que acepte tu solicitud. Se agotara en @2 segundos."
+
+#: init.lua
+msgid "@1 is requesting to teleport to a protected area of yours @2."
+msgstr "@1 solicita teletransportarse a una área protegida tuya @2."
 
 #: init.lua
 msgid "Error: You do not have permission to teleport to those coordinates."
@@ -101,16 +105,24 @@ msgid "You denied the request @1 sent you."
 msgstr "Tú denegaste la solicitud de teletransporte que @1 te mando."
 
 #: init.lua
-msgid "Usage: /tpn allows you to deny teleport requests sent to you by other players."
+msgid "Usage: /tpn allows you to deny teleport/area requests sent to you by other players."
 msgstr "Uso: /tpn te permite denegar solicitudes enviadas para ti de otros jugadores."
 
 #: init.lua
-msgid "Usage: /tpy allows you to accept teleport requests sent to you by other players"
-msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugadores"
+msgid "Area request denied."
+msgstr "Solicitud de área denegada."
 
 #: init.lua
-msgid "@1 doesn't exist, or just disconnected/left (by timeout)."
-msgstr "@1 no existe, o se desconecto/fue."
+msgid "Usage: /tpy allows you to accept teleport/area requests sent to you by other players."
+msgstr "Uso: /tpy te permite aceptar solicitudes enviadas para ti de otros jugadores."
+
+#: init.lua
+msgid "@1 is teleporting to your protected area @2."
+msgstr "@1 se esta teletransportando a tu área protegida @2."
+
+#: init.lua
+msgid "@1 is not online right now."
+msgstr "@1 no esta en linea ahora mismo."
 
 #: init.lua
 msgid "Request Accepted!"
