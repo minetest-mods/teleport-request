@@ -38,7 +38,7 @@ msgstr "Uso: /tpr <jugador>"
 
 #: init.lua
 msgid "There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."
-msgstr "No hay jugador con ese nombre. Tenga en cuenta que esto es caso-sensitivo, y el jugador debe de estar én linea."
+msgstr "No hay jugador con ese nombre. Tenga en cuenta que esto es caso-sensitivo, y el jugador debe de estar én línea."
 
 #: init.lua
 msgid "Teleport request denied, player is in the gamehub!"
@@ -86,7 +86,11 @@ msgstr "Teletransportandose a: @1, @2, @3"
 
 #: init.lua
 msgid "Area request sent! Waiting for @1 to accept your request. It will timeout in @2 seconds."
-msgstr "Solicitud de área enviada! Esperando a @1 que acepte tu solicitud. Se agotara en @2 segundos."
+msgstr "¡Solicitud de área enviada! Esperando a @1 que acepte tu solicitud. Se agotara en @2 segundos."
+
+#: init.lua
+msgid ", or "
+msgstr ", o a "
 
 #: init.lua
 msgid "@1 is requesting to teleport to a protected area of yours @2."
@@ -122,7 +126,7 @@ msgstr "@1 se esta teletransportando a tu área protegida @2."
 
 #: init.lua
 msgid "@1 is not online right now."
-msgstr "@1 no esta en linea ahora mismo."
+msgstr "@1 no esta en línea ahora mismo."
 
 #: init.lua
 msgid "Request Accepted!"

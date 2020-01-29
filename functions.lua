@@ -348,42 +348,44 @@ function tp.tpc_send(sender, coordinates)
 			local protected = minetest.is_protected(target_coords, sender)
 			if protected then
 				if minetest.get_modpath("areas") then
-					if table.concat(areas:getNodeOwners(target_coords)) then
-						minetest.chat_send_player(sender, S("Area request sent! Waiting for @1 to accept your request." ..
-						" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(target_coords), ", or "), tp.timeout_delay))
-						minetest.chat_send_player(table.concat(areas:getNodeOwners(target_coords)), S("@1 is requesting to teleport to a protected area " ..
-						" of yours @2.", sender, minetest.pos_to_string(target_coords)))
+					for _, area in pairs(areas:getAreasAtPos(target_coords)) do
+						if area.owner then
+							minetest.chat_send_player(sender, S("Area request sent! Waiting for @1 to accept your request." ..
+							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(target_coords), S(", or ")), tp.timeout_delay))
+							minetest.chat_send_player(area.owner, S("@1 is requesting to teleport to a protected area" ..
+							" of yours @2.", sender, minetest.pos_to_string(target_coords)))
 
-						if minetest.get_modpath("chat2") then
-							chat2.send_message(minetest.get_player_by_name(sender), S("Area request sent! Waiting for @1 to accept your request." ..
-							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(target_coords), ", or "), tp.timeout_delay), 0xFFFFFF)
+							if minetest.get_modpath("chat2") then
+								chat2.send_message(minetest.get_player_by_name(sender), S("Area request sent! Waiting for @1 to accept your request." ..
+								" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(target_coords), S(", or ")), tp.timeout_delay), 0xFFFFFF)
 
-							chat2.send_message(minetest.get_player_by_name(table.concat(areas:getNodeOwners(target_coords))), S("@1 is requesting to teleport to a protected area "..
-							" of yours @2.", sender, minetest.pos_to_string(target_coords)), 0xFFFFFF)
-						end
-
-						tp.tpc_list[table.concat(areas:getNodeOwners(target_coords))] = sender
-						minetest.after(tp.timeout_delay, function(name)
-							if tp.tpc_list[name] then
-								tp.tpc_list[name] = nil
-								minetest.chat_send_player(sender, S("Request timed-out."))
-								minetest.chat_send_player(table.concat(areas:getNodeOwners(target_coords)), S("Request timed-out."))
-
-								if minetest.get_modpath("chat2") then
-									chat2.send_message(minetest.get_player_by_name(sender), S("Request timed-out."), 0xFFFFFF)
-									chat2.send_message(minetest.get_player_by_name(table.concat(areas:getNodeOwners(target_coords))), S("Request timed-out."), 0xFFFFFF)
-								end
-								return
+								chat2.send_message(minetest.get_player_by_name(area.owner), S("@1 is requesting to teleport to a protected area" ..
+								" of yours @2.", sender, minetest.pos_to_string(target_coords)), 0xFFFFFF)
 							end
-						end, table.concat(areas:getNodeOwners(target_coords)))
-				else
-					minetest.record_protection_violation(target_coords, sender)
+
+							tp.tpc_list[area.owner] = sender
+							minetest.after(tp.timeout_delay, function(name)
+								if tp.tpc_list[name] then
+									tp.tpc_list[name] = nil
+									minetest.chat_send_player(sender, S("Request timed-out."))
+									minetest.chat_send_player(area.owner, S("Request timed-out."))
+
+									if minetest.get_modpath("chat2") then
+										chat2.send_message(minetest.get_player_by_name(sender), S("Request timed-out."), 0xFFFFFF)
+										chat2.send_message(minetest.get_player_by_name(area.owner), S("Request timed-out."), 0xFFFFFF)
+									end
+									return
+								end
+							end, area.owner)
+					else
+						minetest.record_protection_violation(target_coords, sender)
+						end
 					end
-				else
-					minetest.record_protection_violation(target_coords, sender)
+					else
+						minetest.record_protection_violation(target_coords, sender)
+					end
+					return
 				end
-				return
-			end
 
 			tp.tpc_teleport_player(sender)
 			target_coords = nil
@@ -417,7 +419,9 @@ function tp.tpr_deny(name)
 		name2 = tp.tpc_list[name]
 		minetest.chat_send_player(name2, S("Area request denied."))
 		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
-		tp.tpc_list[name] = nil
+		for _, area in pairs(areas:getAreasAtPos(target_coords)) do
+			tp.tpc_list[area.owner] = nil
+		end
 		if minetest.get_modpath("chat2") then
 			chat2.send_message(minetest.get_player_by_name(name2), S("Area request denied."), 0xFFFFFF)
 			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
@@ -472,14 +476,19 @@ function tp.tpr_accept(name)
 			source = minetest.get_player_by_name(name)
 			target = minetest.get_player_by_name(name2)
 			chatmsg = S("@1 is teleporting to your protected area @2.", name2, minetest.pos_to_string(target_coords))
-			tp.tpc_list[name] = nil
+			for _, area in pairs(areas:getAreasAtPos(target_coords)) do
+				tp.tpc_list[area.owner] = nil
+			end
 		else
 			return
 		end
 
-		-- If sender is not present, abort request.
+		-- If source or target are not present, abort request.
 		if not source or not target then
 			minetest.chat_send_player(name, S("@1 is not online right now.", name2))
+			for _, area in pairs(areas:getAreasAtPos(target_coords)) do
+				tp.tpc_list[area.owner] = nil
+			end
 			if minetest.get_modpath("chat2") then
 				chat2.send_message(minetest.get_player_by_name(name), S("@1 is not online right now.", name2), 0xFFFFFF)
 			end
@@ -522,6 +531,8 @@ function tp.tpr_accept(name)
 	if not source
 	or not target then
 		minetest.chat_send_player(name, S("@1 is not online right now.", name2))
+		tp.tpr_list[name] = nil
+		tp.tphr_list[name] = nil
 		if minetest.get_modpath("chat2") then
 			chat2.send_message(minetest.get_player_by_name(name), S("@1 is not online right now.", name2), 0xFFFFFF)
 		end

@@ -89,6 +89,10 @@ msgid "Area request sent! Waiting for @1 to accept your request. It will timeout
 msgstr ""
 
 #: init.lua
+msgid ", or "
+msgstr ""
+
+#: init.lua
 msgid "@1 is requesting to teleport to a protected area of yours @2."
 msgstr ""
 
