@@ -420,9 +420,7 @@ function tp.tpr_deny(name)
 		name2 = tp.tpc_list[name]
 		minetest.chat_send_player(name2, S("Area request denied."))
 		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
-		for _, area in pairs(areas:getAreasAtPos(target_coords)) do
-			tp.tpc_list[area.owner] = nil
-		end
+		tp.tpc_list[name] = nil
 		if minetest.get_modpath("chat2") then
 			chat2.send_message(minetest.get_player_by_name(name2), S("Area request denied."), 0xFFFFFF)
 			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
@@ -486,9 +484,7 @@ function tp.tpr_accept(name)
 			source = minetest.get_player_by_name(name)
 			target = minetest.get_player_by_name(name2)
 			chatmsg = S("@1 is teleporting to your protected area @2.", name2, minetest.pos_to_string(target_coords))
-			for _, area in pairs(areas:getAreasAtPos(target_coords)) do
-				tp.tpc_list[area.owner] = nil
-			end
+			tp.tpc_list[name] = nil
 		else
 			return
 		end
@@ -496,9 +492,7 @@ function tp.tpr_accept(name)
 		-- If source or target are not present, abort request.
 		if not source or not target then
 			minetest.chat_send_player(name, S("@1 is not online right now.", name2))
-			for _, area in pairs(areas:getAreasAtPos(target_coords)) do
-				tp.tpc_list[area.owner] = nil
-			end
+			tp.tpc_list[name] = nil
 			if minetest.get_modpath("chat2") then
 				chat2.send_message(minetest.get_player_by_name(name), S("@1 is not online right now.", name2), 0xFFFFFF)
 			end
