@@ -349,7 +349,7 @@ function tp.tpc_send(sender, coordinates)
 			if protected then
 				if minetest.get_modpath("areas") then
 					for _, area in pairs(areas:getAreasAtPos(target_coords)) do
-						if area.owner then
+						if minetest.get_player_by_name(area.owner) then -- Check if area owners are online
 							minetest.chat_send_player(sender, S("Area request sent! Waiting for @1 to accept your request." ..
 							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(target_coords), S(", or ")), tp.timeout_delay))
 							minetest.chat_send_player(area.owner, S("@1 is requesting to teleport to a protected area" ..
@@ -361,6 +361,7 @@ function tp.tpc_send(sender, coordinates)
 
 								chat2.send_message(minetest.get_player_by_name(area.owner), S("@1 is requesting to teleport to a protected area" ..
 								" of yours @2.", sender, minetest.pos_to_string(target_coords)), 0xFFFFFF)
+								return
 							end
 
 							tp.tpc_list[area.owner] = sender
@@ -470,6 +471,15 @@ function tp.tpr_accept(name)
 
 	-- Area requests
 	if tp.tpc_list[name] then
+
+		-- If "target_coords" is nil, abort request.
+		if not target_coords then
+			minetest.chat_send_player(name, S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."))
+			if minetest.get_modpath("chat2") then
+				chat2.send_message(minetest.get_player_by_name(name), S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."), 0xFFFFFF)
+			end
+			return
+		end
 
 		if tp.tpc_list[name] then
 			name2 = tp.tpc_list[name]
