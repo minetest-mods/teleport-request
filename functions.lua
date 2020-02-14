@@ -192,8 +192,10 @@ function tp.tpr_send(sender, receiver)
 
 			-- Teleport timeout delay
 			minetest.after(tp.timeout_delay, function(name)
-				if tp.tpr_list[name] then
+				if tp.tpr_list[name] and tp.tpn_list[sender] then
 					tp.tpr_list[name] = nil
+					tp.tpn_list[sender] = nil
+
 					minetest.chat_send_player(sender, S("Request timed-out."))
 					minetest.chat_send_player(receiver, S("Request timed-out."))
 
@@ -293,8 +295,10 @@ function tp.tphr_send(sender, receiver)
 
 			-- Teleport timeout delay
 			minetest.after(tp.timeout_delay, function(name)
-				if tp.tphr_list[name] then
+				if tp.tphr_list[name] and tp.tpn_list[sender] then
 					tp.tphr_list[name] = nil
+					tp.tpn_list[sender] = nil
+
 					minetest.chat_send_player(sender, S("Request timed-out."))
 					minetest.chat_send_player(receiver, S("Request timed-out."))
 
