@@ -1,7 +1,7 @@
 # Spanish translation for Teleport Request.
 # Copyright (C) 2014-2020 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
-# David Leal <halfpacho@gmail.com>, 2019.
+# David Leal <halfpacho@gmail.com>, 2019-2020.
 
 msgid ""
 msgstr ""
@@ -99,6 +99,14 @@ msgstr "Solicitud denegada."
 #: init.lua
 msgid "You denied the request @1 sent you."
 msgstr "Tú denegaste la solicitud de teletransporte que @1 te mando."
+
+#: init.lua
+msgid "You denied your request sent to @1."
+msgstr "Tú denegaste la solicitud de teletransporte enviada a @1."
+
+#: init.lua
+msgid "@1 denied their request sent to you."
+msgstr "@1 denego su solicitud de teletransporte enviada a usted."
 
 #: init.lua
 msgid "Usage: /tpn allows you to deny teleport requests sent to you by other players."
