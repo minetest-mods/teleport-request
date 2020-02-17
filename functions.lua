@@ -361,7 +361,6 @@ function tp.tpc_send(sender, coordinates)
 
 								chat2.send_message(minetest.get_player_by_name(area.owner), S("@1 is requesting to teleport to a protected area" ..
 								" of yours @2.", sender, minetest.pos_to_string(target_coords)), 0xFFFFFF)
-								return
 							end
 
 							tp.tpc_list[area.owner] = sender
