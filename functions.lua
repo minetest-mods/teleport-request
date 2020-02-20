@@ -22,7 +22,8 @@ USA
 local S = tp.intllib
 
 -- Placeholders
-local chatmsg, source, target, name2, target_coords
+local chatmsg, source, target, name2,
+target_coords, tpc_target_coords, old_tpc_target_coords
 
 local map_size = 30912
 function tp.can_teleport(to)
@@ -350,17 +351,28 @@ function tp.tpc_send(sender, coordinates)
 				if minetest.get_modpath("areas") then
 					for _, area in pairs(areas:getAreasAtPos(target_coords)) do
 						if minetest.get_player_by_name(area.owner) then -- Check if area owners are online
+
+							if tpc_target_coords then
+								old_tpc_target_coords = tpc_target_coords
+								old_tpc_target_coords[area.owner] = tpc_target_coords[area.owner]
+
+								tpc_target_coords[area.owner] = {x=posx, y=posy, z=posz}
+							else
+								tpc_target_coords = {x=posx, y=posy, z=posz}
+								tpc_target_coords[area.owner] = {x=posx, y=posy, z=posz}
+							end
+
 							minetest.chat_send_player(sender, S("Area request sent! Waiting for @1 to accept your request." ..
-							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(target_coords), S(", or ")), tp.timeout_delay))
+							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(tpc_target_coords[area.owner]), S(", or ")), tp.timeout_delay))
 							minetest.chat_send_player(area.owner, S("@1 is requesting to teleport to a protected area" ..
-							" of yours @2.", sender, minetest.pos_to_string(target_coords)))
+							" of yours @2.", sender, minetest.pos_to_string(tpc_target_coords[area.owner])))
 
 							if minetest.get_modpath("chat2") then
 								chat2.send_message(minetest.get_player_by_name(sender), S("Area request sent! Waiting for @1 to accept your request." ..
-								" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(target_coords), S(", or ")), tp.timeout_delay), 0xFFFFFF)
+								" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(tpc_target_coords[area.owner]), S(", or ")), tp.timeout_delay), 0xFFFFFF)
 
 								chat2.send_message(minetest.get_player_by_name(area.owner), S("@1 is requesting to teleport to a protected area" ..
-								" of yours @2.", sender, minetest.pos_to_string(target_coords)), 0xFFFFFF)
+								" of yours @2.", sender, minetest.pos_to_string(tpc_target_coords[area.owner])), 0xFFFFFF)
 							end
 
 							tp.tpc_list[area.owner] = sender
@@ -469,15 +481,6 @@ function tp.tpr_accept(name)
 	-- Area requests
 	if tp.tpc_list[name] then
 
-		-- If "target_coords" is nil, abort request.
-		if not target_coords then
-			minetest.chat_send_player(name, S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(name), S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."), 0xFFFFFF)
-			end
-			return
-		end
-
 		if tp.tpc_list[name] then
 			name2 = tp.tpc_list[name]
 			source = minetest.get_player_by_name(name)
@@ -498,7 +501,16 @@ function tp.tpr_accept(name)
 			return
 		end
 
-		tp.tpp_teleport_player(name2, target_coords)
+		if not tpc_target_coords[name] then
+			tpc_target_coords[name2] = old_tpc_target_coords[name]
+			tp.tpp_teleport_player(name2, tpc_target_coords[name2])
+
+			chatmsg = S("@1 is teleporting to your protected area @2.", name2, minetest.pos_to_string(tpc_target_coords[name2]))
+		else
+			tp.tpp_teleport_player(name2, tpc_target_coords[name])
+			chatmsg = S("@1 is teleporting to your protected area @2.", name2, minetest.pos_to_string(tpc_target_coords[name]))
+		end
+
 		minetest.chat_send_player(name, chatmsg)
 		minetest.chat_send_player(name2, S("Request Accepted!"))
 
