@@ -485,7 +485,7 @@ function tp.tpr_accept(name)
 			name2 = tp.tpc_list[name]
 			source = minetest.get_player_by_name(name)
 			target = minetest.get_player_by_name(name2)
-			chatmsg = S("@1 is teleporting to your protected area @2.", name2, minetest.pos_to_string(target_coords))
+			chatmsg = S("@1 is teleporting to your protected area @2.", name2, minetest.pos_to_string(tpc_target_coords[name]))
 			tp.tpc_list[name] = nil
 		else
 			return
