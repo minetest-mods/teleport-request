@@ -189,11 +189,14 @@ function tp.tpr_send(sender, receiver)
 
 			-- Write name values to list and clear old values.
 			tp.tpr_list[receiver] = sender
+			tp.tpn_list[sender] = receiver
 
 			-- Teleport timeout delay
 			minetest.after(tp.timeout_delay, function(name)
-				if tp.tpr_list[name] then
+				if tp.tpr_list[name] and tp.tpn_list[sender] then
 					tp.tpr_list[name] = nil
+					tp.tpn_list[sender] = nil
+
 					minetest.chat_send_player(sender, S("Request timed-out."))
 					minetest.chat_send_player(receiver, S("Request timed-out."))
 
@@ -289,11 +292,14 @@ function tp.tphr_send(sender, receiver)
 
 			-- Write name values to list and clear old values.
 			tp.tphr_list[receiver] = sender
+			tp.tpn_list[sender] = receiver
 
 			-- Teleport timeout delay
 			minetest.after(tp.timeout_delay, function(name)
-				if tp.tphr_list[name] then
+				if tp.tphr_list[name] and tp.tpn_list[sender] then
 					tp.tphr_list[name] = nil
+					tp.tpn_list[sender] = nil
+
 					minetest.chat_send_player(sender, S("Request timed-out."))
 					minetest.chat_send_player(receiver, S("Request timed-out."))
 
@@ -451,6 +457,9 @@ function tp.tpr_deny(name)
 
 		tp.tpr_list[name] = nil
 
+		-- Don't allow re-denying requests.
+		tp.tpn_list[name2] = nil
+
 	elseif tp.tphr_list[name] then
 		name2 = tp.tphr_list[name]
 		minetest.chat_send_player(name2, S("Teleport request denied."))
@@ -461,6 +470,32 @@ function tp.tpr_deny(name)
 		end
 
 		tp.tphr_list[name] = nil
+
+		-- Don't allow re-denying requests.
+		tp.tpn_list[name2] = nil
+
+	elseif tp.tpn_list[name] then
+		name2 = tp.tpn_list[name]
+		minetest.chat_send_player(name, S("You denied your request sent to @1.", name2))
+		minetest.chat_send_player(name2, S("@1 denied their request sent to you.", name))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(name), S("You denied your request sent to @1.", name2), 0xFFFFFF)
+			chat2.send_message(minetest.get_player_by_name(name2), S("@1 denied their request sent to you.", name), 0xFFFFFF)
+		end
+
+		if tp.tpr_list[name2] then
+			tp.tpr_list[name2] = nil
+
+		elseif tp.tphr_list[name2] then
+			tp.tphr_list[name2] = nil
+		end
+
+		tp.tpn_list[name] = nil
+	else
+		minetest.chat_send_player(name, S("Usage: /tpn allows you to deny teleport requests sent to you by other players."))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(name), S("Usage: /tpn allows you to deny teleport requests sent to you by other players."), 0xFFFFFF)
+		end
 		return
 	end
 end
@@ -558,6 +593,12 @@ function tp.tpr_accept(name)
 
 	-- Avoid abusing with area requests
 	target_coords = nil
+
+	-- Don't allow re-denying requests.
+	if tp.tpn_list[name] or tp.tpn_list[name2] then
+		tp.tpn_list[name] = nil
+		tp.tpn_list[name2] = nil
+	end
 
 	minetest.chat_send_player(name, chatmsg)
 	if minetest.get_modpath("chat2") then

@@ -112,6 +112,13 @@ msgstr "Tú denegaste la solicitud de teletransporte que @1 te mando."
 msgid "Usage: /tpn allows you to deny teleport/area requests sent to you by other players."
 msgstr "Uso: /tpn te permite denegar solicitudes enviadas para ti de otros jugadores."
 
+msgid "You denied your request sent to @1."
+msgstr "Tú denegaste la solicitud de teletransporte enviada a @1."
+
+#: init.lua
+msgid "@1 denied their request sent to you."
+msgstr "@1 denego su solicitud de teletransporte enviada a usted."
+
 #: init.lua
 msgid "Area request denied."
 msgstr "Solicitud de área denegada."
