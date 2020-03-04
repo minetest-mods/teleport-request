@@ -33,7 +33,8 @@ local S = dofile(MP.."/intllib.lua")
 tp = {
 	intllib = S,
 	tpr_list = {},
-	tphr_list = {}
+	tphr_list = {},
+	tpn_list = {}
 }
 
 -- Clear requests when the player leaves
@@ -45,6 +46,11 @@ minetest.register_on_leaveplayer(function(name)
 
 	if tp.tphr_list[name] then
 		tp.tphr_list[name] = nil
+		return
+	end
+
+	if tp.tpn_list[name] then
+		tp.tpn_list[name] = nil
 		return
 	end
 end)

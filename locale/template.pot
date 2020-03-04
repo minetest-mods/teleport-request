@@ -1,7 +1,7 @@
 # Template translation for Teleport Request.
 # Copyright (C) 2014-2020 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
-# David Leal <halfpacho@gmail.com>, 2019.
+# David Leal <halfpacho@gmail.com>, 2019-2020.
 
 msgid ""
 msgstr ""
@@ -98,6 +98,14 @@ msgstr ""
 
 #: init.lua
 msgid "You denied the request @1 sent you."
+msgstr ""
+
+#: init.lua
+msgid "You denied your request sent to @1."
+msgstr ""
+
+#: init.lua
+msgid "@1 denied their request sent to you."
 msgstr ""
 
 #: init.lua
