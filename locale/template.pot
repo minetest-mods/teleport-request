@@ -117,7 +117,11 @@ msgid "You denied the request @1 sent you."
 msgstr ""
 
 #: init.lua
-msgid "Usage: /tpy allows you to accept teleport/area requests sent to you by other players."
+msgid "You denied your request sent to @1."
+msgstr ""
+
+#: init.lua
+msgid "@1 denied their request sent to you."
 msgstr ""
 
 #: init.lua

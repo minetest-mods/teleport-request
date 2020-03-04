@@ -94,11 +94,15 @@ msgstr ", o a "
 
 #: init.lua
 msgid "@1 is requesting to teleport to a protected area of yours @2."
-msgstr "@1 solicita teletransportarse a una área protegida tuya @2."
+msgstr "@1 solicita teletransportarse a un área protegida tuya @2."
 
 #: init.lua
 msgid "Error: You do not have permission to teleport to those coordinates."
 msgstr "Error: No tienes permiso para teletransportarte a esas coordenadas."
+
+#: init.lua
+msgid "Usage: /tpn allows you to deny teleport/area requests sent to you by other players."
+msgstr "Uso: /tpn te permite denegar solicitudes enviadas para ti de otros jugadores."
 
 #: init.lua
 msgid "Teleport request denied."
@@ -109,8 +113,12 @@ msgid "You denied the request @1 sent you."
 msgstr "Tú denegaste la solicitud de teletransporte que @1 te mando."
 
 #: init.lua
-msgid "Usage: /tpn allows you to deny teleport/area requests sent to you by other players."
-msgstr "Uso: /tpn te permite denegar solicitudes enviadas para ti de otros jugadores."
+msgid "You denied your request sent to @1."
+msgstr "Tú denegaste la solicitud de teletransporte enviada a @1."
+
+#: init.lua
+msgid "@1 denied their request sent to you."
+msgstr "@1 denego su solicitud de teletransporte enviada a usted."
 
 #: init.lua
 msgid "Area request denied."

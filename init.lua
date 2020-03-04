@@ -34,7 +34,8 @@ tp = {
 	intllib = S,
 	tpr_list = {},
 	tphr_list = {},
-	tpc_list = {}
+	tpc_list = {},
+	tpn_list = {}
 }
 
 -- Clear requests when the player leaves
@@ -52,6 +53,11 @@ minetest.register_on_leaveplayer(function(name)
 	-- Area requests
 	if tp.tpc_list[name] then
 		tp.tpc_list[name] = nil
+		return
+	end
+
+	if tp.tpn_list[name] then
+		tp.tpn_list[name] = nil
 		return
 	end
 end)
