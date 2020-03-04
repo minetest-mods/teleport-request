@@ -417,8 +417,8 @@ function tp.tpr_deny(name)
 		minetest.chat_send_player(name, S("You denied your request sent to @1.", name2))
 		minetest.chat_send_player(name2, S("@1 denied their request sent to you.", name))
 		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name2), S("You denied your request sent to @1.", name), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(name), S("@1 denied their request sent to you.", name2), 0xFFFFFF)
+			chat2.send_message(minetest.get_player_by_name(name), S("You denied your request sent to @1.", name2), 0xFFFFFF)
+			chat2.send_message(minetest.get_player_by_name(name2), S("@1 denied their request sent to you.", name), 0xFFFFFF)
 		end
 
 		if tp.tpr_list[name2] then
