@@ -382,6 +382,8 @@ function tp.tpc_send(sender, coordinates)
 							end
 
 							tp.tpc_list[area.owner] = sender
+							tp.tpn_list[sender] = area.owner
+
 							minetest.after(tp.timeout_delay, function(name)
 								if tp.tpc_list[name] then
 									tp.tpc_list[name] = nil
@@ -424,7 +426,7 @@ end
 function tp.tpr_deny(name)
 
 	if not tp.tpr_list[name] and not tp.tphr_list[name]
-	and not tp.tpc_list[name] then
+	and not tp.tpc_list[name] and not tp.tpn_list[name] then
 		minetest.chat_send_player(name, S("Usage: /tpn allows you to deny teleport/area requests sent to you by other players."))
 		if minetest.get_modpath("chat2") then
 			chat2.send_message(minetest.get_player_by_name(name), S("Usage: /tpn allows you to deny teleport/area requests sent to you by other players."), 0xFFFFFF)
@@ -437,11 +439,14 @@ function tp.tpr_deny(name)
 		name2 = tp.tpc_list[name]
 		minetest.chat_send_player(name2, S("Area request denied."))
 		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
-		tp.tpc_list[name] = nil
 		if minetest.get_modpath("chat2") then
 			chat2.send_message(minetest.get_player_by_name(name2), S("Area request denied."), 0xFFFFFF)
 			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
 		end
+		tp.tpc_list[name] = nil
+
+		-- Don't allow re-denying requests.
+		tp.tpn_list[name2] = nil
 		return
 	end
 
@@ -488,14 +493,12 @@ function tp.tpr_deny(name)
 
 		elseif tp.tphr_list[name2] then
 			tp.tphr_list[name2] = nil
+
+		elseif tp.tpc_list[name2] then
+			tp.tpc_list[name2] = nil
 		end
 
 		tp.tpn_list[name] = nil
-	else
-		minetest.chat_send_player(name, S("Usage: /tpn allows you to deny teleport requests sent to you by other players."))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name), S("Usage: /tpn allows you to deny teleport requests sent to you by other players."), 0xFFFFFF)
-		end
 		return
 	end
 end
@@ -544,6 +547,12 @@ function tp.tpr_accept(name)
 		else
 			tp.tpp_teleport_player(name2, tpc_target_coords[name])
 			chatmsg = S("@1 is teleporting to your protected area @2.", name2, minetest.pos_to_string(tpc_target_coords[name]))
+		end
+
+		-- Don't allow re-denying requests.
+		if tp.tpn_list[name] or tp.tpn_list[name2] then
+			tp.tpn_list[name] = nil
+			tp.tpn_list[name2] = nil
 		end
 
 		minetest.chat_send_player(name, chatmsg)
