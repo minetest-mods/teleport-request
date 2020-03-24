@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Teleport Request\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: David Leal\n"
 "POT-Creation-Date: 2019-07-12 5:07+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: David Leal <halfpacho@gmail.com>\n"
