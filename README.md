@@ -136,7 +136,6 @@ https://wiki.minetest.net/Installing_Mods
 ## TODO
 - Add limitations to /tpc which only allow a user to teleport X number of blocks. Prevents users from teleporting to the edge of the world.
 - Assess value in changing all tpr-based chat commands to one global command such as /tp to reduce the chance of confusion between tps_admin and the original mod (and also make it so people don't have to remember so many commands).
-- Create a better sound effect for teleport and apply it to all teleport methods (not just /tpc)
 - Rewrite to place all chat commands into one single command much like how /teleport works.
 - Make evade respect land: no teleporting inside land, but instead make sure player is standing on surface or in water.
 
