@@ -34,6 +34,7 @@ tp = {
 	intllib = S,
 	tpr_list = {},
 	tphr_list = {},
+	tpc_list = {},
 	tpn_list = {}
 }
 
@@ -46,6 +47,12 @@ minetest.register_on_leaveplayer(function(name)
 
 	if tp.tphr_list[name] then
 		tp.tphr_list[name] = nil
+		return
+	end
+
+	-- Area requests
+	if tp.tpc_list[name] then
+		tp.tpc_list[name] = nil
 		return
 	end
 
