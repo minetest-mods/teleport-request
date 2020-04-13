@@ -25,6 +25,9 @@ local S = tp.intllib
 local chatmsg, source, target, name2,
 target_coords, tpc_target_coords, old_tpc_target_coords
 
+local spam_prevention = {}
+local band = false
+
 local map_size = 30912
 function tp.can_teleport(to)
 	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
@@ -99,6 +102,38 @@ end
 
 -- Teleport Request System
 function tp.tpr_send(sender, receiver)
+	if receiver == "" then
+		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
+		end
+		return
+	end
+
+	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
+		end
+		return
+	end
+
+	-- Spam prevention
+	if spam_prevention[receiver] == sender then
+		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
+
+		minetest.after(tp.timeout_delay, function(name)
+			spam_prevention[name] = nil
+			if band == true then return end
+
+			if spam_prevention[receiver] == nil then
+				minetest.chat_send_player(sender, S("You can now send teleport requests to @1.", receiver))
+				band = true
+			end
+		end, receiver)
+
+	else
+
 	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
 			if receiver == "" then
@@ -207,11 +242,52 @@ function tp.tpr_send(sender, receiver)
 				return
 			end
 		end, receiver)
+	end
 end
 
 function tp.tphr_send(sender, receiver)
+	if receiver == "" then
+		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
+		end
+		return
+	end
+
+	if not minetest.get_player_by_name(receiver) then
+		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
+		end
+		return
+	end
+
+	-- Spam prevention
+	if spam_prevention[receiver] == sender then
+		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
+
+		minetest.after(tp.timeout_delay, function(name)
+			spam_prevention[name] = nil
+			if band == true then return end
+
+			if spam_prevention[receiver] == nil then
+				minetest.chat_send_player(sender, S("You can now send teleport requests to @1.", receiver))
+				band = true
+			end
+		end, receiver)
+
+	else
+
 	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
+			if receiver == "" then
+				minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
+				if minetest.get_modpath("chat2") then
+					chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
+				end
+				return
+			end
+
 			if not minetest.get_player_by_name(receiver) then
 				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
 				if minetest.get_modpath("chat2") then
@@ -310,6 +386,7 @@ function tp.tphr_send(sender, receiver)
 				return
 			end
 		end, receiver)
+	end
 end
 
 function tp.tpc_send(sender, coordinates)
@@ -461,6 +538,7 @@ function tp.tpr_deny(name)
 		end
 
 		tp.tpr_list[name] = nil
+		spam_prevention[name] = name2
 
 		-- Don't allow re-denying requests.
 		tp.tpn_list[name2] = nil
@@ -475,6 +553,7 @@ function tp.tpr_deny(name)
 		end
 
 		tp.tphr_list[name] = nil
+		spam_prevention[name] = name2
 
 		-- Don't allow re-denying requests.
 		tp.tpn_list[name2] = nil

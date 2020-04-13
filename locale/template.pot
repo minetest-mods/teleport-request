@@ -29,6 +29,14 @@ msgid "Allow player to teleport to coordinates (if allowed by area protection)"
 msgstr ""
 
 #: init.lua
+msgid "Wait @1 seconds before you can send teleport requests to @2 again."
+msgstr ""
+
+#: init.lua
+msgid "You can now send teleport requests to @1."
+msgstr ""
+
+#: init.lua
 msgid "You are not allowed to send requests because you're muted."
 msgstr ""
 
