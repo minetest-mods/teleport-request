@@ -119,7 +119,7 @@ function tp.tpr_send(sender, receiver)
 	end
 
 	-- Spam prevention
-	if spam_prevention[receiver] == sender then
+	if spam_prevention[receiver] == sender and not minetest.check_player_privs(sender, {tp_admin = true}) then
 		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
 
 		minetest.after(tp.timeout_delay, function(name)
@@ -263,7 +263,7 @@ function tp.tphr_send(sender, receiver)
 	end
 
 	-- Spam prevention
-	if spam_prevention[receiver] == sender then
+	if spam_prevention[receiver] == sender and not minetest.check_player_privs(sender, {tp_admin = true}) then
 		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
 
 		minetest.after(tp.timeout_delay, function(name)
