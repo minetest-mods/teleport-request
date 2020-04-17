@@ -34,3 +34,6 @@ tp.available_places = {
 
 -- Enable tpp command
 tp.enable_tpp_command = minetest.settings:get_bool("tp.enable_tpp_command")
+
+-- Spam prevention
+tp.spam_prevention = minetest.settings:get_bool("tp.enable_spam_prevention")
