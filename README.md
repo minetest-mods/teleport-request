@@ -73,7 +73,6 @@ These are the following commands available in-game:
 
 ## Optional dependencies
 - [areas](https://github.com/minetest-mods/areas)
-- [intllib](https://github.com/minetest-mods/intllib)
 - [beerchat](https://github.com/minetest-beerchat/beerchat)
 - [chat2](https://github.com/minetest-mods/chat2)
 - [gamehub](https://github.com/shivajiva101/minetest-gamehub)

@@ -26,12 +26,11 @@ Updates by Zeno, Panquesito7 and ChaosWormz.
 License: LGPLv2.1+ for code, CC BY-SA 4.0 for sounds.
 --]]
 
--- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
-local S = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("tpr")
 
 tp = {
-	intllib = S,
+	translator = S,
 	tpr_list = {},
 	tphr_list = {},
 	tpc_list = {},

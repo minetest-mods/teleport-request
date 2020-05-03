@@ -11,8 +11,6 @@ read_globals = {
 	table = {fields = {"copy", "getn"}},
 
 	"minetest", "vector",
-
-	"chat2", "gamehub", 
-	"intllib", "areas",
+	"chat2", "gamehub", "areas",
 
 }
