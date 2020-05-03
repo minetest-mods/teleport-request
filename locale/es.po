@@ -29,6 +29,14 @@ msgid "Allow player to teleport to coordinates (if allowed by area protection)"
 msgstr "Permite a los jugadores teletransportarse a las coordenadas especificadas (si esta permitido por la protección de la área)"
 
 #: init.lua
+msgid "Wait @1 seconds before you can send teleport requests to @2 again."
+msgstr "Espere @1 segundos antes de que pueda mandar solicitudes de teletransporte a @2."
+
+#: init.lua
+msgid "You can now send teleport requests to @1."
+msgstr "Ya puede mandar solicitudes de teletransporte a @1."
+
+#: init.lua
 msgid "You are not allowed to send requests because you're muted."
 msgstr "No tienes permiso para mandar solicitudes de teletransporte porque estás silenciado."
 

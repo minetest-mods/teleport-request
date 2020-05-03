@@ -6,3 +6,6 @@ tp.enable_immediate_teleport (Immediate teleport for those with tp_admin privile
 
 # Enables Teleport To Place command (disabled by default)
 tp.enable_tpp_command (Enable Teleport To Place command) bool false
+
+# Spam prevention (enabled by default)
+tp.enable_spam_prevention (Enable spam prevention) bool true
