@@ -462,8 +462,10 @@ function tp.tpc_send(sender, coordinates)
 							tp.tpn_list[sender] = area.owner
 
 							minetest.after(tp.timeout_delay, function(name)
-								if tp.tpc_list[name] then
+								if tp.tpc_list[name] and tp.tpn_list[sender] then
 									tp.tpc_list[name] = nil
+									tp.tpn_list[sender] = nil
+
 									minetest.chat_send_player(sender, S("Request timed-out."))
 									minetest.chat_send_player(area.owner, S("Request timed-out."))
 
