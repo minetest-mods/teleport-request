@@ -29,8 +29,36 @@ msgid "Allow player to teleport to coordinates (if allowed by area protection)"
 msgstr "Permitir que o jogador se teletransporte para coordenadas (se permitido pela protecao da area)"
 
 #: init.lua
+msgid "tpr_mute: Failed to mute player @1: they have the tp_admin privilege."
+msgstr ""
+
+#: init.lua
 msgid "You are not allowed to send requests because you're muted."
 msgstr "Voce nao tem permissao para enviar solicitacoes porque esta' sem som."
+
+#: init.lua
+msgid "Cannot send request to @1 (you have been muted)."
+msgstr ""
+
+#: init.lua
+msgid "tpr_mute: Player @1 is already muted."
+msgstr ""
+
+#: init.lua
+msgid "tpr_mute: Player @1 successfully muted."
+msgstr ""
+
+#: init.lua
+msgid "Usage: /tpr_unmute <player>"
+msgstr ""
+
+#: init.lua
+msgid "tpr_mute: Player @1 is not muted yet."
+msgstr ""
+
+#: init.lua
+msgid "tpr_mute: Player @1 successfully unmuted."
+msgstr ""
 
 #: init.lua
 msgid "Usage: /tpr <Player name>"
@@ -203,6 +231,14 @@ msgstr "Aceitar pedidos de teleporte de outro jogador"
 #: init.lua
 msgid "Deny teleport requests from another player"
 msgstr "Negar pedidos de teleporte de outro jogador"
+
+#: init.lua
+msgid "Mutes a player: denies them from sending you teleport requests"
+msgstr ""
+
+#: init.lua
+msgid "Unmutes a player: allow them to send you teleport requests again"
+msgstr ""
 
 #: init.lua
 msgid "[Teleport Request] TPS Teleport v@1 Loaded!"
