@@ -28,6 +28,8 @@ target_coords, tpc_target_coords, old_tpc_target_coords
 local spam_prevention = {}
 local band = false
 
+local muted_players = {}
+
 local map_size = 30912
 function tp.can_teleport(to)
 	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
@@ -100,8 +102,73 @@ function tp.parti2(pos)
 		"tps_portal_parti.png")
 end
 
+-- Mutes a player from sending you teleport requests
+function tp.tpr_mute(player, muted_player)
+	if muted_player == "" then
+		minetest.chat_send_player(player, S("Usage: /tpr_mute <player>"))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(player), S("Usage: /tpr_mute <player>"), 0xFFFFFF)
+		end
+		return
+	end
+
+	if not minetest.get_player_by_name(muted_player) then
+		minetest.chat_send_player(player, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(player), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
+		end
+		return
+	end
+
+	if minetest.check_player_privs(muted_player, {tp_admin = true}) and not minetest.check_player_privs(player, {server = true}) then
+		minetest.chat_send_player(player, S("tpr_mute: Failed to mute player @1: they have the tp_admin privilege.", muted_player))
+		return
+	end
+
+	if muted_players[player] == muted_player then
+		minetest.chat_send_player(player, S("tpr_mute: Player @1 is already muted.", muted_player))
+		return
+	end
+
+	muted_players[player] = muted_player
+	minetest.chat_send_player(player, S("tpr_mute: Player @1 successfully muted.", muted_player))
+end
+
+-- Unmutes a player from sending you teleport requests
+function tp.tpr_unmute(player, muted_player)
+	if muted_player == "" then
+		minetest.chat_send_player(player, S("Usage: /tpr_unmute <player>"))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(player), S("Usage: /tpr_unmute <player>"), 0xFFFFFF)
+		end
+		return
+	end
+
+	if not minetest.get_player_by_name(muted_player) then
+		minetest.chat_send_player(player, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
+		if minetest.get_modpath("chat2") then
+			chat2.send_message(minetest.get_player_by_name(player), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
+		end
+		return
+	end
+
+	if muted_players[player] ~= muted_player then
+		minetest.chat_send_player(player, S("tpr_mute: Player @1 is not muted yet.", muted_player))
+		return
+	end
+
+	muted_players[player] = nil
+	minetest.chat_send_player(player, S("tpr_mute: Player @1 successfully unmuted.", muted_player))
+end
+
 -- Teleport Request System
 function tp.tpr_send(sender, receiver)
+	-- Check if the sender is muted
+	if muted_players[receiver] == sender and not minetest.check_player_privs(sender, {server = true}) then
+		minetest.chat_send_player(sender, S("Cannot send request to @1 (you have been muted).", receiver))
+		return
+	end
+
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
 		if minetest.get_modpath("chat2") then
@@ -246,6 +313,12 @@ function tp.tpr_send(sender, receiver)
 end
 
 function tp.tphr_send(sender, receiver)
+	-- Check if the sender is muted
+	if muted_players[receiver] == sender and not minetest.check_player_privs(sender, {server = true}) then
+		minetest.chat_send_player(sender, S("Cannot send request to @1 (you have been muted).", receiver))
+		return
+	end
+
 	if receiver == "" then
 		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
 		if minetest.get_modpath("chat2") then
@@ -390,7 +463,6 @@ function tp.tphr_send(sender, receiver)
 end
 
 function tp.tpc_send(sender, coordinates)
-
 	local posx,posy,posz = string.match(coordinates, "^(-?%d+), (-?%d+), (-?%d+)$")
 	local pname = minetest.get_player_by_name(sender)
 
@@ -503,7 +575,6 @@ function tp.tpc_send(sender, coordinates)
 end
 
 function tp.tpr_deny(name)
-
 	if not tp.tpr_list[name] and not tp.tphr_list[name]
 	and not tp.tpc_list[name] and not tp.tpn_list[name] then
 		minetest.chat_send_player(name, S("Usage: /tpn allows you to deny teleport/area requests sent to you by other players."))
@@ -586,7 +657,6 @@ end
 
 -- Teleport Accept Systems
 function tp.tpr_accept(name)
-
 	-- Check to prevent constant teleporting
 	if not tp.tpr_list[name] and not tp.tphr_list[name]
 	and not tp.tpc_list[name] then
@@ -714,7 +784,6 @@ end
 
 -- Teleport Jump - Relative Position Teleportation by number of nodes
 function tp.tpj(player, param)
-
 	if param == "" then
 		minetest.chat_send_player(player, S("Usage: <x|y|z> <number>"))
 		if minetest.get_modpath("chat2") then
@@ -800,9 +869,7 @@ end
 
 -- Teleport To Place (TPP) system.
 if tp.enable_tpp_command then
-
 	function tp.tpp(player, param)
-
 		-- Show the available places to the player (taken from shivajiva101's POI mod, thanks!).
 		if param == "" then
 			local places = {}

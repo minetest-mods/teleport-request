@@ -66,3 +66,17 @@ minetest.register_chatcommand("tpn", {
 	privs = {interact = true, tp = true},
 	func = tp.tpr_deny
 })
+
+minetest.register_chatcommand("tpr_mute", {
+	description = S("Mutes a player: denies them from sending you teleport requests"),
+	params = S("<playername> | leave playername empty to see help message"),
+	privs = {interact = true, tp = true},
+	func = tp.tpr_mute
+})
+
+minetest.register_chatcommand("tpr_unmute", {
+	description = S("Unmutes a player: allow them to send you teleport requests again"),
+	params = S("<playername> | leave playername empty to see help message"),
+	privs = {interact = true, tp = true},
+	func = tp.tpr_unmute
+})
