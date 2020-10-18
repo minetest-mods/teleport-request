@@ -29,6 +29,14 @@ msgid "Allow player to teleport to coordinates (if allowed by area protection)"
 msgstr "Permite a los jugadores teletransportarse a las coordenadas especificadas (si esta permitido por la protección de la área)"
 
 #: init.lua
+msgid "Usage: /tpr_mute <player>"
+msgstr "Uso: /tpr_mute <jugador>"
+
+#: init.lua
+msgid "tpr_mute: Failed to mute player @1: they have the tp_admin privilege."
+msgstr "tpr_mute: No se pudo silenciar al jugador @1: tiene el privilegio tp_admin."
+
+#: init.lua
 msgid "Wait @1 seconds before you can send teleport requests to @2 again."
 msgstr "Espere @1 segundos antes de que pueda mandar solicitudes de teletransporte a @2."
 
@@ -39,6 +47,30 @@ msgstr "Ya puede mandar solicitudes de teletransporte a @1."
 #: init.lua
 msgid "You are not allowed to send requests because you're muted."
 msgstr "No tienes permiso para mandar solicitudes de teletransporte porque estás silenciado."
+
+#: init.lua
+msgid "Cannot send request to @1 (you have been muted)."
+msgstr "No se puede enviar la solicitud a @1 (has sido silenciado)."
+
+#: init.lua
+msgid "tpr_mute: Player @1 is already muted."
+msgstr "tpr_mute: El jugador @1 ya esta silenciado."
+
+#: init.lua
+msgid "tpr_mute: Player @1 successfully muted."
+msgstr "tpr_mute: El jugador @1 ha sido silenciado con éxito."
+
+#: init.lua
+msgid "Usage: /tpr_unmute <player>"
+msgstr "Uso: /tpr_unmute <player>"
+
+#: init.lua
+msgid "tpr_mute: Player @1 is not muted yet."
+msgstr "tpr_mute: El jugador @1 aún no ha sido slienciado."
+
+#: init.lua
+msgid "tpr_mute: Player @1 successfully unmuted."
+msgstr "tpr_mute: El sonido del jugador @1 ha sido activado con éxito."
 
 #: init.lua
 msgid "Usage: /tpr <Player name>"
@@ -226,6 +258,14 @@ msgstr "Aceptar solicitudes de otro jugador."
 #: init.lua
 msgid "Deny teleport requests from another player"
 msgstr "Denegar solicitudos de otro jugador."
+
+#: init.lua
+msgid "Mutes a player: denies them from sending you teleport requests"
+msgstr "Silencia a un jugador: le niega el envío de solicitudes de teletransporte"
+
+#: init.lua
+msgid "Unmutes a player: allow them to send you teleport requests again"
+msgstr "Activar el sonido de un jugador: permite que te envíe solicitudes de teletransporte nuevamente"
 
 #: init.lua
 msgid "[Teleport Request] TPS Teleport v@1 Loaded!"
