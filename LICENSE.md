@@ -1,3 +1,5 @@
+Copyright (C) ChaosWormz 2014-2021 and contributors
+
                   GNU LESSER GENERAL PUBLIC LICENSE
                        Version 2.1, February 1999
 

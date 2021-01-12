@@ -102,7 +102,7 @@ If you know how to fix an issue, or want something to be added, consider opening
 
 ## License
 
-Copyright (C) 2014-2020 ChaosWormz and contributors.
+Copyright (C) 2014-2021 ChaosWormz and contributors.
 
 Teleport Request code is licensed under LGPLv2.1+, see [`LICENSE.md`](LICENSE.md).\
 [`tpr_warp.ogg`](sounds/tpr_warp.ogg) is licensed under [CC BY-SA 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).
