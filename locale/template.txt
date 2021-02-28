@@ -1,7 +1,7 @@
 # textdomain: tpr
 
 Let players teleport to other players (request will be sent)=
-Gives full admin-access to a player.=Da acceso total de administrador a un jugador.
+Gives full admin-access to a player.=
 Allow player to teleport to coordinates (if allowed by area protection)=
 Wait @1 seconds before you can send teleport requests to @2 again.=
 You can now send teleport requests to @1.=
