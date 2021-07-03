@@ -3,7 +3,7 @@ allow_defined_top = true
 max_line_length = 999
 
 globals = {
-	"tp"
+	"tp", "tpr"
 }
 
 read_globals = {
@@ -13,6 +13,9 @@ read_globals = {
 	"minetest", "vector",
 
 	"chat2", "gamehub", 
-	"intllib", "areas",
+	"intllib", "areas"
+}
 
+ignore ={
+	"tp"
 }

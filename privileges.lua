@@ -19,7 +19,7 @@ USA
 --]]
 
 -- Support for intllib
-local S = tp.intllib
+local S = tpr.intllib
 
 minetest.register_privilege("tp", {
 	description = S("Let players teleport to other players (request will be sent)"),

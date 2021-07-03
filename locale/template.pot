@@ -1,7 +1,7 @@
 # Template translation for Teleport Request.
 # Copyright (C) 2014-2021 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
-# David Leal <halfpacho@gmail.com>, 2019-2020.
+# David Leal <halfpacho@gmail.com>, 2019-2021.
 
 msgid ""
 msgstr ""
@@ -29,7 +29,7 @@ msgid "Allow player to teleport to coordinates (if allowed by area protection)"
 msgstr ""
 
 #: init.lua
-msgid "tpr_mute: Failed to mute player @1: they have the tp_admin privilege."
+msgid "tpr_mute: Failed to mute player @1: they have the `tp_admin` privilege."
 msgstr ""
 
 #: init.lua
@@ -264,5 +264,5 @@ msgid "Unmutes a player: allow them to send you teleport requests again"
 msgstr ""
 
 #: init.lua
-msgid "[Teleport Request] TPS Teleport v@1 Loaded!"
+msgid "[Teleport Request v@1] Loaded!"
 msgstr ""

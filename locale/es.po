@@ -1,7 +1,7 @@
 # Spanish translation for Teleport Request.
 # Copyright (C) 2014-2021 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
-# David Leal <halfpacho@gmail.com>, 2019-2020.
+# David Leal <halfpacho@gmail.com>, 2019-2021.
 
 msgid ""
 msgstr ""
@@ -33,8 +33,8 @@ msgid "Usage: /tpr_mute <player>"
 msgstr "Uso: /tpr_mute <jugador>"
 
 #: init.lua
-msgid "tpr_mute: Failed to mute player @1: they have the tp_admin privilege."
-msgstr "tpr_mute: No se pudo silenciar al jugador @1: tiene el privilegio tp_admin."
+msgid "tpr_mute: Failed to mute player @1: they have the `tp_admin` privilege."
+msgstr "tpr_mute: No se pudo silenciar al jugador @1: tiene el privilegio `tp_admin`."
 
 #: init.lua
 msgid "Wait @1 seconds before you can send teleport requests to @2 again."
@@ -62,7 +62,7 @@ msgstr "tpr_mute: El jugador @1 ha sido silenciado con éxito."
 
 #: init.lua
 msgid "Usage: /tpr_unmute <player>"
-msgstr "Uso: /tpr_unmute <player>"
+msgstr "Uso: /tpr_unmute <jugador>"
 
 #: init.lua
 msgid "tpr_mute: Player @1 is not muted yet."
@@ -70,7 +70,7 @@ msgstr "tpr_mute: El jugador @1 aún no ha sido slienciado."
 
 #: init.lua
 msgid "tpr_mute: Player @1 successfully unmuted."
-msgstr "tpr_mute: El sonido del jugador @1 ha sido activado con éxito."
+msgstr "tpr_mute: El jugador @1 ha sido desilenciado con éxito."
 
 #: init.lua
 msgid "Usage: /tpr <Player name>"
@@ -110,7 +110,7 @@ msgstr "Uso: /tphr <jugador>"
 
 #: init.lua
 msgid "@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny."
-msgstr "@1 esta pidiendo que tu te teletransportes a el/ella. /tpy para aceptar, /tpn para denegar."
+msgstr "@1 esta pidiendo que tu te teletransportes a ellos. /tpy para aceptar, /tpn para denegar."
 
 #: init.lua
 msgid "Usage: /tpc <x, y, z>"
@@ -185,11 +185,11 @@ msgstr "Uso: <x|y|z> <numero>"
 
 #: init.lua
 msgid "Not a number!"
-msgstr "¡No un número!"
+msgstr "¡No es un número!"
 
 #: init.lua
 msgid "Not a valid axis. Valid options are X, Y or Z"
-msgstr "Eje invalido. Opciones validas son x, y, o z"
+msgstr "Eje invalido. Las opciones validas son x, y, o z"
 
 #: init.lua
 msgid "EVADE!"
@@ -197,7 +197,7 @@ msgstr "¡EVADIR!"
 
 #: init.lua
 msgid "Request teleport to another player."
-msgstr "Enviar solicitud para teletransportarte a otro jugador."
+msgstr "Enviar solicitud de teletransportarte a otro jugador."
 
 #: init.lua
 msgid "<playername> | leave playername empty to see help message"
@@ -205,7 +205,7 @@ msgstr "<jugador> | Deje el nombre del jugador vacío para ver el mensaje de ayu
 
 #: init.lua
 msgid "Request player to teleport to you"
-msgstr "Solicita al jugador que se teletransporte a ti."
+msgstr "Solicitar al jugador que se teletransporte a ti."
 
 #: init.lua
 msgid "Teleport to coordinates"
@@ -229,7 +229,7 @@ msgstr "Evadir enemigo."
 
 #: init.lua
 msgid "Teleport to a place (i.e., spawn, shop)."
-msgstr "Teletransportarse a un lugar (p.ej., la tienda, la ciudad)."
+msgstr "Teletransportarse a un lugar (p. ej., la tienda, la ciudad)."
 
 #: init.lua
 msgid "<place> | leave empty to see available places"
@@ -237,7 +237,7 @@ msgstr "<lugar> | Deje vacío para ver los lugares disponibles"
 
 #: init.lua
 msgid "There are no places yet."
-msgstr "Todavia no hay lugares."
+msgstr "Todavia no hay lugares a los que se pueda teletransportar."
 
 #: init.lua
 msgid "Usage: /tpp <place>"
@@ -265,8 +265,8 @@ msgstr "Silencia a un jugador: le niega el envío de solicitudes de teletranspor
 
 #: init.lua
 msgid "Unmutes a player: allow them to send you teleport requests again"
-msgstr "Activar el sonido de un jugador: permite que te envíe solicitudes de teletransporte nuevamente"
+msgstr "Desilenciar a un jugador: permite que te envíe solicitudes de teletransporte nuevamente"
 
 #: init.lua
-msgid "[Teleport Request] TPS Teleport v@1 Loaded!"
-msgstr "[TPS] Solicitud de teletransporte v@1 Cargado!"
+msgid "[Teleport Request v@1] Loaded!"
+msgstr "[Teleport Request v@1] Cargado!"
