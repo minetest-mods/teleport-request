@@ -431,8 +431,6 @@ function tp.tphr_send(sender, receiver)
 			end
 		end
 
-		
-
 		if minetest.get_modpath("chat2") then
 			chat2.send_message(minetest.get_player_by_name(receiver), S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny.", sender), 0xFFFFFF)
 			chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay), 0xFFFFFF)
