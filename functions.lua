@@ -189,15 +189,15 @@ function tp.tpr_send(sender, receiver)
 	if spam_prevention[receiver] == sender and not minetest.check_player_privs(sender, {tp_admin = true}) then
 		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
 
-		minetest.after(tp.timeout_delay, function(name)
-			spam_prevention[name] = nil
+		minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
+			spam_prevention[receiver_name] = nil
 			if band == true then return end
 
-			if spam_prevention[receiver] == nil then
-				minetest.chat_send_player(sender, S("You can now send teleport requests to @1.", receiver))
+			if spam_prevention[receiver_name] == nil then
+				minetest.chat_send_player(sender_name, S("You can now send teleport requests to @1.", receiver_name))
 				band = true
 			end
-		end, receiver)
+		end, sender, receiver)
 
 	else
 
@@ -294,21 +294,21 @@ function tp.tpr_send(sender, receiver)
 		tp.tpn_list[sender] = receiver
 
 		-- Teleport timeout delay
-		minetest.after(tp.timeout_delay, function(name)
-			if tp.tpr_list[name] and tp.tpn_list[sender] then
-				tp.tpr_list[name] = nil
-				tp.tpn_list[sender] = nil
+		minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
+			if tp.tpr_list[receiver_name] and tp.tpn_list[sender_name] then
+				tp.tpr_list[receiver_name] = nil
+				tp.tpn_list[sender_name] = nil
 
-				minetest.chat_send_player(sender, S("Request timed-out."))
-				minetest.chat_send_player(receiver, S("Request timed-out."))
+				minetest.chat_send_player(sender_name, S("Request timed-out."))
+				minetest.chat_send_player(receiver_name, S("Request timed-out."))
 
 				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Request timed-out."), 0xFFFFFF)
-					chat2.send_message(minetest.get_player_by_name(receiver), S("Request timed-out."), 0xFFFFFF)
+					chat2.send_message(minetest.get_player_by_name(sender_name), S("Request timed-out."), 0xFFFFFF)
+					chat2.send_message(minetest.get_player_by_name(receiver_name), S("Request timed-out."), 0xFFFFFF)
 				end
 				return
 			end
-		end, receiver)
+		end, sender, receiver)
 	end
 end
 
@@ -339,15 +339,15 @@ function tp.tphr_send(sender, receiver)
 	if spam_prevention[receiver] == sender and not minetest.check_player_privs(sender, {tp_admin = true}) then
 		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
 
-		minetest.after(tp.timeout_delay, function(name)
-			spam_prevention[name] = nil
+		minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
+			spam_prevention[receiver_name] = nil
 			if band == true then return end
 
-			if spam_prevention[receiver] == nil then
-				minetest.chat_send_player(sender, S("You can now send teleport requests to @1.", receiver))
+			if spam_prevention[receiver_name] == nil then
+				minetest.chat_send_player(sender_name, S("You can now send teleport requests to @1.", receiver_name))
 				band = true
 			end
-		end, receiver)
+		end, sender, receiver)
 
 	else
 
@@ -444,21 +444,22 @@ function tp.tphr_send(sender, receiver)
 		tp.tpn_list[sender] = receiver
 
 		-- Teleport timeout delay
-		minetest.after(tp.timeout_delay, function(name)
-			if tp.tphr_list[name] and tp.tpn_list[sender] then
-				tp.tphr_list[name] = nil
-				tp.tpn_list[sender] = nil
 
-				minetest.chat_send_player(sender, S("Request timed-out."))
-				minetest.chat_send_player(receiver, S("Request timed-out."))
+		minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
+			if tp.tphr_list[receiver_name] and tp.tpn_list[sender_name] then
+				tp.tphr_list[receiver_name] = nil
+				tp.tpn_list[sender_name] = nil
+
+				minetest.chat_send_player(sender_name, S("Request timed-out."))
+				minetest.chat_send_player(receiver_name, S("Request timed-out."))
 
 				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Request timed-out"), 0xFFFFFF)
-					chat2.send_message(minetest.get_player_by_name(receiver), S("Request timed-out"), 0xFFFFFF)
+					chat2.send_message(minetest.get_player_by_name(sender_name), S("Request timed-out"), 0xFFFFFF)
+					chat2.send_message(minetest.get_player_by_name(receiver_name), S("Request timed-out"), 0xFFFFFF)
 				end
 				return
 			end
-		end, receiver)
+		end, sender, receiver)
 	end
 end
 
@@ -533,21 +534,21 @@ function tp.tpc_send(sender, coordinates)
 							tp.tpc_list[area.owner] = sender
 							tp.tpn_list[sender] = area.owner
 
-							minetest.after(tp.timeout_delay, function(name)
-								if tp.tpc_list[name] and tp.tpn_list[sender] then
-									tp.tpc_list[name] = nil
-									tp.tpn_list[sender] = nil
+							minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
+								if tp.tpc_list[receiver_name] and tp.tpn_list[sender_name] then
+									tp.tpc_list[receiver_name] = nil
+									tp.tpn_list[sender_name] = nil
 
-									minetest.chat_send_player(sender, S("Request timed-out."))
-									minetest.chat_send_player(area.owner, S("Request timed-out."))
+									minetest.chat_send_player(sender_name, S("Request timed-out."))
+									minetest.chat_send_player(receiver_name, S("Request timed-out."))
 
 									if minetest.get_modpath("chat2") then
-										chat2.send_message(minetest.get_player_by_name(sender), S("Request timed-out."), 0xFFFFFF)
-										chat2.send_message(minetest.get_player_by_name(area.owner), S("Request timed-out."), 0xFFFFFF)
+										chat2.send_message(minetest.get_player_by_name(sender_name), S("Request timed-out."), 0xFFFFFF)
+										chat2.send_message(minetest.get_player_by_name(receiver_name), S("Request timed-out."), 0xFFFFFF)
 									end
 									return
 								end
-							end, area.owner)
+							end, sender, area.owner)
 						else
 							minetest.record_protection_violation(target_coords, sender)
 						end
