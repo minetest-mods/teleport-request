@@ -1,8 +1,8 @@
-<!-- If it fixes an reported issue, specify the issue number below -->
+<!-- If it fixes a reported issue, specify the issue number below -->
 
 Closes #
 Things added/changed:
-<!-- Specify what the PR adds, fixes or does -->
+<!-- Specify what the PR adds, fixes, or does -->
 - 
 - 
 - 

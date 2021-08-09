@@ -1,7 +1,7 @@
 # Timeout delay (default is 60)
 tp.timeout_delay (Timeout delay after a request is sent) int 60
 
-# Message color (default is #FFFFFF)
+# Message color (default color is #FFFFFF)
 tp.message_color (The color of the messages sent to players) string #FFFFFF
 
 # Enables immediate teleport to players for those who have tp_admin privilege (enabled by default)
