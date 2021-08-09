@@ -56,7 +56,6 @@ local function send_message(player, message)
 	end
 end
 
-
 local request_id = 0
 local request_list = {}
 local sender_list = {}
