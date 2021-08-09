@@ -30,6 +30,32 @@ local band = false
 
 local muted_players = {}
 
+local message_color = tp.message_color
+
+local function color_string_to_number(color)
+	if string.sub(color,1,1) == '#' then
+		color = string.sub(color, 2)
+	end
+	if #color < 6 then
+		local r = string.sub(color,1,1)
+		local g = string.sub(color,2,2)
+		local b = string.sub(color,3,3)
+		color = r..r .. g..g .. b..b
+	elseif #color > 6 then
+		color = string.sub(color, 1, 6)
+	end
+	return tonumber(color, 16)
+end
+
+local message_color_number = color_string_to_number(message_color)
+
+local function send_message(player, message)
+	minetest.chat_send_player(player, minetest.colorize(message_color, message))
+	if minetest.get_modpath("chat2") then
+		chat2.send_message(minetest.get_player_by_name(player), message, message_color_number)
+	end
+end
+
 local map_size = 30912
 function tp.can_teleport(to)
 	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
@@ -105,89 +131,71 @@ end
 -- Mutes a player from sending you teleport requests
 function tp.tpr_mute(player, muted_player)
 	if muted_player == "" then
-		minetest.chat_send_player(player, S("Usage: /tpr_mute <player>"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("Usage: /tpr_mute <player>"), 0xFFFFFF)
-		end
+		send_message(player, S("Usage: /tpr_mute <player>"))
 		return
 	end
 
 	if not minetest.get_player_by_name(muted_player) then
-		minetest.chat_send_player(player, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
-		end
+		send_message(player, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
 		return
 	end
 
 	if minetest.check_player_privs(muted_player, {tp_admin = true}) and not minetest.check_player_privs(player, {server = true}) then
-		minetest.chat_send_player(player, S("tpr_mute: Failed to mute player @1: they have the tp_admin privilege.", muted_player))
+		send_message(player, S("tpr_mute: Failed to mute player @1: they have the tp_admin privilege.", muted_player))
 		return
 	end
 
 	if muted_players[player] == muted_player then
-		minetest.chat_send_player(player, S("tpr_mute: Player @1 is already muted.", muted_player))
+		send_message(player, S("tpr_mute: Player @1 is already muted.", muted_player))
 		return
 	end
 
 	muted_players[player] = muted_player
-	minetest.chat_send_player(player, S("tpr_mute: Player @1 successfully muted.", muted_player))
+	send_message(player, S("tpr_mute: Player @1 successfully muted.", muted_player))
 end
 
 -- Unmutes a player from sending you teleport requests
 function tp.tpr_unmute(player, muted_player)
 	if muted_player == "" then
-		minetest.chat_send_player(player, S("Usage: /tpr_unmute <player>"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("Usage: /tpr_unmute <player>"), 0xFFFFFF)
-		end
+		send_message(player, S("Usage: /tpr_unmute <player>"))
 		return
 	end
 
 	if not minetest.get_player_by_name(muted_player) then
-		minetest.chat_send_player(player, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
-		end
+		send_message(player, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
 		return
 	end
 
 	if muted_players[player] ~= muted_player then
-		minetest.chat_send_player(player, S("tpr_mute: Player @1 is not muted yet.", muted_player))
+		send_message(player, S("tpr_mute: Player @1 is not muted yet.", muted_player))
 		return
 	end
 
 	muted_players[player] = nil
-	minetest.chat_send_player(player, S("tpr_mute: Player @1 successfully unmuted.", muted_player))
+	send_message(player, S("tpr_mute: Player @1 successfully unmuted.", muted_player))
 end
 
 -- Teleport Request System
 function tp.tpr_send(sender, receiver)
 	-- Check if the sender is muted
 	if muted_players[receiver] == sender and not minetest.check_player_privs(sender, {server = true}) then
-		minetest.chat_send_player(sender, S("Cannot send request to @1 (you have been muted).", receiver))
+		send_message(sender, S("Cannot send request to @1 (you have been muted).", receiver))
 		return
 	end
 
 	if receiver == "" then
-		minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
-		end
+		send_message(sender, S("Usage: /tpr <Player name>"))
 		return
 	end
 
 	if not minetest.get_player_by_name(receiver) then
-		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-		end
+		send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 		return
 	end
 
 	-- Spam prevention
 	if spam_prevention[receiver] == sender and not minetest.check_player_privs(sender, {tp_admin = true}) then
-		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
+		send_message(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
 
 		minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
 			spam_prevention[receiver_name] = nil
@@ -204,90 +212,58 @@ function tp.tpr_send(sender, receiver)
 	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
 			if receiver == "" then
-				minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
-					if minetest.get_modpath("chat2") then
-						chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
-					end
+				send_message(sender, S("Usage: /tpr <Player name>"))
 				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
-				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-				end
+				send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 				return
 			end
 
 			local player_receiver = minetest.get_player_by_name(receiver)
 			if player_receiver:get_meta():get_string("beerchat:muted:" .. sender) == "true" then
-				minetest.chat_send_player(sender, S("You are not allowed to send requests because you're muted."))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("You are not allowed to send requests because you're muted."), 0xFFFFFF)
-				end
+				send_message(sender, S("You are not allowed to send requests because you're muted."))
 				return
 			end
 		end
 
 		if minetest.check_player_privs(sender, {tp_admin = true}) and tp.enable_immediate_teleport then
 			if receiver == "" then
-				minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
-				end
+				send_message(sender, S("Usage: /tpr <Player name>"))
 				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
-				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-				end
+				send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 				return
 			end
 
 			tp.tpr_list[receiver] = sender
 			tp.tpr_accept(receiver)
-			minetest.chat_send_player(sender, S("You are teleporting to @1.", receiver))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("You are teleporting to @1.", receiver), 0xFFFFFF)
-			end
+			send_message(sender, S("You are teleporting to @1.", receiver))
 			return
 		end
 
 		if receiver == "" then
-			minetest.chat_send_player(sender, S("Usage: /tpr <Player name>"))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpr <Player name>"), 0xFFFFFF)
-			end
+			send_message(sender, S("Usage: /tpr <Player name>"))
 			return
 		end
 
 		if not minetest.get_player_by_name(receiver) then
-			minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"), 0xFFFFFF)
-			end
+			send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online"))
 			return
 		end
 
 		if minetest.get_modpath("gamehub") then -- Compatibility with gamehub (UNTESTED)
 			if gamehub.players[receiver] then
-				minetest.chat_send_player(sender, S("Teleport request denied, player is in the gamehub!"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
-				end
+				send_message(sender, S("Teleport request denied, player is in the gamehub!"))
 				return
 			end
 		end
 
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(receiver), S("@1 is requesting to teleport to you. /tpy to accept.", sender), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay), 0xFFFFFF)
-		end
-
-		minetest.chat_send_player(receiver, S("@1 is requesting to teleport to you. /tpy to accept.", sender))
-		minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
+		send_message(receiver, S("@1 is requesting to teleport to you. /tpy to accept.", sender))
+		send_message(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
 
 		-- Write name values to list and clear old values.
 		tp.tpr_list[receiver] = sender
@@ -299,13 +275,8 @@ function tp.tpr_send(sender, receiver)
 				tp.tpr_list[receiver_name] = nil
 				tp.tpn_list[sender_name] = nil
 
-				minetest.chat_send_player(sender_name, S("Request timed-out."))
-				minetest.chat_send_player(receiver_name, S("Request timed-out."))
-
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender_name), S("Request timed-out."), 0xFFFFFF)
-					chat2.send_message(minetest.get_player_by_name(receiver_name), S("Request timed-out."), 0xFFFFFF)
-				end
+				send_message(sender_name, S("Request timed-out."))
+				send_message(receiver_name, S("Request timed-out."))
 				return
 			end
 		end, sender, receiver)
@@ -315,36 +286,30 @@ end
 function tp.tphr_send(sender, receiver)
 	-- Check if the sender is muted
 	if muted_players[receiver] == sender and not minetest.check_player_privs(sender, {server = true}) then
-		minetest.chat_send_player(sender, S("Cannot send request to @1 (you have been muted).", receiver))
+		send_message(sender, S("Cannot send request to @1 (you have been muted).", receiver))
 		return
 	end
 
 	if receiver == "" then
-		minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
-		end
+		send_message(sender, S("Usage: /tphr <Player name>"))
 		return
 	end
 
 	if not minetest.get_player_by_name(receiver) then
-		minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
-		end
+		send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
 		return
 	end
 
 	-- Spam prevention
 	if spam_prevention[receiver] == sender and not minetest.check_player_privs(sender, {tp_admin = true}) then
-		minetest.chat_send_player(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
+		send_message(sender, S("Wait @1 seconds before you can send teleport requests to @2 again.", tp.timeout_delay, receiver))
 
 		minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
 			spam_prevention[receiver_name] = nil
 			if band == true then return end
 
 			if spam_prevention[receiver_name] == nil then
-				minetest.chat_send_player(sender_name, S("You can now send teleport requests to @1.", receiver_name))
+				send_message(sender_name, S("You can now send teleport requests to @1.", receiver_name))
 				band = true
 			end
 		end, sender, receiver)
@@ -354,90 +319,58 @@ function tp.tphr_send(sender, receiver)
 	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
 			if receiver == "" then
-				minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
-				end
+				send_message(sender, S("Usage: /tphr <Player name>"))
 				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
-				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
-				end
+				send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
 				return
 			end
 
 			local player_receiver = minetest.get_player_by_name(receiver)
 			if player_receiver:get_meta():get_string("beerchat:muted:" .. sender) == "true" then
-				minetest.chat_send_player(sender, S("You are not allowed to send requests because you're muted."))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("You are not allowed to send requests because you're muted."), 0xFFFFFF)
-				end
+				send_message(sender, S("You are not allowed to send requests because you're muted."))
 				return
 			end
 		end
 
 		if minetest.check_player_privs(sender, {tp_admin = true}) and tp.enable_immediate_teleport then
 			if receiver == "" then
-				minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
-				end
+				send_message(sender, S("Usage: /tphr <Player name>"))
 				return
 			end
 
 			if not minetest.get_player_by_name(receiver) then
-				minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
-				end
+				send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
 				return
 			end
 
 			tp.tphr_list[receiver] = sender
 			tp.tpr_accept(receiver)
-			minetest.chat_send_player(sender, S("@1 is teleporting to you.", receiver))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("@1 is teleporting to you.", receiver), 0xFFFFFF)
-			end
+			send_message(sender, S("@1 is teleporting to you.", receiver))
 			return
 		end
 
 		if receiver == "" then
-			minetest.chat_send_player(sender, S("Usage: /tphr <Player name>"))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("Usage. /tphr <Player name>"), 0xFFFFFF)
-			end
+			send_message(sender, S("Usage: /tphr <Player name>"))
 			return
 		end
 
 		if not minetest.get_player_by_name(receiver) then
-			minetest.chat_send_player(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."), 0xFFFFFF)
-			end
+			send_message(sender, S("There is no player by that name. Keep in mind this is case-sensitive, and the player must be online."))
 			return
 		end
 
 		if minetest.get_modpath("gamehub") then -- Compatibility with gamehub (UNTESTED)
 			if gamehub.players[receiver] then
-				minetest.chat_send_player(sender, S("Teleport request denied, player is in the gamehub!"))
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request denied, player is in the gamehub!"), 0xFFFFFF)
-				end
+				send_message(sender, S("Teleport request denied, player is in the gamehub!"))
 				return
 			end
 		end
 
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(receiver), S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny.", sender), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(sender), S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay), 0xFFFFFF)
-		end
-
-		minetest.chat_send_player(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny.", sender))
-		minetest.chat_send_player(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
+		send_message(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny.", sender))
+		send_message(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
 
 		-- Write name values to list and clear old values.
 		tp.tphr_list[receiver] = sender
@@ -450,13 +383,8 @@ function tp.tphr_send(sender, receiver)
 				tp.tphr_list[receiver_name] = nil
 				tp.tpn_list[sender_name] = nil
 
-				minetest.chat_send_player(sender_name, S("Request timed-out."))
-				minetest.chat_send_player(receiver_name, S("Request timed-out."))
-
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(sender_name), S("Request timed-out"), 0xFFFFFF)
-					chat2.send_message(minetest.get_player_by_name(receiver_name), S("Request timed-out"), 0xFFFFFF)
-				end
+				send_message(sender_name, S("Request timed-out."))
+				send_message(receiver_name, S("Request timed-out."))
 				return
 			end
 		end, sender, receiver)
@@ -474,20 +402,14 @@ function tp.tpc_send(sender, coordinates)
 	end
 
 	if posx==nil or posy==nil or posz==nil or string.len(posx) > 6 or string.len(posy) > 6 or string.len(posz) > 6 then
-		minetest.chat_send_player(sender, S("Usage: /tpc <x, y, z>"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(sender), S("Usage: /tpc <x, y, z>"), 0xFFFFFF)
-		end
+		send_message(sender, S("Usage: /tpc <x, y, z>"))
 		return nil
 	end
 
 	target_coords = {x=posx, y=posy, z=posz}
 
 	if tp.can_teleport(target_coords) == false then
-		minetest.chat_send_player(sender, S("You cannot teleport to a location outside the map!"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(sender), S("You cannot teleport to a location outside the map!"), 0xFFFFFF)
-		end
+		send_message(sender, S("You cannot teleport to a location outside the map!"))
 		return nil
 	end
 
@@ -496,10 +418,7 @@ function tp.tpc_send(sender, coordinates)
 	if minetest.check_player_privs(pname, {tp_admin = true}) then
 		tp.tpc_teleport_player(sender)
 		target_coords = nil
-		minetest.chat_send_player(sender, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(sender), S("Teleporting to: @1, @2, @3", posx, posy, posz), 0xFFFFFF)
-		end
+		send_message(sender, S("Teleporting to: @1, @2, @3", posx, posy, posz))
 	else
 		if minetest.check_player_privs(pname, {tp_tpc = true}) then
 			local protected = minetest.is_protected(target_coords, sender)
@@ -518,18 +437,10 @@ function tp.tpc_send(sender, coordinates)
 								tpc_target_coords[area.owner] = {x=posx, y=posy, z=posz}
 							end
 
-							minetest.chat_send_player(sender, S("Area request sent! Waiting for @1 to accept your request." ..
+							send_message(sender, S("Area request sent! Waiting for @1 to accept your request." ..
 							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(tpc_target_coords[area.owner]), S(", or ")), tp.timeout_delay))
-							minetest.chat_send_player(area.owner, S("@1 is requesting to teleport to a protected area" ..
+							send_message(area.owner, S("@1 is requesting to teleport to a protected area" ..
 							" of yours @2.", sender, minetest.pos_to_string(tpc_target_coords[area.owner])))
-
-							if minetest.get_modpath("chat2") then
-								chat2.send_message(minetest.get_player_by_name(sender), S("Area request sent! Waiting for @1 to accept your request." ..
-								" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(tpc_target_coords[area.owner]), S(", or ")), tp.timeout_delay), 0xFFFFFF)
-
-								chat2.send_message(minetest.get_player_by_name(area.owner), S("@1 is requesting to teleport to a protected area" ..
-								" of yours @2.", sender, minetest.pos_to_string(tpc_target_coords[area.owner])), 0xFFFFFF)
-							end
 
 							tp.tpc_list[area.owner] = sender
 							tp.tpn_list[sender] = area.owner
@@ -539,13 +450,8 @@ function tp.tpc_send(sender, coordinates)
 									tp.tpc_list[receiver_name] = nil
 									tp.tpn_list[sender_name] = nil
 
-									minetest.chat_send_player(sender_name, S("Request timed-out."))
-									minetest.chat_send_player(receiver_name, S("Request timed-out."))
-
-									if minetest.get_modpath("chat2") then
-										chat2.send_message(minetest.get_player_by_name(sender_name), S("Request timed-out."), 0xFFFFFF)
-										chat2.send_message(minetest.get_player_by_name(receiver_name), S("Request timed-out."), 0xFFFFFF)
-									end
+									send_message(sender_name, S("Request timed-out."))
+									send_message(receiver_name, S("Request timed-out."))
 									return
 								end
 							end, sender, area.owner)
@@ -561,15 +467,9 @@ function tp.tpc_send(sender, coordinates)
 
 			tp.tpc_teleport_player(sender)
 			target_coords = nil
-			minetest.chat_send_player(sender, S("Teleporting to: @1, @2, @3", posx, posy, posz))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("Teleporting to: @1, @2, @3", posx, posy, posz), 0xFFFFFF)
-			end
+			send_message(sender, S("Teleporting to: @1, @2, @3", posx, posy, posz))
 		else
-			minetest.chat_send_player(sender, S("Error: You do not have permission to teleport to those coordinates."))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(sender), S("Error: You do not have permission to teleport to those coordinates."), 0xFFFFFF)
-			end
+			send_message(sender, S("Error: You do not have permission to teleport to those coordinates."))
 			return
 		end
 	end
@@ -578,22 +478,15 @@ end
 function tp.tpr_deny(name)
 	if not tp.tpr_list[name] and not tp.tphr_list[name]
 	and not tp.tpc_list[name] and not tp.tpn_list[name] then
-		minetest.chat_send_player(name, S("Usage: /tpn allows you to deny teleport/area requests sent to you by other players."))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name), S("Usage: /tpn allows you to deny teleport/area requests sent to you by other players."), 0xFFFFFF)
-		end
+		send_message(name, S("Usage: /tpn allows you to deny teleport/area requests sent to you by other players."))
 		return
 	end
 
 	-- Area requests
 	if tp.tpc_list[name] then
 		name2 = tp.tpc_list[name]
-		minetest.chat_send_player(name2, S("Area request denied."))
-		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name2), S("Area request denied."), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
-		end
+		send_message(name2, S("Area request denied."))
+		send_message(name, S("You denied the request @1 sent you.", name2))
 		tp.tpc_list[name] = nil
 
 		-- Don't allow re-denying requests.
@@ -604,12 +497,8 @@ function tp.tpr_deny(name)
 	-- Teleport requests
 	if tp.tpr_list[name] then
 		name2 = tp.tpr_list[name]
-		minetest.chat_send_player(name2, S("Teleport request denied."))
-		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name2), S("Teleport request denied."), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
-		end
+		send_message(name2, S("Teleport request denied."))
+		send_message(name, S("You denied the request @1 sent you.", name2))
 
 		tp.tpr_list[name] = nil
 		spam_prevention[name] = name2
@@ -619,12 +508,8 @@ function tp.tpr_deny(name)
 
 	elseif tp.tphr_list[name] then
 		name2 = tp.tphr_list[name]
-		minetest.chat_send_player(name2, S("Teleport request denied."))
-		minetest.chat_send_player(name, S("You denied the request @1 sent you.", name2))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name2), S("Teleport request denied."), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(name), S("You denied the request @1 sent you.", name2), 0xFFFFFF)
-		end
+		send_message(name2, S("Teleport request denied."))
+		send_message(name, S("You denied the request @1 sent you.", name2))
 
 		tp.tphr_list[name] = nil
 		spam_prevention[name] = name2
@@ -634,12 +519,8 @@ function tp.tpr_deny(name)
 
 	elseif tp.tpn_list[name] then
 		name2 = tp.tpn_list[name]
-		minetest.chat_send_player(name, S("You denied your request sent to @1.", name2))
-		minetest.chat_send_player(name2, S("@1 denied their request sent to you.", name))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name), S("You denied your request sent to @1.", name2), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(name2), S("@1 denied their request sent to you.", name), 0xFFFFFF)
-		end
+		send_message(name, S("You denied your request sent to @1.", name2))
+		send_message(name2, S("@1 denied their request sent to you.", name))
 
 		if tp.tpr_list[name2] then
 			tp.tpr_list[name2] = nil
@@ -661,10 +542,7 @@ function tp.tpr_accept(name)
 	-- Check to prevent constant teleporting
 	if not tp.tpr_list[name] and not tp.tphr_list[name]
 	and not tp.tpc_list[name] then
-		minetest.chat_send_player(name, S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name), S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."), 0xFFFFFF)
-		end
+		send_message(name, S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."))
 		return
 	end
 
@@ -683,11 +561,8 @@ function tp.tpr_accept(name)
 
 		-- If source or target are not present, abort request.
 		if not source or not target then
-			minetest.chat_send_player(name, S("@1 is not online right now.", name2))
+			send_message(name, S("@1 is not online right now.", name2))
 			tp.tpc_list[name] = nil
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(name), S("@1 is not online right now.", name2), 0xFFFFFF)
-			end
 			return
 		end
 
@@ -707,17 +582,11 @@ function tp.tpr_accept(name)
 			tp.tpn_list[name2] = nil
 		end
 
-		minetest.chat_send_player(name, chatmsg)
-		minetest.chat_send_player(name2, S("Request Accepted!"))
+		send_message(name, chatmsg)
+		send_message(name2, S("Request Accepted!"))
 
 		-- Avoid abusing with area requests
 		target_coords = nil
-
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name2), S("Request Accepted!"), 0xFFFFFF)
-			chat2.send_message(minetest.get_player_by_name(name), chatmsg, 0xFFFFFF)
-			return
-		end
 	end
 
 	-- Teleport requests.
@@ -741,12 +610,9 @@ function tp.tpr_accept(name)
 	-- Could happen if either player disconnects (or timeout); if so just abort
 	if not source
 	or not target then
-		minetest.chat_send_player(name, S("@1 is not online right now.", name2))
+		send_message(name, S("@1 is not online right now.", name2))
 		tp.tpr_list[name] = nil
 		tp.tphr_list[name] = nil
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name), S("@1 is not online right now.", name2), 0xFFFFFF)
-		end
 		return
 	end
 
@@ -761,24 +627,14 @@ function tp.tpr_accept(name)
 		tp.tpn_list[name2] = nil
 	end
 
-	minetest.chat_send_player(name, chatmsg)
-	if minetest.get_modpath("chat2") then
-		chat2.send_message(minetest.get_player_by_name(name), chatmsg, 0xFFFFFF)
-	end
+	send_message(name, chatmsg)
 
 	if minetest.check_player_privs(name2, {tp_admin = true}) == false then
-		minetest.chat_send_player(name2, S("Request Accepted!"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name2), S("Request Accepted!"), 0xFFFFFF)
-		end
-
+		send_message(name2, S("Request Accepted!"))
 	else
 		if tp.enable_immediate_teleport then return end
 
-		minetest.chat_send_player(name2, S("Request Accepted!"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(name2), S("Request Accepted!"), 0xFFFFFF)
-		end
+		send_message(name2, S("Request Accepted!"))
 		return
 	end
 end
@@ -786,26 +642,18 @@ end
 -- Teleport Jump - Relative Position Teleportation by number of nodes
 function tp.tpj(player, param)
 	if param == "" then
-		minetest.chat_send_player(player, S("Usage: <x|y|z> <number>"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("Usage: <x|y|z> <number>"), 0xFFFFFF)
-		end
+		send_message(player, S("Usage: <x|y|z> <number>"))
 		return false
 	end
 
 	local args = param:split(" ") -- look into this. Can it crash if the player does not have two parameters?
 	if #args < 2 then
-		minetest.chat_send_player(player, S("Usage: <x|y|z> <number>"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("Usage: <x|y|z> <number>"), 0xFFFFFF)
-		end
+		send_message(player, S("Usage: <x|y|z> <number>"))
 		return false
 	end
 
 	if not tonumber(args[2]) then
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("Not a number!"), 0xFFFFFF)
-		end
+		send_message(player, S("Not a number!"))
 		return false, S("Not a number!")
 	end
 
@@ -818,18 +666,12 @@ function tp.tpj(player, param)
 	elseif args[1] == "z" then
 		target_coords["z"] = target_coords["z"] + tonumber(args[2])
 	else
-		minetest.chat_send_player(player, S("Not a valid axis. Valid options are X, Y or Z"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("Not a valid axis. Valid options are X, Y or Z"), 0xFFFFFF)
-		end
+		send_message(player, S("Not a valid axis. Valid options are X, Y or Z"))
 		return
 	end
 
 	if tp.can_teleport(target_coords) == false then
-		minetest.chat_send_player(player, S("You cannot teleport to a location outside the map!"))
-		if minetest.get_modpath("chat2") then
-			chat2.send_message(minetest.get_player_by_name(player), S("You cannot teleport to a location outside the map!"), 0xFFFFFF)
-		end
+		send_message(player, S("You cannot teleport to a location outside the map!"))
 		return
 	end
 	tp.tpc_teleport_player(player)
@@ -840,10 +682,7 @@ end
 
 -- Evade
 function tp.tpe(player)
-	if minetest.get_modpath("chat2") then
-		chat2.send_message(minetest.get_player_by_name(player), S("EVADE!"), 0xFFFFFF)
-	end
-	minetest.chat_send_player(player, S("EVADE!"))
+	send_message(player, S("EVADE!"))
 	local mindistance = 15
 	local maxdistance = 50
 	local times = math.random(6,20) -- how many times to jump - minimum,maximum
@@ -876,20 +715,14 @@ if tp.enable_tpp_command then
 			local places = {}
 			if not tp.available_places then tp.available_places = {} end
 			for key, value in pairs(tp.available_places) do
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(player), key, 0xFFFFFF)
-				end
+				send_message(player, key)
 				table.insert(places, key)
 			end
 			if #places == 0 then
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(player), S("There are no places yet."), 0xFFFFFF)
-				end
+				send_message(player, S("There are no places yet."))
 				return true, S("There are no places yet.")
 			end
-				if minetest.get_modpath("chat2") then
-					chat2.send_message(minetest.get_player_by_name(player), S("Usage: /tpp <place>"), 0xFFFFFF)
-				end
+				send_message(player, S("Usage: /tpp <place>"))
 				table.insert(places, S("Usage: /tpp <place>"))
 				return true, table.concat(places, "\n")
 
@@ -897,17 +730,11 @@ if tp.enable_tpp_command then
 		elseif tp.available_places[param] then
 			local pos = {x = tp.available_places[param].x, y = tp.available_places[param].y, z = tp.available_places[param].z}
 			tp.tpp_teleport_player(player, pos)
-			minetest.chat_send_player(player, S("Teleporting to @1.", param))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(player), S("Teleporting to @1.", param), 0xFFFFFF)
-			end
+			send_message(player, S("Teleporting to @1.", param))
 
 		-- Check if the place exists.
 		elseif not tp.available_places[param] then
-			minetest.chat_send_player(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
-			if minetest.get_modpath("chat2") then
-				chat2.send_message(minetest.get_player_by_name(player), S("There is no place by that name. Keep in mind this is case-sensitive."), 0xFFFFFF)
-			end
+			send_message(player, S("There is no place by that name. Keep in mind this is case-sensitive."))
 			return
 		end
 	end
