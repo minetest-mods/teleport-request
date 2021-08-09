@@ -56,10 +56,6 @@ local function send_message(player, message)
 	end
 end
 
-local function pending_request(name)
-	return tp.tpr_list[name] or tp.tphr_list[name] or tp.tpc_list[name]
-end
-
 local map_size = 30912
 function tp.can_teleport(to)
 	return to.x < map_size and to.x > -map_size and to.y < map_size and to.y > -map_size and to.z < map_size and to.z > -map_size
@@ -266,26 +262,6 @@ function tp.tpr_send(sender, receiver)
 			end
 		end
 
-		local receiver_request = pending_request(receiver)
-		if receiver_request or tp.tpn_list[receiver] then
-			if receiver_request == sender then
-				send_message(sender, S("You have already sent a request to @1, wait for them to respond before sending another.", receiver))
-			else
-				send_message(sender, S("@1 is dealing with another request right now, try again later.", receiver))
-			end
-			return
-		end
-
-		local sender_request = pending_request(sender)
-		if sender_request or tp.tpn_list[sender] then
-			if sender_request == receiver then
-				send_message(sender, S("@1 has already sent a request to you, cancel it with /tpn before sending a request to them.", receiver))
-			else
-				send_message(sender, S("You are dealing with another request right now, cancel it with /tpn before sending another request.", receiver))
-			end
-			return
-		end
-
 		send_message(receiver, S("@1 is requesting to teleport to you. /tpy to accept.", sender))
 		send_message(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
 
@@ -393,26 +369,6 @@ function tp.tphr_send(sender, receiver)
 			end
 		end
 
-		local receiver_request = pending_request(receiver)
-		if receiver_request or tp.tpn_list[receiver] then
-			if receiver_request == sender then
-				send_message(sender, S("You have already sent a request to @1, wait for them to respond before sending another.", receiver))
-			else
-				send_message(sender, S("@1 is dealing with another request right now, try again later.", receiver))
-			end
-			return
-		end
-
-		local sender_request = pending_request(sender)
-		if sender_request or tp.tpn_list[sender] then
-			if sender_request == receiver then
-				send_message(sender, S("@1 has already sent a request to you, cancel it with /tpn before sending a request to them.", receiver))
-			else
-				send_message(sender, S("You are dealing with another request right now, cancel it with /tpn before sending another request.", receiver))
-			end
-			return
-		end
-
 		send_message(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny.", sender))
 		send_message(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
 
@@ -469,47 +425,25 @@ function tp.tpc_send(sender, coordinates)
 			if protected then
 				if minetest.get_modpath("areas") then
 					for _, area in pairs(areas:getAreasAtPos(target_coords)) do
-						local receiver = area.owner
-
-						if minetest.get_player_by_name(receiver) then -- Check if area owners are online
-
-							local receiver_request = pending_request(receiver)
-							if receiver_request or tp.tpn_list[receiver] then
-								if receiver_request == sender then
-									send_message(sender, S("You have already sent a request to @1, wait for them to respond before sending another.", receiver))
-								else
-									send_message(sender, S("@1 is dealing with another request right now, try again later.", receiver))
-								end
-								return
-							end
-
-							local sender_request = pending_request(sender)
-							if sender_request or tp.tpn_list[sender] then
-								if sender_request == receiver then
-									send_message(sender, S("@1 has already sent a request to you, cancel it with /tpn before sending a request to them.", receiver))
-								else
-									send_message(sender, S("You are dealing with another request right now, cancel it with /tpn before sending another request.", receiver))
-								end
-								return
-							end
+						if minetest.get_player_by_name(area.owner) then -- Check if area owners are online
 
 							if tpc_target_coords then
 								old_tpc_target_coords = tpc_target_coords
-								old_tpc_target_coords[receiver] = tpc_target_coords[receiver]
+								old_tpc_target_coords[area.owner] = tpc_target_coords[area.owner]
 
-								tpc_target_coords[receiver] = {x=posx, y=posy, z=posz}
+								tpc_target_coords[area.owner] = {x=posx, y=posy, z=posz}
 							else
 								tpc_target_coords = {x=posx, y=posy, z=posz}
-								tpc_target_coords[receiver] = {x=posx, y=posy, z=posz}
+								tpc_target_coords[area.owner] = {x=posx, y=posy, z=posz}
 							end
 
 							send_message(sender, S("Area request sent! Waiting for @1 to accept your request." ..
-							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(tpc_target_coords[receiver]), S(", or ")), tp.timeout_delay))
-							send_message(receiver, S("@1 is requesting to teleport to a protected area" ..
-							" of yours @2.", sender, minetest.pos_to_string(tpc_target_coords[receiver])))
+							" It will timeout in @2 seconds.", table.concat(areas:getNodeOwners(tpc_target_coords[area.owner]), S(", or ")), tp.timeout_delay))
+							send_message(area.owner, S("@1 is requesting to teleport to a protected area" ..
+							" of yours @2.", sender, minetest.pos_to_string(tpc_target_coords[area.owner])))
 
-							tp.tpc_list[receiver] = sender
-							tp.tpn_list[sender] = receiver
+							tp.tpc_list[area.owner] = sender
+							tp.tpn_list[sender] = area.owner
 
 							minetest.after(tp.timeout_delay, function(sender_name, receiver_name)
 								if tp.tpc_list[receiver_name] and tp.tpn_list[sender_name] then
@@ -520,7 +454,7 @@ function tp.tpc_send(sender, coordinates)
 									send_message(receiver_name, S("Request timed-out."))
 									return
 								end
-							end, sender, receiver)
+							end, sender, area.owner)
 						else
 							minetest.record_protection_violation(target_coords, sender)
 						end
@@ -542,7 +476,8 @@ function tp.tpc_send(sender, coordinates)
 end
 
 function tp.tpr_deny(name)
-	if not pending_request(name) and not tp.tpn_list[name] then
+	if not tp.tpr_list[name] and not tp.tphr_list[name]
+	and not tp.tpc_list[name] and not tp.tpn_list[name] then
 		send_message(name, S("Usage: /tpn allows you to deny teleport/area requests sent to you by other players."))
 		return
 	end
@@ -605,7 +540,8 @@ end
 -- Teleport Accept Systems
 function tp.tpr_accept(name)
 	-- Check to prevent constant teleporting
-	if not pending_request(name) then
+	if not tp.tpr_list[name] and not tp.tphr_list[name]
+	and not tp.tpc_list[name] then
 		send_message(name, S("Usage: /tpy allows you to accept teleport/area requests sent to you by other players."))
 		return
 	end
