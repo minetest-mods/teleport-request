@@ -22,6 +22,9 @@ USA
 tp.timeout_delay = tonumber(minetest.settings:get("tp.timeout_delay")) or 60
 tp.version = "1.5"
 
+-- Message color
+tp.message_color = minetest.settings:get("tp.message_color") or "#FFFFFF"
+
 -- Enable teleporting immediately to the specified player for those with "tp_admin" privilege.
 tp.enable_immediate_teleport = minetest.settings:get_bool("tp.enable_immediate_teleport")
 
