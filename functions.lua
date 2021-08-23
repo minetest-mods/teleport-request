@@ -508,9 +508,8 @@ function tp.tpr_send(sender, receiver)
 				return
 			end
 
-			tp.tpr_list[receiver] = sender
-			tp.tpr_accept(receiver)
-			send_message(sender, S("You are teleporting to @1.", receiver))
+			local id = tp.make_request(sender, receiver, "receiver")
+			tp.accept_request(id)
 			return
 		end
 
@@ -534,7 +533,7 @@ function tp.tpr_send(sender, receiver)
 		send_message(receiver, S("@1 is requesting to teleport to you. /tpy to accept.", sender))
 		send_message(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
 
-		local tp_id = tp.make_request(sender, receiver, "sender")
+		local tp_id = tp.make_request(sender, receiver, "receiver")
 
 		-- Teleport timeout delay
 		minetest.after(tp.timeout_delay, function(id)
@@ -638,7 +637,7 @@ function tp.tphr_send(sender, receiver)
 		send_message(receiver, S("@1 is requesting that you teleport to them. /tpy to accept; /tpn to deny.", sender))
 		send_message(sender, S("Teleport request sent! It will timeout in @1 seconds.", tp.timeout_delay))
 
-		local tp_id = tp.make_request(sender, receiver, "receiver")
+		local tp_id = tp.make_request(sender, receiver, "sender")
 
 		-- Teleport timeout delay
 		minetest.after(tp.timeout_delay, function(id)
