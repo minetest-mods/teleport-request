@@ -56,14 +56,14 @@ local function send_message(player, message)
 	end
 end
 
-local request_id = 0
+local next_request_id = 0
 local request_list = {}
 local sender_list = {}
 local receiver_list = {}
 
 function tp.make_request(sender, receiver, direction)
-	request_id = request_id+1
-	request_list[request_id] = {
+	next_request_id = next_request_id+1
+	request_list[next_request_id] = {
 		time = os.time(),
 		direction = direction or "receiver",
 		receiver = receiver,
@@ -71,14 +71,14 @@ function tp.make_request(sender, receiver, direction)
 	}
 
 	receiver_list[receiver] = receiver_list[receiver] or {count=0}
-	receiver_list[receiver][request_id] = true
+	receiver_list[receiver][next_request_id] = true
 	receiver_list[receiver].count = receiver_list[receiver].count+1
 
 	sender_list[sender] = sender_list[sender] or {count=0}
-	sender_list[sender][request_id] = true
+	sender_list[sender][next_request_id] = true
 	sender_list[sender].count = sender_list[sender].count+1
 
-	return request_id
+	return next_request_id
 end
 
 function tp.clear_request(id)
@@ -317,7 +317,6 @@ function tp.first_request(playername, party)
 	local player_list = tp.get_requests(playername, party)
 	if not player_list then return end
 
-	local request
 	for request_id, _ in pairs(player_list) do
 		if request_id ~= "count" then
 			return request_id
