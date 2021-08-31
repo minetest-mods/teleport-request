@@ -292,7 +292,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			changes = true
 		end
 	end
-	if chnages and not fields.quit then
+	if changes and not fields.quit then
 		tp.list_requests(playername)
 	end
 end)
