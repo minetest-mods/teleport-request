@@ -279,18 +279,22 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			table.insert(accepts, tonumber(string.sub(button_name, 8)))
 		end
 	end
+	local changes = false
 	for _, id in ipairs(accepts) do
 		if request_list[id] and request_list[id].receiver == playername then
 			tp.accept_request(id)
+			changes = true
 		end
 	end
 	for _, id in ipairs(denys) do
 		if request_list[id] and (request_list[id].sender == playername or request_list[id].receiver == playername) then
 			tp.deny_request(id, request_list[id].sender == playername)
+			changes = true
 		end
 	end
-
-	tp.list_requests(playername)
+	if chnages and not fields.quit then
+		tp.list_requests(playername)
+	end
 end)
 
 
