@@ -1,5 +1,5 @@
 # Spanish translation for Teleport Request.
-# Copyright (C) 2014-2021 ChaosWormz and contributors.
+# Copyright (C) 2014-2022 ChaosWormz and contributors.
 # This file is distributed under under the same license as the Teleport Request package.
 # David Leal <halfpacho@gmail.com>, 2019-2020.
 
