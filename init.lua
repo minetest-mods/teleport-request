@@ -1,6 +1,6 @@
 --[[
 Allows players to request from another player to be teleported to them, and do much more.
-Copyright (C) 2014-2022 ChaosWormz and contributors
+Copyright (C) 2014-2023 ChaosWormz and contributors
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
