@@ -18,8 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 USA
 --]]
 
--- Support for intllib
-local S = tp.intllib
+local S = tp.S
 
 minetest.register_chatcommand("tpr", {
 	description = S("Request teleport to another player"),
