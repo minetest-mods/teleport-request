@@ -200,7 +200,9 @@ function tp.deny_request(id, own)
 	end
 end
 
-function tp.list_requests(playername)
+function tp.list_requests(player)
+	local playername = player:get_player_name()
+
 	local sent_requests = tp.get_requests(playername, "sender")
 	local received_requests = tp.get_requests(playername, "receiver")
 	local area_requests = tp.get_requests(playername, "area")
@@ -277,7 +279,23 @@ function tp.list_requests(playername)
 		formspec = ("size[8,%f]label[1,0.3;%s:]"):format(math.min(y,10),S("Teleport Requests"))
 			..request_list_formspec
 	end
+
 	minetest.show_formspec(playername, "teleport_request_list", formspec)
+
+	local function update_time()
+		if formspec == "" or string.find(formspec, S("You have no requests.")) then
+			tp.tpf_update_time[player] = false
+			return
+		end
+
+		if tp.tpf_update_time[player] then
+			-- TODO: find a way to edit the text only and update
+			-- the formspec without re-calling the function.
+			tp.list_requests(player)
+		end
+	end
+
+	minetest.after(1, update_time)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -307,8 +325,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			changes = true
 		end
 	end
+
 	if changes and not fields.quit then
-		tp.list_requests(playername)
+		tp.tpf_update_time[player] = true
+		tp.list_requests(player)
+	elseif fields.quit then
+		tp.tpf_update_time[player] = false
 	end
 end)
 
