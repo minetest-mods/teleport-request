@@ -60,6 +60,7 @@ local next_request_id = 0
 local request_list = {}
 local sender_list = {}
 local receiver_list = {}
+local area_list = {}
 
 function tp.make_request(sender, receiver, direction)
 	next_request_id = next_request_id+1
@@ -187,6 +188,7 @@ function tp.deny_request(id, own)
 		if request.direction == "area" then
 			send_message(request.sender, S("Area request denied."))
 			send_message(request.receiver, S("You denied the request @1 sent you.", request.sender))
+			spam_prevention[request.receiver] = request.sender
 		elseif request.direction == "receiver" then
 			send_message(request.sender, S("Teleport request denied."))
 			send_message(request.receiver, S("You denied the request @1 sent you.", request.sender))
@@ -202,9 +204,10 @@ end
 function tp.list_requests(playername)
 	local sent_requests = tp.get_requests(playername, "sender")
 	local received_requests = tp.get_requests(playername, "receiver")
+	local area_requests = tp.get_requests(playername, "area")
 
 	local formspec
-	if sent_requests.count == 0 and received_requests.count == 0 then
+	if sent_requests.count == 0 and received_requests.count == 0 and area_requests.count == 0 then
 		formspec = ("size[5,2]label[1,0.3;%s:]"):format(S("Teleport Requests"))
 		formspec = formspec..("label[1,1.2;%s]"):format(S("You have no requests."))
 	else
@@ -226,6 +229,12 @@ function tp.list_requests(playername)
 						request_list_formspec = request_list_formspec..("label[0.3,%f;%s]button[7,%f;1,1;deny_%s;Cancel]")
 							:format(
 								y, tostring(os.time()-request.time).."s: "..S("You are requesting that @1 teleports to you.", request.receiver),
+								y, tostring(request_id)
+							)
+					elseif request.direction == "area" then
+						request_list_formspec = request_list_formspec..("label[0.3,%f;%s]button[7,%f;1,1;deny_%s;Cancel]")
+							:format(
+								y, tostring(os.time()-request.time).."s: "..S("You are requesting to teleport to @1's protected area.", request.receiver),
 								y, tostring(request_id)
 							)
 					end
@@ -251,6 +260,13 @@ function tp.list_requests(playername)
 						request_list_formspec = request_list_formspec..("label[0.3,%f;%s]button[6,%f;1,1;accept_%s;Accept]button[7,%f;1,1;deny_%s;Deny]")
 							:format(
 								y, tostring(os.time()-request.time).."s ago: "..S("@1 is requesting that you teleport to them.", request.sender),
+								y, tostring(request_id),
+								y, tostring(request_id)
+							)
+					elseif request.direction == "area" then
+						request_list_formspec = request_list_formspec..("label[0.3,%f;%s]button[6,%f;1,1;accept_%s;Accept]button[7,%f;1,1;deny_%s;Deny]")
+							:format(
+								y, tostring(os.time()-request.time).."s ago: "..S("@1 is requesting to teleport to your protected area.", request.sender),
 								y, tostring(request_id),
 								y, tostring(request_id)
 							)
@@ -304,6 +320,10 @@ function tp.get_requests(playername, party)
 		list = sender_list
 	elseif party == "receiver" then
 		list = receiver_list
+	elseif party == "area" then
+		list = area_list
+	else
+		return -- Invalid party
 	end
 	if not list then return end
 
