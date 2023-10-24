@@ -69,7 +69,12 @@ minetest.register_chatcommand("tpn", {
 minetest.register_chatcommand("tpf", {
 	description = S("Show all teleport requests, made by you or to you, that are still active"),
 	privs = {interact = true, tp = true},
-	func = tp.list_requests
+	func = function(player)
+		local playername = minetest.get_player_by_name(player)
+
+		tp.tpf_update_time[playername] = true
+		tp.list_requests(playername)
+	end
 })
 
 minetest.register_chatcommand("tpr_mute", {
