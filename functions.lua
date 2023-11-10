@@ -200,9 +200,7 @@ function tp.deny_request(id, own)
 	end
 end
 
-function tp.list_requests(player)
-	local playername = player:get_player_name()
-
+function tp.list_requests(playername)
 	local sent_requests = tp.get_requests(playername, "sender")
 	local received_requests = tp.get_requests(playername, "receiver")
 	local area_requests = tp.get_requests(playername, "area")
@@ -284,14 +282,14 @@ function tp.list_requests(player)
 
 	local function update_time()
 		if formspec == "" or string.find(formspec, S("You have no requests.")) then
-			tp.tpf_update_time[player] = false
+			tp.tpf_update_time[playername] = false
 			return
 		end
 
-		if tp.tpf_update_time[player] then
+		if tp.tpf_update_time[playername] then
 			-- TODO: find a way to edit the text only and update
 			-- the formspec without re-calling the function.
-			tp.list_requests(player)
+			tp.list_requests(playername)
 		end
 	end
 
@@ -327,13 +325,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 	if changes and not fields.quit then
-		tp.tpf_update_time[player] = true
-		tp.list_requests(player)
+		tp.tpf_update_time[playername] = true
+		tp.list_requests(playername)
 	elseif fields.quit then
-		tp.tpf_update_time[player] = false
+		tp.tpf_update_time[playername] = false
 	end
 end)
-
 
 function tp.get_requests(playername, party)
 	local list
@@ -519,9 +516,7 @@ function tp.tpr_send(sender, receiver)
 				band = true
 			end
 		end, sender, receiver)
-
 	else
-
 	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
 			if receiver == "" then
@@ -622,9 +617,7 @@ function tp.tphr_send(sender, receiver)
 				band = true
 			end
 		end, sender, receiver)
-
 	else
-
 	-- Compatibility with beerchat
 		if minetest.get_modpath("beerchat") and not minetest.check_player_privs(sender, {tp_admin = true}) then
 			if receiver == "" then
@@ -787,6 +780,7 @@ function tp.tpr_deny(name)
 	if (tp.count_requests(name, "sender") + tp.count_requests(name, "receiver")) > 1 then
 		-- Show formspec for decision
 		tp.list_requests(name)
+		tp.tpf_update_time[name] = true
 		return
 	end
 
@@ -814,6 +808,7 @@ function tp.tpr_accept(name)
 	if tp.count_requests(name, "receiver") > 1 then
 		-- Show formspec for decision
 		tp.list_requests(name)
+		tp.tpf_update_time[name] = true
 		return
 	end
 
