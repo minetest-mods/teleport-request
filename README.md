@@ -43,7 +43,7 @@ Note there must be 2 players in order to make the commands to work: a player mus
 
 There are two ways of sending a request:
 
-1. A request which teleports you to the specified player (command `/tpr <player>`).\
+1. A request which teleports you to the specified player (command `/tpr <player>`).
 2. A request which teleports the specified player to you (command `/tphr <player>`).
 
 To accept a request some sent you, you must use `/tpy`.\
