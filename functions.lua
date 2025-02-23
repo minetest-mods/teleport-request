@@ -487,7 +487,7 @@ end
 
 -- Teleport Request System
 function tp.tpr_send(sender, receiver)
-	-- Check if the sender is the receiver
+	-- Disallow entering inaccessible areas. (Teleportation includes a position offset of 1)
 	if sender == receiver then
 		send_message(sender, S("You cannot send a teleport request to yourself."))
 		return
