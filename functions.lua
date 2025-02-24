@@ -599,7 +599,7 @@ function tp.tphr_send(sender, receiver)
 		send_message(sender, S("You cannot send a teleport request to yourself."))
 		return
 	end
-	
+
 	-- Check if the sender is muted
 	if muted_players[receiver] == sender and not minetest.check_player_privs(sender, {server = true}) then
 		send_message(sender, S("Cannot send request to @1 (you have been muted).", receiver))
